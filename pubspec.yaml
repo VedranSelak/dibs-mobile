@@ -1,0 +1,11 @@
+name: project
+publish_to: 'none'
+
+environment:
+  sdk: ">=2.16.2 <3.0.0"
+
+dependencies:
+  flutter_lints: ^1.0.4
+  flutter:
+    sdk: flutter
+  melos: ^1.5.2

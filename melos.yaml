@@ -1,0 +1,18 @@
+name: dibs_flutter
+
+packages:
+  - app/**
+  - code_style/**
+  - common/**
+  - data/**
+  - domain/**
+  - '*'
+
+scripts:
+  get_packages:
+    run: melos exec -- flutter pub get
+    description: Run pub get in all packages
+
+  analyze:
+    run: melos exec -- flutter analyze
+    description: Run dart analyze in all packages
