@@ -42,7 +42,7 @@ packages:
       path: "../code_style"
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.0.0"
   collection:
     dependency: transitive
     description:
@@ -79,7 +79,7 @@ packages:
     source: hosted
     version: "1.2.0"
   flutter:
-    dependency: "direct main"
+    dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.0"

@@ -7,8 +7,6 @@ environment:
   sdk: ">=2.16.2 <3.0.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
   json_annotation: ^4.4.0
   common:
     path: ../common
