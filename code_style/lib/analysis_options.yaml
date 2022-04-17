@@ -4,7 +4,7 @@ linter:
   rules:
     always_use_package_imports: true
     prefer_single_quotes: false
-    prefer_double_quotes: true
+    prefer_double_quotes: false
     public_member_api_docs: false
     type_annotate_public_apis: true
     avoid_types_on_closure_parameters: false
