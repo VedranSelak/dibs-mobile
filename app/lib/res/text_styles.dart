@@ -17,4 +17,12 @@ class TextStyles {
         fontFamily: "WorkSans",
         fontWeight: FontWeight.w600,
       );
+
+  TextStyle get buttonText => _theme.bodyText1!.copyWith(
+        color: Colors.white,
+        fontSize: 18.0,
+        fontFamily: "WorkSans",
+        fontWeight: FontWeight.w500,
+        letterSpacing: 1,
+      );
 }
