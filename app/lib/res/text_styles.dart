@@ -13,6 +13,8 @@ class TextStyles {
 
   TextStyle get headerText => _theme.bodyText1!.copyWith(
         color: Colors.blueAccent,
-        fontSize: 20.0,
+        fontSize: 30.0,
+        fontFamily: "WorkSans",
+        fontWeight: FontWeight.w600,
       );
 }

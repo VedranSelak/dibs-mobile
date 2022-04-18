@@ -11,7 +11,6 @@ class LoginScreen extends StatelessWidget {
     final textStyles = TextStyles.of(context);
 
     return Scaffold(
-      backgroundColor: Colors.red,
       body: Center(
         child: Text("Log in", style: textStyles.headerText),
       ),
