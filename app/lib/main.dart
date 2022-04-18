@@ -14,7 +14,7 @@ void main() {
     providers: [
       BlocProvider<TestBloc>(create: (context) => GetIt.I.get<TestBloc>()),
     ],
-    child: const Application(),
+    child: Application(),
   ));
 }
 
