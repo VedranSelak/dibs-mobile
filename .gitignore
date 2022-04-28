@@ -15,6 +15,7 @@
 
 # Module related
 */.idea/
+.idea/
 !.idea/modules.xml
 !app/.idea/runConfigurations
 

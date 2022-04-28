@@ -1,4 +1,5 @@
 import 'package:common/params/login_request.dart';
+import 'package:common/resources/data_state.dart';
 import 'package:domain/auth/usecases/login_usecase.dart';
 import "package:equatable/equatable.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -19,10 +20,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     final response = await _loginUseCase(
       params: LoginRequestParams(password: event.password, email: event.email),
     );
-    if (response.error != null) {
-      print(response.error.toString());
+    if (response is DataFailed) {
+      emit(LoginFailed(statusCode: response.error?.response?.statusCode, message: response.error?.message));
     } else {
-      print(response.data?.accessToken);
+      emit(LoginSuccessful());
     }
   }
 }

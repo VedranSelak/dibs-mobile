@@ -39,7 +39,7 @@ linter:
     prefer_expression_function_bodies: false
     flutter_style_todos: false
     join_return_with_assignment: true
-    lines_longer_than_80_chars: true
+    lines_longer_than_80_chars: false
     non_constant_identifier_names: true
     prefer_constructors_over_static_methods: true
     prefer_final_in_for_each: true

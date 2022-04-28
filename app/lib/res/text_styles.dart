@@ -25,4 +25,11 @@ class TextStyles {
         fontWeight: FontWeight.w500,
         letterSpacing: 1,
       );
+
+  TextStyle get errorText => _theme.bodyText1!.copyWith(
+        color: Colors.redAccent,
+        fontSize: 15.0,
+        fontFamily: "WorkSans",
+        fontWeight: FontWeight.w600,
+      );
 }

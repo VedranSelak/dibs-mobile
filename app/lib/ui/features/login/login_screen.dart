@@ -1,6 +1,8 @@
 import 'package:app/blocs/login_bloc/login_bloc.dart';
 import 'package:app/res/text_styles.dart';
+import 'package:app/ui/widgets/outlined_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -65,25 +67,29 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     height: 10,
                   ),
+                  BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+                    if (state is LoginFailed) {
+                      return SizedBox(
+                        width: mediaQuery.size.width,
+                        child: Text(
+                          "Incorrect email or password",
+                          style: textStyles.errorText,
+                          textAlign: TextAlign.start,
+                        ),
+                      );
+                    }
+                    return Text("", style: textStyles.errorText);
+                  }),
                   SizedBox(
-                    width: mediaQuery.size.width * 0.5,
-                    child: OutlinedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.blue),
-                        foregroundColor: MaterialStateProperty.all(Colors.white),
-                      ),
-                      onPressed: () {
-                        context.read<LoginBloc>().add(StartLogin(
-                              email: _emailController.text,
-                              password: _passwordController.text,
-                            ));
-                      },
-                      child: Text(
-                        "Login",
-                        style: textStyles.buttonText,
-                      ),
-                    ),
-                  ),
+                      width: mediaQuery.size.width * 0.5,
+                      child: PrimaryButton(
+                        onPress: () {
+                          context.read<LoginBloc>().add(StartLogin(
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                              ));
+                        },
+                      )),
                 ],
               ),
             ),
