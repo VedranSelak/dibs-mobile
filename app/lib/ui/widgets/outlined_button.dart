@@ -2,8 +2,9 @@ import 'package:app/res/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class PrimaryButton extends StatelessWidget {
-  const PrimaryButton({required this.onPress, Key? key}) : super(key: key);
+  const PrimaryButton({required this.buttonText, required this.onPress, Key? key}) : super(key: key);
   final void Function() onPress;
+  final String buttonText;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class PrimaryButton extends StatelessWidget {
       ),
       onPressed: onPress,
       child: Text(
-        "Login",
+        buttonText,
         style: textStyles.buttonText,
       ),
     );
