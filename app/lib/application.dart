@@ -1,7 +1,6 @@
-import 'package:app/blocs/test_bloc/test_bloc.dart';
 import 'package:app/ui/features/login/login_screen.dart';
+import 'package:app/ui/features/signup/signup_screen.dart';
 import "package:flutter/material.dart";
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class Application extends StatelessWidget {
@@ -18,5 +17,6 @@ class Application extends StatelessWidget {
 
   final _routes = [
     GetPage<LoginScreen>(name: LoginScreen.routeName, page: LoginScreen.new),
+    GetPage<SignUpScreen>(name: SignUpScreen.routeName, page: SignUpScreen.new),
   ];
 }
