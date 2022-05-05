@@ -32,4 +32,11 @@ class TextStyles {
         fontFamily: "WorkSans",
         fontWeight: FontWeight.w600,
       );
+
+  TextStyle get accentText => _theme.bodyText1!.copyWith(
+        color: Colors.blueAccent,
+        fontSize: 15.0,
+        fontFamily: "WorkSans",
+        fontWeight: FontWeight.w500,
+      );
 }

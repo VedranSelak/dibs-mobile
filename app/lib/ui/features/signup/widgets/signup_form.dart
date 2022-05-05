@@ -43,7 +43,7 @@ class _SignUpFormState extends State<SignUpForm> {
           children: [
             Text("Sign up:", style: textStyles.headerText),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
             TextField(
               controller: _emailController,

@@ -10,6 +10,14 @@ abstract class SignUpState extends Equatable {
 
 class SignUpInitial extends SignUpState {}
 
+class SignUpStarted extends SignUpState {
+  const SignUpStarted({required this.type});
+  final AccountType type;
+
+  @override
+  List<Object?> get props => [type];
+}
+
 class SignUpFailed extends SignUpState {
   const SignUpFailed({this.statusCode = 500, this.message = "Something went wrong"});
   final int? statusCode;
