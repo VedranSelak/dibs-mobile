@@ -19,12 +19,13 @@ class SignUpStarted extends SignUpState {
 }
 
 class SignUpFailed extends SignUpState {
-  const SignUpFailed({this.statusCode = 500, this.message = "Something went wrong"});
+  const SignUpFailed({required this.type, this.statusCode = 500, this.message = "Something went wrong"});
+  final AccountType type;
   final int? statusCode;
   final String? message;
 
   @override
-  List<Object?> get props => [statusCode, message];
+  List<Object?> get props => [type, statusCode, message];
 }
 
 class SignUpSuccessful extends SignUpState {}
