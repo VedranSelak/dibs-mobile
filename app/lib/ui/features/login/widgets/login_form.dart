@@ -65,7 +65,7 @@ class _LoginFormState extends State<LoginForm> {
                 return SizedBox(
                   width: mediaQuery.size.width,
                   child: Text(
-                    "Incorrect email or password",
+                    state.message!,
                     style: textStyles.errorText,
                     textAlign: TextAlign.start,
                   ),

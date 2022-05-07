@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:app/res/account_type.dart';
 import 'package:common/params/signup_request.dart';
+import 'package:common/resources/data_state.dart';
 import 'package:domain/auth/usecases/signup_usecase.dart';
 import "package:equatable/equatable.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -20,17 +23,22 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
   void _onStartSignUp(StartSignUp event, Emitter<SignUpState> emit) async {
     if (state is SignUpStarted || state is SignUpFailed) {
+      final type = state is SignUpStarted ? (state as SignUpStarted).type : (state as SignUpFailed).type;
       final response = await _signUpUseCase(
           params: SignUpRequestParams(
               email: event.email,
               firstName: event.firstName,
               lastName: event.lastName,
               password: event.password,
-              type: state is SignUpStarted
-                  ? (state as SignUpStarted).type.rawValue
-                  : (state as SignUpFailed).type.rawValue,
+              type: type.rawValue,
               status: 'inactive'));
-      print(response);
+      if (response is DataSuccess) {
+        emit(SignUpSuccessful());
+      } else if (response is DataFailed) {
+        final Map errorObject = json.decode(response.error?.response.toString() ?? "") as Map;
+        emit(SignUpFailed(
+            type: type, message: errorObject['msg'] as String?, statusCode: response.error?.response?.statusCode));
+      }
     }
   }
 

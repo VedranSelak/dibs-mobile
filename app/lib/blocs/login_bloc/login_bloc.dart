@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:common/params/login_request.dart';
 import 'package:common/resources/data_state.dart';
 import 'package:domain/auth/usecases/login_usecase.dart';
@@ -21,7 +23,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       params: LoginRequestParams(password: event.password, email: event.email),
     );
     if (response is DataFailed) {
-      emit(LoginFailed(statusCode: response.error?.response?.statusCode, message: response.error?.message));
+      final Map errorObject = json.decode(response.error?.response.toString() ?? "") as Map;
+      emit(LoginFailed(statusCode: response.error?.response?.statusCode, message: errorObject['msg'] as String?));
     } else {
       emit(LoginSuccessful());
     }
