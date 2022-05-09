@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:app/res/account_type.dart';
+import 'package:app/ui/features/home/home_screen.dart';
 import 'package:common/params/signup_request.dart';
 import 'package:common/resources/data_state.dart';
 import 'package:domain/auth/usecases/signup_usecase.dart';
 import "package:equatable/equatable.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import "package:meta/meta.dart";
 
@@ -33,6 +35,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
               type: type.rawValue,
               status: 'inactive'));
       if (response is DataSuccess) {
+        Get.offAllNamed<dynamic>(HomeScreen.routeName);
         emit(SignUpSuccessful());
       } else if (response is DataFailed) {
         final Map errorObject = json.decode(response.error?.response.toString() ?? "") as Map;

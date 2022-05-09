@@ -17,8 +17,8 @@ class SignUpRequestParams {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'email': email,
-        'first_name': firstName,
-        'last_name': lastName,
+        'firstName': firstName,
+        'lastName': lastName,
         'password': password,
         'type': type,
         'status': status,
