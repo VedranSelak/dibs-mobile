@@ -72,11 +72,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ],
               ),
             );
-          } else if (state is SignUpStarted) {
-            return Column(
-              children: const [
-                SignUpForm(),
-              ],
+          } else if (state is SignUpStarted || state is SignUpFailed) {
+            return SingleChildScrollView(
+              child: Column(
+                children: const [
+                  SignUpForm(),
+                ],
+              ),
             );
           } else {
             return const Center(

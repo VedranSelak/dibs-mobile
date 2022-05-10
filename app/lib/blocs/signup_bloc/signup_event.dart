@@ -18,8 +18,10 @@ class ChooseAccountType extends SignUpEvent {
 class ResetBloc extends SignUpEvent {}
 
 class StartSignUp extends SignUpEvent {
-  const StartSignUp({required this.email, required this.password});
+  const StartSignUp({required this.email, required this.firstName, required this.lastName, required this.password});
   final String email;
+  final String firstName;
+  final String lastName;
   final String password;
 
   @override

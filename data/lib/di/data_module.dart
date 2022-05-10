@@ -6,6 +6,7 @@ import 'package:data/placeholder_api/di/placeholder_api_module.dart';
 import 'package:dio/dio.dart';
 import 'package:domain/auth/common/auth_api_repository.dart';
 import 'package:domain/auth/usecases/login_usecase.dart';
+import 'package:domain/auth/usecases/signup_usecase.dart';
 import 'package:domain/placeholder_api/common/placeholder_api_repository.dart';
 import 'package:domain/placeholder_api/usecases/get_posts_usecase.dart';
 import 'package:get_it/get_it.dart';
@@ -29,5 +30,6 @@ class DataModule extends BaseDiModule {
 
     // auth usecases
     GetIt.I.registerFactory(() => LoginUseCase(authRepository));
+    GetIt.I.registerFactory(() => SignUpUseCase(authRepository));
   }
 }

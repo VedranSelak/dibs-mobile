@@ -1,18 +1,18 @@
 import 'package:common/resources/data_state.dart';
 import 'package:common/usecases/usecase.dart';
-import 'package:common/params/login_request.dart';
+import 'package:common/params/signup_request.dart';
 import 'package:domain/auth/common/auth_api_repository.dart';
 import 'package:domain/auth/entities/token_response.dart';
 
 typedef Response = DataState<TokenResponse>;
-typedef Params = LoginRequestParams;
+typedef Params = SignUpRequestParams;
 
-class LoginUseCase implements UseCase<Response, Params> {
-  LoginUseCase(this.authApiRepository);
+class SignUpUseCase implements UseCase<Response, Params> {
+  SignUpUseCase(this.authApiRepository);
   final AuthApiRepository authApiRepository;
 
   @override
   Future<Response> call({required Params params}) {
-    return authApiRepository.login(params);
+    return authApiRepository.signUp(params);
   }
 }

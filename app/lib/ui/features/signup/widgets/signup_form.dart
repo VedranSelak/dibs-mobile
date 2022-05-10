@@ -1,4 +1,4 @@
-import 'package:app/blocs/login_bloc/login_bloc.dart';
+import 'package:app/blocs/signup_bloc/signup_bloc.dart';
 import 'package:app/res/text_styles.dart';
 import 'package:app/ui/widgets/outlined_button.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +17,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   bool _passwordVisible = false;
   bool _confirmPasswordVisible = false;
 
@@ -35,9 +36,12 @@ class _SignUpFormState extends State<SignUpForm> {
     final textStyles = TextStyles.of(context);
     final mediaQuery = MediaQuery.of(context);
 
-    return Expanded(
-      child: Container(
-        margin: const EdgeInsets.only(left: 20.0, right: 20.0),
+    return Container(
+      margin: const EdgeInsets.only(left: 20.0, right: 20.0),
+      height: mediaQuery.size.height,
+      width: mediaQuery.size.width,
+      child: Form(
+        key: _formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -45,18 +49,35 @@ class _SignUpFormState extends State<SignUpForm> {
             const SizedBox(
               height: 20,
             ),
-            TextField(
+            TextFormField(
               controller: _emailController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter an email';
+                }
+                if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+                  return 'Please enter a valid email';
+                }
+                return null;
+              },
               decoration: const InputDecoration(
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red, width: 1.0),
+                ),
                 hintText: 'Email...',
               ),
             ),
             const SizedBox(
               height: 10,
             ),
-            TextField(
-              controller: _lastNameController,
+            TextFormField(
+              controller: _firstNameController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your first name';
+                }
+                return null;
+              },
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'First name...',
@@ -65,8 +86,14 @@ class _SignUpFormState extends State<SignUpForm> {
             const SizedBox(
               height: 10,
             ),
-            TextField(
-              controller: _firstNameController,
+            TextFormField(
+              controller: _lastNameController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your last name';
+                }
+                return null;
+              },
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Last name...',
@@ -75,8 +102,19 @@ class _SignUpFormState extends State<SignUpForm> {
             const SizedBox(
               height: 10,
             ),
-            TextField(
+            TextFormField(
               controller: _passwordController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a password';
+                }
+
+                if (value.length < 6) {
+                  return 'The password needs to be at least 6 characters long';
+                }
+
+                return null;
+              },
               decoration: InputDecoration(
                   border: const OutlineInputBorder(),
                   hintText: 'Password...',
@@ -97,8 +135,17 @@ class _SignUpFormState extends State<SignUpForm> {
             const SizedBox(
               height: 10,
             ),
-            TextField(
+            TextFormField(
               controller: _confirmPasswordController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please confirm your password';
+                }
+                if (value != _passwordController.text) {
+                  return "Passwords don't match";
+                }
+                return null;
+              },
               decoration: InputDecoration(
                   border: const OutlineInputBorder(),
                   hintText: 'Confirm password...',
@@ -117,14 +164,14 @@ class _SignUpFormState extends State<SignUpForm> {
               autocorrect: false,
             ),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
-            BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
-              if (state is LoginFailed) {
+            BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
+              if (state is SignUpFailed) {
                 return SizedBox(
                   width: mediaQuery.size.width,
                   child: Text(
-                    "Incorrect email or password",
+                    state.message!,
                     style: textStyles.errorText,
                     textAlign: TextAlign.start,
                   ),
@@ -137,10 +184,14 @@ class _SignUpFormState extends State<SignUpForm> {
                 child: PrimaryButton(
                   buttonText: "Sign up",
                   onPress: () {
-                    context.read<LoginBloc>().add(StartLogin(
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                        ));
+                    if (_formKey.currentState!.validate()) {
+                      context.read<SignUpBloc>().add(StartSignUp(
+                            email: _emailController.text,
+                            firstName: _firstNameController.text,
+                            lastName: _lastNameController.text,
+                            password: _passwordController.text,
+                          ));
+                    }
                   },
                 )),
           ],
