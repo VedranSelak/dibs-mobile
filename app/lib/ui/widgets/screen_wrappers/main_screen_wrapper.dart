@@ -1,3 +1,4 @@
+import 'package:app/res/dimensions.dart';
 import 'package:app/ui/features/profile/profile_screen.dart';
 import 'package:app/ui/widgets/bottom_navigation/main_controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,7 @@ class MainScreenWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dimensions = Dimensions.of(context);
     return GetBuilder<MainController>(builder: (controller) {
       return Scaffold(
         body: SafeArea(
@@ -22,7 +24,7 @@ class MainScreenWrapper extends StatelessWidget {
           ),
         ),
         bottomNavigationBar: SizedBox(
-          height: 80.0,
+          height: dimensions.bottomNavBarHeight,
           child: BottomNavigationBar(
             onTap: controller.changeTabIndex,
             currentIndex: controller.tabIndex,
@@ -32,7 +34,7 @@ class MainScreenWrapper extends StatelessWidget {
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.sportscourt),
+                icon: Icon(CupertinoIcons.person),
                 label: 'Profile',
               ),
             ],

@@ -9,32 +9,36 @@ class ListingItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyles = TextStyles.of(context);
-    final mediaQuery = MediaQuery.of(context);
-    return SizedBox(
-      height: 80.0,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
+    return InkWell(
+      onTap: () {
+        print("tapped ${listing.id}");
+      },
+      child: SizedBox(
+        height: 80.0,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
               ),
+              child: const Icon(Icons.image, size: 80),
             ),
-            child: const Icon(Icons.image, size: 80),
-          ),
-          const SizedBox(
-            width: 10.0,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(listing.name, style: textStyles.labelText),
-              Text(listing.shortDescription, style: textStyles.secondaryLabel),
-            ],
-          )
-        ],
+            const SizedBox(
+              width: 10.0,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(listing.name, style: textStyles.labelText),
+                Text(listing.shortDescription, style: textStyles.secondaryLabel),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
