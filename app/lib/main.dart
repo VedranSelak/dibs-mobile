@@ -1,5 +1,6 @@
 import "package:app/application.dart";
 import 'package:app/blocs/bloc_module.dart';
+import 'package:app/blocs/listing_bloc/listing_bloc.dart';
 import 'package:app/blocs/login_bloc/login_bloc.dart';
 import 'package:app/blocs/signup_bloc/signup_bloc.dart';
 import 'package:app/blocs/test_bloc/test_bloc.dart';
@@ -17,6 +18,7 @@ void main() {
       BlocProvider<TestBloc>(create: (context) => GetIt.I.get<TestBloc>()),
       BlocProvider<LoginBloc>(create: (context) => GetIt.I.get<LoginBloc>()),
       BlocProvider<SignUpBloc>(create: (context) => GetIt.I.get<SignUpBloc>()),
+      BlocProvider<ListingBloc>(create: (context) => GetIt.I.get<ListingBloc>()),
     ],
     child: Application(),
   ));

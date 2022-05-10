@@ -39,4 +39,18 @@ class TextStyles {
         fontFamily: "WorkSans",
         fontWeight: FontWeight.w500,
       );
+
+  TextStyle get labelText => _theme.bodyText1!.copyWith(
+        color: Colors.black,
+        fontSize: 17.0,
+        fontFamily: "WorkSans",
+        fontWeight: FontWeight.w600,
+      );
+
+  TextStyle get secondaryLabel => _theme.bodyText1!.copyWith(
+        color: Colors.grey,
+        fontSize: 15.0,
+        fontFamily: "WorkSans",
+        fontWeight: FontWeight.w500,
+      );
 }

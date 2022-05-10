@@ -21,19 +21,22 @@ class MainScreenWrapper extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: controller.changeTabIndex,
-          currentIndex: controller.tabIndex,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.sportscourt),
-              label: 'Profile',
-            ),
-          ],
+        bottomNavigationBar: SizedBox(
+          height: 80.0,
+          child: BottomNavigationBar(
+            onTap: controller.changeTabIndex,
+            currentIndex: controller.tabIndex,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.sportscourt),
+                label: 'Profile',
+              ),
+            ],
+          ),
         ),
       );
     });
