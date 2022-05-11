@@ -1,6 +1,6 @@
 import 'package:app/blocs/login_bloc/login_bloc.dart';
 import 'package:app/res/text_styles.dart';
-import 'package:app/ui/widgets/outlined_button.dart';
+import 'package:app/ui/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

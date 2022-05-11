@@ -7,6 +7,7 @@ import 'package:data/public_listing/datasource/public_listing_api_service.dart';
 import 'package:data/public_listing/di/public_listing_api_module.dart';
 import 'package:dio/dio.dart';
 import 'package:domain/auth/common/auth_api_repository.dart';
+import 'package:domain/auth/usecases/get_user_usecase.dart';
 import 'package:domain/auth/usecases/login_usecase.dart';
 import 'package:domain/auth/usecases/signup_usecase.dart';
 import 'package:domain/placeholder_api/common/placeholder_api_repository.dart';
@@ -38,6 +39,7 @@ class DataModule extends BaseDiModule {
     // auth usecases
     GetIt.I.registerFactory(() => LoginUseCase(authRepository));
     GetIt.I.registerFactory(() => SignUpUseCase(authRepository));
+    GetIt.I.registerFactory(() => GetUserUseCase(authRepository));
 
     // listing usecases
     GetIt.I.registerFactory(() => GetAllListingsUseCase(publicListingRepository));
