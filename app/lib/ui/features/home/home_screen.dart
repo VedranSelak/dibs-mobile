@@ -22,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     context.read<ListingBloc>().add(FetchListings());
+    context.read<UserTypeBloc>().add(GetUserType());
   }
 
   @override
@@ -30,8 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
     final textStyles = TextStyles.of(context);
 
     return MainScreenWrapper(
-      child: BlocBuilder<UserTypeBloc, UserTypeState>(builder: (context, state) {
-        return Container(
+      child: BlocBuilder<UserTypeBloc, UserTypeState>(
+        builder: (context, state) {
+          return Container(
             margin: const EdgeInsets.symmetric(horizontal: 20.0),
             width: dimensions.fullWidth,
             height: dimensions.mainContentHeight,
@@ -79,8 +81,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
               ],
-            ));
-      }),
+            ),
+          );
+        },
+      ),
     );
   }
 }
