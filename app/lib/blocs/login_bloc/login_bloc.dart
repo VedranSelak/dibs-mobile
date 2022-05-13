@@ -16,6 +16,7 @@ part "login_state.dart";
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginInitial()) {
     on<StartLogin>(_onStartLogin);
+    on<ResetLogin>(_onResetLogin);
   }
 
   final LoginUseCase _loginUseCase = GetIt.I.get<LoginUseCase>();
@@ -31,5 +32,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       Get.offAllNamed<dynamic>(HomeScreen.routeName);
       emit(LoginSuccessful());
     }
+  }
+
+  void _onResetLogin(ResetLogin event, Emitter<LoginState> emit) async {
+    emit(LoginInitial());
   }
 }

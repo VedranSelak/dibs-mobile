@@ -3,10 +3,13 @@ import 'package:common/params/signup_request.dart';
 import 'package:common/resources/data_state.dart';
 import 'package:common/utils/constants.dart';
 import 'package:data/auth/datasource/auth_api_service.dart';
+import 'package:data/auth/dtos/user_model.dart';
 import 'package:dio/dio.dart';
 import 'package:domain/auth/common/auth_api_repository.dart';
 import 'package:domain/auth/entities/token_response.dart';
+import 'package:domain/auth/entities/user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 
 class AuthApiImpl implements AuthApiRepository {
   const AuthApiImpl(this.authApiService);
@@ -52,5 +55,17 @@ class AuthApiImpl implements AuthApiRepository {
     } on DioError catch (e) {
       return DataFailed(e);
     }
+  }
+
+  @override
+  Future<User?> getUser() async {
+    const storage = FlutterSecureStorage();
+    final String? token = await storage.read(key: kAccessTokenKey);
+    if (token == null) {
+      return null;
+    }
+    final Map<String, dynamic> userData = Jwt.parseJwt(token);
+    userData['accessToken'] = token;
+    return UserModel.fromJson(userData);
   }
 }

@@ -13,7 +13,7 @@ class Application extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: "Dibs",
-      initialRoute: LoginScreen.routeName,
+      initialRoute: HomeScreen.routeName,
       getPages: _routes,
     );
   }

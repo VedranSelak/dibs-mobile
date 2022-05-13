@@ -4,6 +4,7 @@ import 'package:app/res/assets.dart';
 import 'package:app/res/text_styles.dart';
 import 'package:app/ui/features/signup/widgets/account_type_card.dart';
 import 'package:app/ui/features/signup/widgets/signup_form.dart';
+import 'package:app/ui/widgets/screen_wrappers/simple_screen_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -21,29 +22,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final textStyles = TextStyles.of(context);
+
     return WillPopScope(
       onWillPop: () async {
         context.read<SignUpBloc>().add(ResetBloc());
         return true;
       },
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          leading: IconButton(
-            onPressed: () {
-              Get.back<dynamic>();
-              context.read<SignUpBloc>().add(ResetBloc());
-            },
-            icon: const Icon(
-              Icons.chevron_left,
-              color: Colors.blue,
-              size: 35.0,
-            ),
-          ),
-        ),
-        body: BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
+      child: SimpleScreenWrapper(
+        onBackPressed: () {
+          Get.back<dynamic>();
+          context.read<SignUpBloc>().add(ResetBloc());
+        },
+        child: BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
           if (state is SignUpInitial) {
             return SizedBox(
               width: mediaQuery.size.width,

@@ -1,6 +1,6 @@
 import 'package:app/blocs/login_bloc/login_bloc.dart';
 import 'package:app/res/text_styles.dart';
-import 'package:app/ui/widgets/outlined_button.dart';
+import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -103,18 +103,22 @@ class _LoginFormState extends State<LoginForm> {
                 return Text("", style: textStyles.errorText);
               }),
               SizedBox(
-                  width: mediaQuery.size.width * 0.5,
-                  child: PrimaryButton(
-                    buttonText: "Login",
-                    onPress: () {
-                      if (_formKey.currentState!.validate()) {
-                        context.read<LoginBloc>().add(StartLogin(
+                width: mediaQuery.size.width * 0.5,
+                child: PrimaryButton(
+                  buttonText: "Login",
+                  isPrimary: true,
+                  onPress: () {
+                    if (_formKey.currentState!.validate()) {
+                      context.read<LoginBloc>().add(
+                            StartLogin(
                               email: _emailController.text,
                               password: _passwordController.text,
-                            ));
-                      }
-                    },
-                  )),
+                            ),
+                          );
+                    }
+                  },
+                ),
+              ),
             ],
           ),
         ),
