@@ -1,6 +1,6 @@
 import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
-import 'package:app/ui/widgets/primary_button.dart';
+import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:flutter/material.dart';
 
 class CreatePublicListingCard extends StatelessWidget {
@@ -29,6 +29,7 @@ class CreatePublicListingCard extends StatelessWidget {
                     height: 10.0,
                   ),
                   PrimaryButton(
+                    isPrimary: true,
                     onPress: () {
                       print("Create listing");
                     },

@@ -1,6 +1,8 @@
+import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainScreenOverlay extends StatelessWidget {
   const MainScreenOverlay({required this.entry, Key? key}) : super(key: key);
@@ -47,32 +49,33 @@ class MainScreenOverlay extends StatelessWidget {
                     )
                   ],
                 ),
-                Column(
-                  children: [
-                    Text("Create", style: textStyles.buttonText),
-                    Text("Listing", style: textStyles.buttonText),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white, width: 2.0),
-                        shape: BoxShape.circle,
+                if (context.read<UserTypeBloc>().state is OwnerType)
+                  Column(
+                    children: [
+                      Text("Create", style: textStyles.buttonText),
+                      Text("Listing", style: textStyles.buttonText),
+                      const SizedBox(
+                        height: 10.0,
                       ),
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.add_location_outlined,
-                          color: Colors.white,
+                      Container(
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white, width: 2.0),
+                          shape: BoxShape.circle,
                         ),
-                        onPressed: () {},
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.add_location_outlined,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {},
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                  ],
-                ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                    ],
+                  ),
                 Column(
                   children: [
                     const SizedBox(

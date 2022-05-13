@@ -1,6 +1,6 @@
 import 'package:app/blocs/signup_bloc/signup_bloc.dart';
 import 'package:app/res/text_styles.dart';
-import 'package:app/ui/widgets/primary_button.dart';
+import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -183,6 +183,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 width: mediaQuery.size.width * 0.5,
                 child: PrimaryButton(
                   buttonText: "Sign up",
+                  isPrimary: true,
                   onPress: () {
                     if (_formKey.currentState!.validate()) {
                       context.read<SignUpBloc>().add(StartSignUp(
