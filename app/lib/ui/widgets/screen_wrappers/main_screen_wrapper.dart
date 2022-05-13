@@ -58,7 +58,7 @@ class _MainScreenWrapperState extends State<MainScreenWrapper> {
                   description: "To be able to take advantage the apps whole functionality please create an account.",
                   acceptButton: PrimaryButton(
                     buttonText: 'Log in',
-                    isPrimary: true,
+                    backgroundColor: Colors.blueAccent,
                     onPress: () {
                       Get.back<dynamic>();
                       // ignore: cascade_invocations
@@ -67,7 +67,7 @@ class _MainScreenWrapperState extends State<MainScreenWrapper> {
                   ),
                   rejectButton: PrimaryButton(
                     buttonText: 'Cancel',
-                    isPrimary: false,
+                    backgroundColor: Colors.grey,
                     onPress: () {
                       Get.back<dynamic>();
                     },

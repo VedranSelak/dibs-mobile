@@ -5,12 +5,12 @@ class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
     required this.buttonText,
     required this.onPress,
-    required this.isPrimary,
+    required this.backgroundColor,
     Key? key,
   }) : super(key: key);
   final void Function() onPress;
   final String buttonText;
-  final bool isPrimary;
+  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class PrimaryButton extends StatelessWidget {
 
     return OutlinedButton(
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(isPrimary ? Colors.blue : Colors.grey),
+        backgroundColor: MaterialStateProperty.all(backgroundColor),
         foregroundColor: MaterialStateProperty.all(Colors.white),
       ),
       onPressed: onPress,

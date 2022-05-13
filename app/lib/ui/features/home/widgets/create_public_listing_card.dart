@@ -1,7 +1,9 @@
 import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
+import 'package:app/ui/features/create_listing/create_listing_screen.dart';
 import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CreatePublicListingCard extends StatelessWidget {
   const CreatePublicListingCard({Key? key}) : super(key: key);
@@ -29,9 +31,9 @@ class CreatePublicListingCard extends StatelessWidget {
                     height: 10.0,
                   ),
                   PrimaryButton(
-                    isPrimary: true,
+                    backgroundColor: Colors.blueAccent,
                     onPress: () {
-                      print("Create listing");
+                      Get.toNamed<dynamic>(CreateListingScreen.routeName);
                     },
                     buttonText: "Create",
                   ),

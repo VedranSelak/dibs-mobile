@@ -1,3 +1,4 @@
+import 'package:app/ui/features/create_listing/create_listing_screen.dart';
 import 'package:app/ui/features/home/home_screen.dart';
 import 'package:app/ui/features/login/login_screen.dart';
 import 'package:app/ui/features/profile/profile_screen.dart';
@@ -35,6 +36,10 @@ class Application extends StatelessWidget {
     GetPage<ProfileScreen>(
       name: ProfileScreen.routeName,
       page: ProfileScreen.new,
+    ),
+    GetPage<CreateListingScreen>(
+      name: CreateListingScreen.routeName,
+      page: CreateListingScreen.new,
     ),
   ];
 }
