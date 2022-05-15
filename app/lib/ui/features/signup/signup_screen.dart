@@ -29,6 +29,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         return true;
       },
       child: SimpleScreenWrapper(
+        shouldGoUnderAppBar: true,
         onBackPressed: () {
           Get.back<dynamic>();
           context.read<SignUpBloc>().add(ResetBloc());

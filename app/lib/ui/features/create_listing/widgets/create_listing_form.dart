@@ -1,4 +1,4 @@
-import 'package:app/blocs/signup_bloc/signup_bloc.dart';
+import 'package:app/blocs/create_listing_bloc/create_listing_bloc.dart';
 import 'package:app/res/text_styles.dart';
 import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:flutter/material.dart';
@@ -285,7 +285,25 @@ class _CreateListingFormState extends State<CreateListingForm> {
                   buttonText: "Next",
                   backgroundColor: Colors.blueAccent,
                   onPress: () {
-                    if (_formKey.currentState!.validate()) {}
+                    if (_formKey.currentState!.validate()) {
+                      final currentState = context.read<CreateListingBloc>().state;
+                      if (currentState is ListingImagesEntered) {
+                        context.read<CreateListingBloc>().add(EnterListingData(
+                              name: widget.nameController.text,
+                              shortDesc: widget.shortDescController.text,
+                              detailedDesc: widget.detailedDescController.text,
+                              type: "restaurant",
+                              images: currentState.images,
+                            ));
+                      } else {
+                        context.read<CreateListingBloc>().add(EnterListingData(
+                              name: widget.nameController.text,
+                              shortDesc: widget.shortDescController.text,
+                              detailedDesc: widget.detailedDescController.text,
+                              type: "restaurant",
+                            ));
+                      }
+                    }
                   },
                 )),
           ],

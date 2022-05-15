@@ -43,5 +43,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLbraryUsageDescription</key>
+	<string>To choose images for your public listing</string>
 </dict>
 </plist>

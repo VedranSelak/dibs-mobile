@@ -5,18 +5,20 @@ class SimpleScreenWrapper extends StatelessWidget {
   const SimpleScreenWrapper({
     required this.child,
     required this.onBackPressed,
+    required this.shouldGoUnderAppBar,
     this.title,
     Key? key,
   }) : super(key: key);
   final Widget child;
   final void Function() onBackPressed;
+  final bool shouldGoUnderAppBar;
   final String? title;
 
   @override
   Widget build(BuildContext context) {
     final textStyles = TextStyles.of(context);
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: shouldGoUnderAppBar,
       appBar: AppBar(
         backgroundColor: title != null ? Colors.grey[50] : Colors.transparent,
         centerTitle: true,

@@ -1,5 +1,6 @@
 import "package:app/application.dart";
 import 'package:app/blocs/bloc_module.dart';
+import 'package:app/blocs/create_listing_bloc/create_listing_bloc.dart';
 import 'package:app/blocs/listing_bloc/listing_bloc.dart';
 import 'package:app/blocs/login_bloc/login_bloc.dart';
 import 'package:app/blocs/signup_bloc/signup_bloc.dart';
@@ -30,6 +31,9 @@ void main() {
       ),
       BlocProvider<UserTypeBloc>(
         create: (context) => GetIt.I.get<UserTypeBloc>()..add(GetUserType()),
+      ),
+      BlocProvider<CreateListingBloc>(
+        create: (context) => GetIt.I.get<CreateListingBloc>(),
       ),
     ],
     child: Application(),

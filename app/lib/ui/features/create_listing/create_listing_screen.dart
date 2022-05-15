@@ -54,6 +54,7 @@ class CreateListingScreen extends StatelessWidget {
       },
       child: SimpleScreenWrapper(
         title: "Enter listing details",
+        shouldGoUnderAppBar: true,
         onBackPressed: () {
           onBack(context);
         },
