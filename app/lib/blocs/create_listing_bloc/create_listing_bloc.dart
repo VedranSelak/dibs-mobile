@@ -12,6 +12,7 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
   CreateListingBloc() : super(CreateListingInitial()) {
     on<EnterListingData>(_onEnterListingData);
     on<AddListingImages>(_onAddListingImages);
+    on<RemoveListingImage>(_onRemoveListingImage);
   }
 
   void _onEnterListingData(EnterListingData event, Emitter<CreateListingState> emit) {
@@ -47,12 +48,29 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
         images: images ?? [],
       ));
     } else if (currentState is ListingImagesEntered) {
+      final List<XFile> allImages = [...currentState.images, ...images ?? []];
       emit(ListingImagesEntered(
         name: currentState.name,
         shortDesc: currentState.shortDesc,
         detailedDesc: currentState.detailedDesc,
         type: currentState.type,
-        images: images ?? [],
+        images: allImages,
+      ));
+    }
+  }
+
+  void _onRemoveListingImage(RemoveListingImage event, Emitter<CreateListingState> emit) {
+    final currentState = state;
+    if (currentState is ListingImagesEntered) {
+      currentState.images.removeAt(event.index);
+      final images = [...currentState.images];
+      emit(CreateListingInitial());
+      emit(ListingImagesEntered(
+        name: currentState.name,
+        shortDesc: currentState.shortDesc,
+        detailedDesc: currentState.detailedDesc,
+        type: currentState.type,
+        images: images,
       ));
     }
   }

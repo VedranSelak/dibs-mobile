@@ -26,3 +26,11 @@ class EnterListingData extends CreateListingEvent {
 }
 
 class AddListingImages extends CreateListingEvent {}
+
+class RemoveListingImage extends CreateListingEvent {
+  const RemoveListingImage({required this.index});
+  final int index;
+
+  @override
+  List<Object?> get props => [index];
+}
