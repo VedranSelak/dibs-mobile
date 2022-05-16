@@ -1,5 +1,6 @@
 import 'package:common/params/create_listing_request.dart';
 import 'package:common/resources/data_state.dart';
+import 'package:domain/public_listing/entities/created.dart';
 import 'package:domain/public_listing/entities/public_listing.dart';
 
 abstract class PublicListingApiRepository {
