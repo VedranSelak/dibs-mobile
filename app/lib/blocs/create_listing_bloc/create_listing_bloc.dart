@@ -1,7 +1,9 @@
 import 'package:app/ui/features/create_listing/enter_images_screen.dart';
+import 'package:domain/public_listing/usecases/post_listing_images_usecase.dart';
 import "package:equatable/equatable.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import "package:meta/meta.dart";
 
@@ -13,7 +15,10 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
     on<EnterListingData>(_onEnterListingData);
     on<AddListingImages>(_onAddListingImages);
     on<RemoveListingImage>(_onRemoveListingImage);
+    on<SubmitListing>(_onSubmitListing);
   }
+
+  final PostListingImagesUseCase _postListingImagesUseCase = GetIt.I.get<PostListingImagesUseCase>();
 
   void _onEnterListingData(EnterListingData event, Emitter<CreateListingState> emit) {
     Get.toNamed<dynamic>(EnterImagesScreen.routeName);
@@ -36,6 +41,9 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
   }
 
   void _onAddListingImages(AddListingImages event, Emitter<CreateListingState> emit) async {
+    if (state is ListingImagesEntered && (state as ListingImagesEntered).images.length >= 6) {
+      return;
+    }
     final ImagePicker picker = ImagePicker();
     final List<XFile>? images = await picker.pickMultiImage();
     final currentState = state;
@@ -45,7 +53,7 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
         shortDesc: currentState.shortDesc,
         detailedDesc: currentState.detailedDesc,
         type: currentState.type,
-        images: images ?? [],
+        images: images?.sublist(0, images.length < 6 ? images.length : 6) ?? [],
       ));
     } else if (currentState is ListingImagesEntered) {
       final List<XFile> allImages = [...currentState.images, ...images ?? []];
@@ -54,7 +62,7 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
         shortDesc: currentState.shortDesc,
         detailedDesc: currentState.detailedDesc,
         type: currentState.type,
-        images: allImages,
+        images: allImages.sublist(0, allImages.length < 6 ? allImages.length : 6),
       ));
     }
   }
@@ -72,6 +80,26 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
         type: currentState.type,
         images: images,
       ));
+    }
+  }
+
+  void _onSubmitListing(SubmitListing event, Emitter<CreateListingState> emit) async {
+    final currentState = state;
+    if (currentState is ListingImagesEntered) {
+      final name = currentState.name;
+      final shortDesc = currentState.shortDesc;
+      final detailedDesc = currentState.detailedDesc;
+      final type = currentState.type;
+      emit(CreateListingInProgress());
+      final imagePaths = currentState.images.map((i) => i.path).toList();
+      final response = await _postListingImagesUseCase(params: imagePaths);
+      final savedUrls = response.data ?? [];
+      if (savedUrls.isEmpty) {
+        emit(CreateListingFailure());
+        return;
+      }
+
+      print(savedUrls.data);
     }
   }
 }

@@ -43,3 +43,9 @@ class ListingImagesEntered extends CreateListingState {
   @override
   List<Object> get props => [name, shortDesc, detailedDesc, type, images];
 }
+
+class CreateListingSuccess extends CreateListingState {}
+
+class CreateListingFailure extends CreateListingState {}
+
+class CreateListingInProgress extends CreateListingState {}

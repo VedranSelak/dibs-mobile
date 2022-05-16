@@ -34,3 +34,5 @@ class RemoveListingImage extends CreateListingEvent {
   @override
   List<Object?> get props => [index];
 }
+
+class SubmitListing extends CreateListingEvent {}

@@ -124,19 +124,31 @@ class EnterImagesScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 5.0),
             BlocBuilder<CreateListingBloc, CreateListingState>(
               builder: (context, state) {
                 return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(),
+                    Text(state is CreateListingFailure ? "Something went wrong" : "", style: textStyles.errorText),
+                    Text(
+                      state is ListingImagesEntered ? "${state.images.length}/6" : "0/6",
+                      style: state is ListingImagesEntered
+                          ? state.images.length >= 6
+                              ? textStyles.secondaryLabelAccent
+                              : textStyles.secondaryLabel
+                          : textStyles.secondaryLabel,
+                    ),
                   ],
                 );
               },
             ),
+            const SizedBox(height: 20.0),
             PrimaryButton(
               buttonText: "Submit",
-              onPress: () {},
+              onPress: () {
+                context.read<CreateListingBloc>().add(SubmitListing());
+              },
               backgroundColor: Colors.blueAccent,
             ),
           ],
