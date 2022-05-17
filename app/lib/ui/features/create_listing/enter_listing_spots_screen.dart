@@ -128,10 +128,10 @@ class _EnterListingSpotsScreenState extends State<EnterListingSpotsScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Tables:', style: textStyles.subheaderText),
+                            Text(state.type.title, style: textStyles.subheaderText),
                             GestureDetector(
                                 onTap: () {
-                                  BottomInputPopupWidget(context: context).onTapped();
+                                  BottomInputPopupWidget(context: context, type: state.type).onTapped();
                                 },
                                 child: const Icon(
                                   Icons.add_outlined,
@@ -148,6 +148,13 @@ class _EnterListingSpotsScreenState extends State<EnterListingSpotsScreen> {
                                 width: 1.5,
                               ),
                               borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: state.spots.length,
+                              itemBuilder: (context, index) {
+                                return Text(state.spots[index].availableSpots.toString());
+                              },
                             ),
                           ),
                         )

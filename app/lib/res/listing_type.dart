@@ -18,6 +18,51 @@ extension ListingTypeExtension on ListingType {
     }
   }
 
+  String get title {
+    switch (this) {
+      case ListingType.restaurant:
+        return 'Tables:';
+      case ListingType.sportcenter:
+        return 'Playing grounds:';
+      case ListingType.theatre:
+        return 'Rows:';
+      case ListingType.cinema:
+        return 'Rows:';
+      default:
+        return 'Unknown';
+    }
+  }
+
+  String get popupTitle {
+    switch (this) {
+      case ListingType.restaurant:
+        return 'Create a table';
+      case ListingType.sportcenter:
+        return 'Create a playing ground';
+      case ListingType.theatre:
+        return 'Create a row';
+      case ListingType.cinema:
+        return 'Create a row';
+      default:
+        return 'Unknown';
+    }
+  }
+
+  String get textLabelText {
+    switch (this) {
+      case ListingType.restaurant:
+        return 'Number of seats';
+      case ListingType.sportcenter:
+        return 'Number of players';
+      case ListingType.theatre:
+        return 'Number of seats';
+      case ListingType.cinema:
+        return 'Number of seats';
+      default:
+        return 'Unknown';
+    }
+  }
+
   IconData get icon {
     switch (this) {
       case ListingType.restaurant:
