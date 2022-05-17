@@ -286,23 +286,11 @@ class _CreateListingFormState extends State<CreateListingForm> {
                   backgroundColor: Colors.blueAccent,
                   onPress: () {
                     if (_formKey.currentState!.validate()) {
-                      final currentState = context.read<CreateListingBloc>().state;
-                      if (currentState is ListingImagesEntered) {
-                        context.read<CreateListingBloc>().add(EnterListingData(
-                              name: widget.nameController.text,
-                              shortDesc: widget.shortDescController.text,
-                              detailedDesc: widget.detailedDescController.text,
-                              type: "restaurant",
-                              images: currentState.images,
-                            ));
-                      } else {
-                        context.read<CreateListingBloc>().add(EnterListingData(
-                              name: widget.nameController.text,
-                              shortDesc: widget.shortDescController.text,
-                              detailedDesc: widget.detailedDescController.text,
-                              type: "restaurant",
-                            ));
-                      }
+                      context.read<CreateListingBloc>().add(EnterListingData(
+                            name: widget.nameController.text,
+                            shortDesc: widget.shortDescController.text,
+                            detailedDesc: widget.detailedDescController.text,
+                          ));
                     }
                   },
                 )),

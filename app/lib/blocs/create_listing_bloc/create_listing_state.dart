@@ -15,15 +15,30 @@ class ListingDataEntered extends CreateListingState {
     required this.name,
     required this.shortDesc,
     required this.detailedDesc,
-    required this.type,
   });
   final String name;
   final String shortDesc;
   final String detailedDesc;
-  final String type;
 
   @override
-  List<Object> get props => [name, shortDesc, detailedDesc, type];
+  List<Object> get props => [name, shortDesc, detailedDesc];
+}
+
+class ListingSpotsEntered extends CreateListingState {
+  const ListingSpotsEntered(
+      {required this.name,
+      required this.shortDesc,
+      required this.detailedDesc,
+      required this.type,
+      required this.spots});
+  final String name;
+  final String shortDesc;
+  final String detailedDesc;
+  final ListingType type;
+  final List<Spot> spots;
+
+  @override
+  List<Object> get props => [name, shortDesc, detailedDesc, type, spots];
 }
 
 class ListingImagesEntered extends CreateListingState {
@@ -33,15 +48,17 @@ class ListingImagesEntered extends CreateListingState {
     required this.detailedDesc,
     required this.type,
     required this.images,
+    required this.spots,
   });
   final String name;
   final String shortDesc;
   final String detailedDesc;
-  final String type;
+  final ListingType type;
   final List<XFile> images;
+  final List<Spot> spots;
 
   @override
-  List<Object> get props => [name, shortDesc, detailedDesc, type, images];
+  List<Object> get props => [name, shortDesc, detailedDesc, type, images, spots];
 }
 
 class CreateListingSuccess extends CreateListingState {}

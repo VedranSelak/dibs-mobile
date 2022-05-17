@@ -1,5 +1,7 @@
+import 'package:app/res/listing_type.dart';
 import 'package:app/ui/features/create_listing/enter_listing_spots_screen.dart';
 import 'package:domain/public_listing/usecases/post_listing_images_usecase.dart';
+import 'package:domain/public_listing/entities/spot.dart';
 import "package:equatable/equatable.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:get/get.dart';
@@ -15,6 +17,8 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
     on<EnterListingData>(_onEnterListingData);
     on<AddListingImages>(_onAddListingImages);
     on<RemoveListingImage>(_onRemoveListingImage);
+    on<SelectListingType>(_onSelectListingType);
+    on<AddListingSpot>(_onAddListingSpot);
     on<SubmitListing>(_onSubmitListing);
   }
 
@@ -22,20 +26,29 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
 
   void _onEnterListingData(EnterListingData event, Emitter<CreateListingState> emit) {
     Get.toNamed<dynamic>(EnterListingSpotsScreen.routeName);
-    if (event.images != null) {
+    final currentState = state;
+    if (currentState is ListingImagesEntered) {
       emit(ListingImagesEntered(
         name: event.name,
         shortDesc: event.shortDesc,
         detailedDesc: event.detailedDesc,
-        type: event.type,
-        images: event.images ?? [],
+        type: currentState.type,
+        spots: currentState.spots,
+        images: currentState.images,
+      ));
+    } else if (currentState is ListingSpotsEntered) {
+      emit(ListingSpotsEntered(
+        name: event.name,
+        shortDesc: event.shortDesc,
+        detailedDesc: event.detailedDesc,
+        type: currentState.type,
+        spots: currentState.spots,
       ));
     } else {
       emit(ListingDataEntered(
         name: event.name,
         shortDesc: event.shortDesc,
         detailedDesc: event.detailedDesc,
-        type: event.type,
       ));
     }
   }
@@ -47,12 +60,13 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
     final ImagePicker picker = ImagePicker();
     final List<XFile>? images = await picker.pickMultiImage();
     final currentState = state;
-    if (currentState is ListingDataEntered) {
+    if (currentState is ListingSpotsEntered) {
       emit(ListingImagesEntered(
         name: currentState.name,
         shortDesc: currentState.shortDesc,
         detailedDesc: currentState.detailedDesc,
         type: currentState.type,
+        spots: currentState.spots,
         images: images?.sublist(0, images.length < 6 ? images.length : 6) ?? [],
       ));
     } else if (currentState is ListingImagesEntered) {
@@ -62,6 +76,7 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
         shortDesc: currentState.shortDesc,
         detailedDesc: currentState.detailedDesc,
         type: currentState.type,
+        spots: currentState.spots,
         images: allImages.sublist(0, allImages.length < 6 ? allImages.length : 6),
       ));
     }
@@ -78,7 +93,62 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
         shortDesc: currentState.shortDesc,
         detailedDesc: currentState.detailedDesc,
         type: currentState.type,
+        spots: currentState.spots,
         images: images,
+      ));
+    }
+  }
+
+  void _onSelectListingType(SelectListingType event, Emitter<CreateListingState> emit) async {
+    final currentState = state;
+    if (currentState is ListingSpotsEntered) {
+      emit(ListingSpotsEntered(
+        name: currentState.name,
+        shortDesc: currentState.shortDesc,
+        detailedDesc: currentState.detailedDesc,
+        type: event.type,
+        spots: const [],
+      ));
+    } else if (currentState is ListingImagesEntered) {
+      emit(ListingImagesEntered(
+        name: currentState.name,
+        shortDesc: currentState.shortDesc,
+        detailedDesc: currentState.detailedDesc,
+        type: event.type,
+        spots: const [],
+        images: currentState.images,
+      ));
+    } else if (currentState is ListingDataEntered) {
+      emit(ListingSpotsEntered(
+        name: currentState.name,
+        shortDesc: currentState.shortDesc,
+        detailedDesc: currentState.detailedDesc,
+        type: event.type,
+        spots: const [],
+      ));
+    }
+  }
+
+  void _onAddListingSpot(AddListingSpot event, Emitter<CreateListingState> emit) async {
+    final currentState = state;
+    if (currentState is ListingSpotsEntered) {
+      final spots = [...currentState.spots, event.spot];
+      emit(ListingSpotsEntered(
+        name: currentState.name,
+        shortDesc: currentState.shortDesc,
+        detailedDesc: currentState.detailedDesc,
+        type: currentState.type,
+        spots: spots,
+      ));
+    } else if (currentState is ListingImagesEntered) {
+      final spots = [...currentState.spots, event.spot];
+      emit(ListingImagesEntered(
+        name: currentState.name,
+        shortDesc: currentState.shortDesc,
+        detailedDesc: currentState.detailedDesc,
+        type: currentState.type,
+        spots: spots,
+        images: currentState.images,
       ));
     }
   }

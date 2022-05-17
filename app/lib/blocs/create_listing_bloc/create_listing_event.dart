@@ -12,17 +12,31 @@ class EnterListingData extends CreateListingEvent {
     required this.name,
     required this.shortDesc,
     required this.detailedDesc,
-    required this.type,
-    this.images,
   });
   final String name;
   final String shortDesc;
   final String detailedDesc;
-  final String type;
-  final List<XFile>? images;
 
   @override
-  List<Object?> get props => [name, shortDesc, detailedDesc, type, images];
+  List<Object?> get props => [name, shortDesc, detailedDesc];
+}
+
+class SelectListingType extends CreateListingEvent {
+  const SelectListingType({
+    required this.type,
+  });
+  final ListingType type;
+
+  @override
+  List<Object> get props => [type];
+}
+
+class AddListingSpot extends CreateListingEvent {
+  const AddListingSpot({required this.spot});
+  final Spot spot;
+
+  @override
+  List<Object?> get props => [spot];
 }
 
 class AddListingImages extends CreateListingEvent {}
