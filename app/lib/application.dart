@@ -1,5 +1,6 @@
 import 'package:app/ui/features/create_listing/create_listing_screen.dart';
 import 'package:app/ui/features/create_listing/enter_images_screen.dart';
+import 'package:app/ui/features/create_listing/enter_listing_spots_screen.dart';
 import 'package:app/ui/features/home/home_screen.dart';
 import 'package:app/ui/features/login/login_screen.dart';
 import 'package:app/ui/features/profile/profile_screen.dart';
@@ -45,6 +46,10 @@ class Application extends StatelessWidget {
     GetPage<EnterImagesScreen>(
       name: EnterImagesScreen.routeName,
       page: EnterImagesScreen.new,
+    ),
+    GetPage<EnterListingSpotsScreen>(
+      name: EnterListingSpotsScreen.routeName,
+      page: EnterListingSpotsScreen.new,
     ),
   ];
 }

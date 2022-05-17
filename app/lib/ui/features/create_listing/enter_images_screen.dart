@@ -145,7 +145,7 @@ class EnterImagesScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20.0),
             PrimaryButton(
-              buttonText: "Submit",
+              buttonText: "Next",
               onPress: () {
                 context.read<CreateListingBloc>().add(SubmitListing());
               },

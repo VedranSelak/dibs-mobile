@@ -1,4 +1,4 @@
-import 'package:app/ui/features/create_listing/enter_images_screen.dart';
+import 'package:app/ui/features/create_listing/enter_listing_spots_screen.dart';
 import 'package:domain/public_listing/usecases/post_listing_images_usecase.dart';
 import "package:equatable/equatable.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -21,7 +21,7 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
   final PostListingImagesUseCase _postListingImagesUseCase = GetIt.I.get<PostListingImagesUseCase>();
 
   void _onEnterListingData(EnterListingData event, Emitter<CreateListingState> emit) {
-    Get.toNamed<dynamic>(EnterImagesScreen.routeName);
+    Get.toNamed<dynamic>(EnterListingSpotsScreen.routeName);
     if (event.images != null) {
       emit(ListingImagesEntered(
         name: event.name,
@@ -99,7 +99,7 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
         return;
       }
 
-      print(savedUrls.data);
+      print(savedUrls);
     }
   }
 }
