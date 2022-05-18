@@ -3,9 +3,11 @@ import 'package:app/res/dimensions.dart';
 import 'package:app/res/listing_type.dart';
 import 'package:app/res/text_styles.dart';
 import 'package:app/ui/features/create_listing/enter_images_screen.dart';
+import 'package:app/ui/features/create_listing/widgets/spot_list_container.dart';
+import 'package:app/ui/features/create_listing/widgets/text_label.dart';
 import 'package:app/ui/widgets/buttons/primary_button.dart';
-import 'package:app/ui/widgets/dialogs/bottom_input_popup.dart';
 import 'package:app/ui/widgets/screen_wrappers/simple_screen_wrapper.dart';
+import 'package:domain/public_listing/entities/spot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -19,14 +21,8 @@ class EnterListingSpotsScreen extends StatefulWidget {
 }
 
 class _EnterListingSpotsScreenState extends State<EnterListingSpotsScreen> {
-  final List<ListingType> dropdownItems = [
-    ListingType.restaurant,
-    ListingType.sportcenter,
-    ListingType.theatre,
-    ListingType.cinema
-  ];
-
   ListingType? selectedType;
+  bool hasError = false;
 
   @override
   void initState() {
@@ -39,15 +35,14 @@ class _EnterListingSpotsScreenState extends State<EnterListingSpotsScreen> {
     }
   }
 
+  void onBack() {
+    Get.back<dynamic>();
+  }
+
   @override
   Widget build(BuildContext context) {
     final dimensions = Dimensions.of(context);
-    final mediaQuery = MediaQuery.of(context);
     final textStyles = TextStyles.of(context);
-
-    void onBack() {
-      Get.back<dynamic>();
-    }
 
     return SimpleScreenWrapper(
       title: "Enter listing details",
@@ -60,34 +55,9 @@ class _EnterListingSpotsScreenState extends State<EnterListingSpotsScreen> {
         child: Column(
           children: [
             const SizedBox(height: 20.0),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "Type of listing:",
-                  style: textStyles.subheaderText,
-                ),
-                const SizedBox(
-                  width: 10.0,
-                ),
-                Tooltip(
-                    margin: EdgeInsets.symmetric(horizontal: mediaQuery.size.width * 0.25),
-                    padding: const EdgeInsets.all(10.0),
-                    triggerMode: TooltipTriggerMode.tap,
-                    waitDuration: Duration.zero,
-                    showDuration: const Duration(seconds: 3),
-                    message: "This is the type of your listing that will be user for further setup and filtering.",
-                    child: Container(
-                      padding: const EdgeInsets.all(2.0),
-                      decoration: const BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
-                      child: const Icon(
-                        Icons.question_mark,
-                        color: Colors.white,
-                        size: 15.0,
-                      ),
-                    )),
-              ],
-            ),
+            const TextLabel(
+                title: 'Type of listing:',
+                tooltip: 'This is the type of your listing that will be user for further setup and filtering.'),
             const SizedBox(
               height: 10.0,
             ),
@@ -96,7 +66,7 @@ class _EnterListingSpotsScreenState extends State<EnterListingSpotsScreen> {
                 DropdownButton<ListingType>(
                   value: selectedType,
                   hint: const Text('Select the listing type'),
-                  items: dropdownItems.map((ListingType type) {
+                  items: ListingType.values.map((ListingType type) {
                     return DropdownMenuItem<ListingType>(
                       value: type,
                       child: Row(
@@ -113,62 +83,112 @@ class _EnterListingSpotsScreenState extends State<EnterListingSpotsScreen> {
                       selectedType = selected ?? ListingType.restaurant;
                     });
                     context.read<CreateListingBloc>().add(SelectListingType(type: selected ?? ListingType.restaurant));
+                    setState(() {
+                      hasError = false;
+                    });
                   },
                   icon: const Icon(Icons.arrow_drop_down_rounded),
                 ),
               ],
             ),
             const SizedBox(height: 20.0),
-            BlocBuilder<CreateListingBloc, CreateListingState>(
+            BlocConsumer<CreateListingBloc, CreateListingState>(
+              listener: (context, state) {
+                if (state is ListingSpotsEntered) {
+                  if (state.spots.isNotEmpty && hasError) {
+                    setState(() {
+                      hasError = false;
+                    });
+                  }
+                } else if (state is ListingImagesEntered) {
+                  if (state.spots.isNotEmpty && hasError) {
+                    setState(() {
+                      hasError = false;
+                    });
+                  }
+                }
+              },
               builder: (context, state) {
                 if (state is ListingSpotsEntered) {
-                  return Expanded(
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(state.type.title, style: textStyles.subheaderText),
-                            GestureDetector(
-                                onTap: () {
-                                  BottomInputPopupWidget(context: context, type: state.type).onTapped();
-                                },
-                                child: const Icon(
-                                  Icons.add_outlined,
-                                  color: Colors.green,
-                                )),
-                          ],
-                        ),
-                        const SizedBox(height: 10.0),
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.blueAccent,
-                                width: 1.5,
-                              ),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: state.spots.length,
-                              itemBuilder: (context, index) {
-                                return Text(state.spots[index].availableSpots.toString());
-                              },
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
+                  final List<Spot> rows = [];
+                  if (state.type == ListingType.cinema || state.type == ListingType.theatre) {
+                    final List<String> rowNames = [];
+                    Spot temp = Spot(availableSpots: 0);
+                    for (final spot in state.spots) {
+                      if (!rowNames.any((name) => name == spot.rowName!)) {
+                        rowNames.add(spot.rowName!);
+                        temp = Spot(availableSpots: 1, rowName: spot.rowName!);
+                        rows.add(temp);
+                      } else {
+                        temp.availableSpots++;
+                      }
+                    }
+                  }
+                  return SpotListContainer(
+                    type: state.type,
+                    spots: state.type == ListingType.cinema || state.type == ListingType.theatre ? rows : state.spots,
+                  );
+                } else if (state is ListingImagesEntered) {
+                  final List<Spot> rows = [];
+                  if (state.type == ListingType.cinema || state.type == ListingType.theatre) {
+                    final List<String> rowNames = [];
+                    Spot temp = Spot(availableSpots: 0);
+                    for (final spot in state.spots) {
+                      if (!rowNames.any((name) => name == spot.rowName!)) {
+                        rowNames.add(spot.rowName!);
+                        temp = Spot(availableSpots: 1, rowName: spot.rowName!);
+                        rows.add(temp);
+                      } else {
+                        temp.availableSpots++;
+                      }
+                    }
+                  }
+                  return SpotListContainer(
+                    type: state.type,
+                    spots: state.type == ListingType.cinema || state.type == ListingType.theatre ? rows : state.spots,
                   );
                 }
                 return Expanded(child: Container());
               },
             ),
+            const SizedBox(height: 5.0),
+            Row(
+              children: [
+                Text(
+                  hasError
+                      ? selectedType == null
+                          ? 'Please select a type'
+                          : "Please enter at least one ${selectedType!.itemTitle.toLowerCase()}"
+                      : "",
+                  style: textStyles.errorText,
+                ),
+              ],
+            ),
             const SizedBox(height: 10.0),
             PrimaryButton(
               buttonText: "Next",
               onPress: () {
+                final state = context.read<CreateListingBloc>().state;
+                if (state is ListingImagesEntered) {
+                  if (state.spots.isEmpty) {
+                    setState(() {
+                      hasError = true;
+                    });
+                    return;
+                  }
+                } else if (state is ListingSpotsEntered) {
+                  if (state.spots.isEmpty) {
+                    setState(() {
+                      hasError = true;
+                    });
+                    return;
+                  }
+                } else if (state is ListingDataEntered) {
+                  setState(() {
+                    hasError = true;
+                  });
+                  return;
+                }
                 Get.toNamed<dynamic>(EnterImagesScreen.routeName);
               },
               backgroundColor: Colors.blueAccent,

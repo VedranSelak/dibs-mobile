@@ -69,7 +69,7 @@ class PublicListingApiImpl implements PublicListingApiRepository {
 
       final httpResponse = await publicListingApiService.postListing(
         params,
-        token,
+        'Bearer $token',
       );
 
       if (httpResponse.response.statusCode == 201) {

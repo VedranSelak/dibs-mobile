@@ -1,14 +1,9 @@
-import 'package:equatable/equatable.dart';
-
-class Spot extends Equatable {
-  const Spot({
+class Spot {
+  Spot({
     required this.availableSpots,
-    this.row,
+    this.rowName,
   });
 
-  final int availableSpots;
-  final int? row;
-
-  @override
-  List<Object?> get props => [availableSpots, row];
+  int availableSpots;
+  String? rowName;
 }

@@ -39,6 +39,26 @@ class AddListingSpot extends CreateListingEvent {
   List<Object?> get props => [spot];
 }
 
+class RemoveListingSpot extends CreateListingEvent {
+  const RemoveListingSpot({required this.index, this.rowName});
+  final int index;
+  final String? rowName;
+
+  @override
+  List<Object?> get props => [index, rowName];
+}
+
+class EditListingSpot extends CreateListingEvent {
+  const EditListingSpot({required this.index, required this.availableSpots, this.rowName, this.prevRowName});
+  final int index;
+  final int availableSpots;
+  final String? rowName;
+  final String? prevRowName;
+
+  @override
+  List<Object?> get props => [index, availableSpots, rowName, prevRowName];
+}
+
 class AddListingImages extends CreateListingEvent {}
 
 class RemoveListingImage extends CreateListingEvent {
@@ -50,3 +70,5 @@ class RemoveListingImage extends CreateListingEvent {
 }
 
 class SubmitListing extends CreateListingEvent {}
+
+class ResetCreateListingBloc extends CreateListingEvent {}

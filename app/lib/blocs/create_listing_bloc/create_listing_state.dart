@@ -63,6 +63,42 @@ class ListingImagesEntered extends CreateListingState {
 
 class CreateListingSuccess extends CreateListingState {}
 
-class CreateListingFailure extends CreateListingState {}
+class CreateListingFailure extends CreateListingState {
+  const CreateListingFailure({
+    required this.name,
+    required this.shortDesc,
+    required this.detailedDesc,
+    required this.type,
+    required this.images,
+    required this.spots,
+  });
+  final String name;
+  final String shortDesc;
+  final String detailedDesc;
+  final ListingType type;
+  final List<XFile> images;
+  final List<Spot> spots;
 
-class CreateListingInProgress extends CreateListingState {}
+  @override
+  List<Object> get props => [name, shortDesc, detailedDesc, type, images, spots];
+}
+
+class CreateListingInProgress extends CreateListingState {
+  const CreateListingInProgress({
+    required this.name,
+    required this.shortDesc,
+    required this.detailedDesc,
+    required this.type,
+    required this.images,
+    required this.spots,
+  });
+  final String name;
+  final String shortDesc;
+  final String detailedDesc;
+  final ListingType type;
+  final List<XFile> images;
+  final List<Spot> spots;
+
+  @override
+  List<Object> get props => [name, shortDesc, detailedDesc, type, images, spots];
+}

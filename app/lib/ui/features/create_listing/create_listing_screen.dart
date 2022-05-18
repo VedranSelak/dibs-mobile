@@ -1,8 +1,10 @@
+import 'package:app/blocs/create_listing_bloc/create_listing_bloc.dart';
 import 'package:app/ui/features/create_listing/widgets/create_listing_form.dart';
 import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:app/ui/widgets/dialogs/alert_dialog.dart';
 import 'package:app/ui/widgets/screen_wrappers/simple_screen_wrapper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class CreateListingScreen extends StatelessWidget {
@@ -29,6 +31,7 @@ class CreateListingScreen extends StatelessWidget {
           backgroundColor: Colors.red,
           buttonText: "Discard",
           onPress: () {
+            context.read<CreateListingBloc>().add(ResetCreateListingBloc());
             Get.back<dynamic>();
             // ignore: cascade_invocations
             Get.back<dynamic>();

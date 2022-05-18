@@ -63,6 +63,21 @@ extension ListingTypeExtension on ListingType {
     }
   }
 
+  String get itemTitle {
+    switch (this) {
+      case ListingType.restaurant:
+        return 'Table';
+      case ListingType.sportcenter:
+        return 'Playing ground';
+      case ListingType.theatre:
+        return 'Row';
+      case ListingType.cinema:
+        return 'Row';
+      default:
+        return 'Unknown';
+    }
+  }
+
   IconData get icon {
     switch (this) {
       case ListingType.restaurant:
