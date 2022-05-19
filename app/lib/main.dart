@@ -1,5 +1,6 @@
 import "package:app/application.dart";
 import 'package:app/blocs/bloc_module.dart';
+import 'package:app/blocs/create_listing_bloc/create_listing_bloc.dart';
 import 'package:app/blocs/listing_bloc/listing_bloc.dart';
 import 'package:app/blocs/login_bloc/login_bloc.dart';
 import 'package:app/blocs/signup_bloc/signup_bloc.dart';
@@ -8,10 +9,12 @@ import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:data/di/data_module.dart';
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   registerServices();
 
   runApp(MultiBlocProvider(
@@ -30,6 +33,9 @@ void main() {
       ),
       BlocProvider<UserTypeBloc>(
         create: (context) => GetIt.I.get<UserTypeBloc>()..add(GetUserType()),
+      ),
+      BlocProvider<CreateListingBloc>(
+        create: (context) => GetIt.I.get<CreateListingBloc>(),
       ),
     ],
     child: Application(),

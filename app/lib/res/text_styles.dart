@@ -18,6 +18,13 @@ class TextStyles {
         fontWeight: FontWeight.w600,
       );
 
+  TextStyle get subheaderText => _theme.bodyText1!.copyWith(
+        color: Colors.blueAccent,
+        fontSize: 20.0,
+        fontFamily: "WorkSans",
+        fontWeight: FontWeight.w600,
+      );
+
   TextStyle get buttonText => _theme.bodyText1!.copyWith(
         color: Colors.white,
         fontSize: 18.0,
@@ -28,9 +35,9 @@ class TextStyles {
 
   TextStyle get errorText => _theme.bodyText1!.copyWith(
         color: Colors.redAccent,
-        fontSize: 15.0,
+        fontSize: 14.0,
         fontFamily: "WorkSans",
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w500,
       );
 
   TextStyle get accentText => _theme.bodyText1!.copyWith(
@@ -50,6 +57,20 @@ class TextStyles {
   TextStyle get secondaryLabel => _theme.bodyText1!.copyWith(
         color: Colors.grey,
         fontSize: 15.0,
+        fontFamily: "WorkSans",
+        fontWeight: FontWeight.w500,
+      );
+
+  TextStyle get secondaryLabelAccent => _theme.bodyText1!.copyWith(
+        color: Colors.grey,
+        fontSize: 15.0,
+        fontFamily: "WorkSans",
+        fontWeight: FontWeight.w600,
+      );
+
+  TextStyle get descriptiveText => _theme.bodyText1!.copyWith(
+        color: Colors.grey,
+        fontSize: 17.0,
         fontFamily: "WorkSans",
         fontWeight: FontWeight.w500,
       );

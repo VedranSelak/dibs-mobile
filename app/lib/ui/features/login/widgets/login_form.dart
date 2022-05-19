@@ -106,7 +106,7 @@ class _LoginFormState extends State<LoginForm> {
                 width: mediaQuery.size.width * 0.5,
                 child: PrimaryButton(
                   buttonText: "Login",
-                  isPrimary: true,
+                  backgroundColor: Colors.blueAccent,
                   onPress: () {
                     if (_formKey.currentState!.validate()) {
                       context.read<LoginBloc>().add(

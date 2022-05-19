@@ -1,3 +1,4 @@
+import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:common/base_di_module.dart';
 import 'package:data/auth/datasource/auth_api_service.dart';
 import 'package:data/auth/di/auth_api_module.dart';
@@ -14,6 +15,9 @@ import 'package:domain/placeholder_api/common/placeholder_api_repository.dart';
 import 'package:domain/placeholder_api/usecases/get_posts_usecase.dart';
 import 'package:domain/public_listing/common/public_listing_api_repository.dart';
 import 'package:domain/public_listing/usecases/get_all_listings_usecase.dart';
+import 'package:domain/public_listing/usecases/post_listing_images_usecase.dart';
+import 'package:domain/public_listing/usecases/post_listing_usecase.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 
 class DataModule extends BaseDiModule {
@@ -23,9 +27,14 @@ class DataModule extends BaseDiModule {
 
   @override
   void inject() {
+    final _cloudinaryPublic = CloudinaryPublic(
+      dotenv.env['CLOUDINARY_CLOUD_NAME'] ?? "",
+      dotenv.env['CLOUDINARY_PRESET_NAME'] ?? "",
+      cache: false,
+    );
     PlaceholderApiModule(_placeHolderApiService);
     AuthApiModule(_authApiService);
-    PublicListingApiModule(_publicListingApiService);
+    PublicListingApiModule(_publicListingApiService, _cloudinaryPublic);
     useCases();
   }
 
@@ -43,5 +52,7 @@ class DataModule extends BaseDiModule {
 
     // listing usecases
     GetIt.I.registerFactory(() => GetAllListingsUseCase(publicListingRepository));
+    GetIt.I.registerFactory(() => PostListingImagesUseCase(publicListingRepository));
+    GetIt.I.registerFactory(() => PostListingUseCase(publicListingRepository));
   }
 }

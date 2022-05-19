@@ -13,6 +13,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SimpleScreenWrapper(
+      shouldGoUnderAppBar: true,
       onBackPressed: () {
         Get.back<dynamic>();
         context.read<LoginBloc>().add(ResetLogin());

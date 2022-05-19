@@ -183,7 +183,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 width: mediaQuery.size.width * 0.5,
                 child: PrimaryButton(
                   buttonText: "Sign up",
-                  isPrimary: true,
+                  backgroundColor: Colors.blueAccent,
                   onPress: () {
                     if (_formKey.currentState!.validate()) {
                       context.read<SignUpBloc>().add(StartSignUp(

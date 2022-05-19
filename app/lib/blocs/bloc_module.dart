@@ -1,3 +1,4 @@
+import 'package:app/blocs/create_listing_bloc/create_listing_bloc.dart';
 import 'package:app/blocs/listing_bloc/listing_bloc.dart';
 import 'package:app/blocs/login_bloc/login_bloc.dart';
 import 'package:app/blocs/signup_bloc/signup_bloc.dart';
@@ -15,5 +16,6 @@ class BlocModule extends BaseDiModule {
     GetIt.I.registerFactory<SignUpBloc>(SignUpBloc.new);
     GetIt.I.registerFactory<ListingBloc>(ListingBloc.new);
     GetIt.I.registerFactory<UserTypeBloc>(UserTypeBloc.new);
+    GetIt.I.registerFactory<CreateListingBloc>(CreateListingBloc.new);
   }
 }
