@@ -67,4 +67,11 @@ class TextStyles {
         fontFamily: "WorkSans",
         fontWeight: FontWeight.w600,
       );
+
+  TextStyle get descriptiveText => _theme.bodyText1!.copyWith(
+        color: Colors.grey,
+        fontSize: 17.0,
+        fontFamily: "WorkSans",
+        fontWeight: FontWeight.w500,
+      );
 }

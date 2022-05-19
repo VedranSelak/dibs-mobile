@@ -1,11 +1,15 @@
 import 'package:app/res/listing_type.dart';
+import 'package:app/ui/features/create_listing/create_listing_screen.dart';
+import 'package:app/ui/features/create_listing/create_listing_success_screen.dart';
 import 'package:app/ui/features/create_listing/enter_listing_spots_screen.dart';
+import 'package:app/ui/features/home/home_screen.dart';
 import 'package:common/params/create_listing_request.dart';
 import 'package:common/resources/data_state.dart';
 import 'package:domain/public_listing/usecases/post_listing_images_usecase.dart';
 import 'package:domain/public_listing/entities/spot.dart';
 import 'package:domain/public_listing/usecases/post_listing_usecase.dart';
 import "package:equatable/equatable.dart";
+import 'package:flutter/material.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
@@ -262,9 +266,31 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
 
       final response = await _postListingUseCase(params: params);
       if (response is DataFailed) {
-        print(response.error);
+        if (response.error?.response?.statusCode != null && response.error?.response?.statusCode == 401) {
+          emit(ListingDataEntering(
+            name: currentState.name,
+            shortDesc: currentState.shortDesc,
+            detailedDesc: currentState.detailedDesc,
+            type: currentState.type!,
+            spots: currentState.spots!,
+            images: currentState.images!,
+            errorMessage: "Your session has expired. Please log in again.",
+          ));
+        } else {
+          emit(ListingDataEntering(
+            name: currentState.name,
+            shortDesc: currentState.shortDesc,
+            detailedDesc: currentState.detailedDesc,
+            type: currentState.type!,
+            spots: currentState.spots!,
+            images: currentState.images!,
+            errorMessage: "Something went wrong. Try again later.",
+          ));
+        }
       } else {
-        print(response.data?.id);
+        Get.offAllNamed<dynamic>(CreateListingSuccessScreen.routeName,
+            predicate: ModalRoute.withName(HomeScreen.routeName));
+        emit(CreateListingSuccess());
       }
     } else if (currentState is ListingDataEntering) {
       emit(ListingDataEntering(
