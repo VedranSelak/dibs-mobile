@@ -1,6 +1,8 @@
 import 'package:app/res/text_styles.dart';
+import 'package:app/ui/features/listing_details/listing_details_screen.dart';
 import 'package:domain/public_listing/entities/public_listing.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ListingItem extends StatelessWidget {
   const ListingItem({required this.listing, Key? key}) : super(key: key);
@@ -11,7 +13,7 @@ class ListingItem extends StatelessWidget {
     final textStyles = TextStyles.of(context);
     return InkWell(
       onTap: () {
-        print("tapped ${listing.id}");
+        Get.to<dynamic>(ListingDeatilsScreen(title: listing.name, id: listing.id));
       },
       child: SizedBox(
         height: 80.0,

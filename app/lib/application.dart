@@ -3,6 +3,7 @@ import 'package:app/ui/features/create_listing/create_listing_success_screen.dar
 import 'package:app/ui/features/create_listing/enter_images_screen.dart';
 import 'package:app/ui/features/create_listing/enter_listing_spots_screen.dart';
 import 'package:app/ui/features/home/home_screen.dart';
+import 'package:app/ui/features/listing_details/listing_details_screen.dart';
 import 'package:app/ui/features/login/login_screen.dart';
 import 'package:app/ui/features/profile/profile_screen.dart';
 import 'package:app/ui/features/signup/signup_screen.dart';

@@ -15,6 +15,7 @@ import 'package:domain/placeholder_api/common/placeholder_api_repository.dart';
 import 'package:domain/placeholder_api/usecases/get_posts_usecase.dart';
 import 'package:domain/public_listing/common/public_listing_api_repository.dart';
 import 'package:domain/public_listing/usecases/get_all_listings_usecase.dart';
+import 'package:domain/public_listing/usecases/get_listing_details_usecase.dart';
 import 'package:domain/public_listing/usecases/post_listing_images_usecase.dart';
 import 'package:domain/public_listing/usecases/post_listing_usecase.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -54,5 +55,6 @@ class DataModule extends BaseDiModule {
     GetIt.I.registerFactory(() => GetAllListingsUseCase(publicListingRepository));
     GetIt.I.registerFactory(() => PostListingImagesUseCase(publicListingRepository));
     GetIt.I.registerFactory(() => PostListingUseCase(publicListingRepository));
+    GetIt.I.registerFactory(() => GetListingDetailsUseCase(publicListingRepository));
   }
 }

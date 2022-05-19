@@ -7,4 +7,5 @@ abstract class PublicListingApiRepository {
   Future<DataState<List<PublicListing>>> getAll();
   Future<DataState<List<String>>> postListingImages(List<String> images);
   Future<DataState<Created>> postListing(CreateListingRequestParams params);
+  Future<DataState<PublicListing>> getListingById(int id);
 }
