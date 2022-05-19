@@ -10,55 +10,26 @@ abstract class CreateListingState extends Equatable {
 
 class CreateListingInitial extends CreateListingState {}
 
-class ListingDataEntered extends CreateListingState {
-  const ListingDataEntered({
-    required this.name,
-    required this.shortDesc,
-    required this.detailedDesc,
-  });
-  final String name;
-  final String shortDesc;
-  final String detailedDesc;
-
-  @override
-  List<Object> get props => [name, shortDesc, detailedDesc];
-}
-
-class ListingSpotsEntered extends CreateListingState {
-  const ListingSpotsEntered(
-      {required this.name,
-      required this.shortDesc,
-      required this.detailedDesc,
-      required this.type,
-      required this.spots});
-  final String name;
-  final String shortDesc;
-  final String detailedDesc;
-  final ListingType type;
-  final List<Spot> spots;
-
-  @override
-  List<Object> get props => [name, shortDesc, detailedDesc, type, spots];
-}
-
-class ListingImagesEntered extends CreateListingState {
-  const ListingImagesEntered({
+class ListingDataEntering extends CreateListingState {
+  const ListingDataEntering({
     required this.name,
     required this.shortDesc,
     required this.detailedDesc,
     required this.type,
     required this.images,
     required this.spots,
+    this.errorMessage,
   });
   final String name;
   final String shortDesc;
   final String detailedDesc;
-  final ListingType type;
-  final List<XFile> images;
-  final List<Spot> spots;
+  final ListingType? type;
+  final List<XFile>? images;
+  final List<Spot>? spots;
+  final String? errorMessage;
 
   @override
-  List<Object> get props => [name, shortDesc, detailedDesc, type, images, spots];
+  List<Object?> get props => [name, shortDesc, detailedDesc, type, images, spots, errorMessage];
 }
 
 class CreateListingSuccess extends CreateListingState {}

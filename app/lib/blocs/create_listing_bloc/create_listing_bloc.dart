@@ -1,6 +1,7 @@
 import 'package:app/res/listing_type.dart';
 import 'package:app/ui/features/create_listing/enter_listing_spots_screen.dart';
 import 'package:common/params/create_listing_request.dart';
+import 'package:common/resources/data_state.dart';
 import 'package:domain/public_listing/usecases/post_listing_images_usecase.dart';
 import 'package:domain/public_listing/entities/spot.dart';
 import 'package:domain/public_listing/usecases/post_listing_usecase.dart';
@@ -13,8 +14,6 @@ import "package:meta/meta.dart";
 
 part "create_listing_event.dart";
 part "create_listing_state.dart";
-
-// THE WORST CODE I EVER WROTE
 
 class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
   CreateListingBloc() : super(CreateListingInitial()) {
@@ -35,8 +34,8 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
   void _onEnterListingData(EnterListingData event, Emitter<CreateListingState> emit) {
     Get.toNamed<dynamic>(EnterListingSpotsScreen.routeName);
     final currentState = state;
-    if (currentState is ListingImagesEntered) {
-      emit(ListingImagesEntered(
+    if (currentState is ListingDataEntering) {
+      emit(ListingDataEntering(
         name: event.name,
         shortDesc: event.shortDesc,
         detailedDesc: event.detailedDesc,
@@ -44,42 +43,37 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
         spots: currentState.spots,
         images: currentState.images,
       ));
-    } else if (currentState is ListingSpotsEntered) {
-      emit(ListingSpotsEntered(
-        name: event.name,
-        shortDesc: event.shortDesc,
-        detailedDesc: event.detailedDesc,
-        type: currentState.type,
-        spots: currentState.spots,
-      ));
     } else {
-      emit(ListingDataEntered(
+      emit(ListingDataEntering(
         name: event.name,
         shortDesc: event.shortDesc,
         detailedDesc: event.detailedDesc,
+        type: null,
+        spots: null,
+        images: null,
       ));
     }
   }
 
   void _onAddListingImages(AddListingImages event, Emitter<CreateListingState> emit) async {
-    if (state is ListingImagesEntered && (state as ListingImagesEntered).images.length >= 6) {
+    final currentState = state;
+    if (currentState is ListingDataEntering && currentState.images != null && currentState.images!.length >= 6) {
       return;
     }
     final ImagePicker picker = ImagePicker();
     final List<XFile>? images = await picker.pickMultiImage();
-    final currentState = state;
-    if (currentState is ListingSpotsEntered) {
-      emit(ListingImagesEntered(
+    if (currentState is ListingDataEntering && currentState.images == null) {
+      emit(ListingDataEntering(
         name: currentState.name,
         shortDesc: currentState.shortDesc,
         detailedDesc: currentState.detailedDesc,
         type: currentState.type,
         spots: currentState.spots,
-        images: images?.sublist(0, images.length < 6 ? images.length : 6) ?? [],
+        images: images?.sublist(0, images.length < 6 ? images.length : 6),
       ));
-    } else if (currentState is ListingImagesEntered) {
-      final List<XFile> allImages = [...currentState.images, ...images ?? []];
-      emit(ListingImagesEntered(
+    } else if (currentState is ListingDataEntering) {
+      final List<XFile> allImages = [...currentState.images!, ...images ?? []];
+      emit(ListingDataEntering(
         name: currentState.name,
         shortDesc: currentState.shortDesc,
         detailedDesc: currentState.detailedDesc,
@@ -92,11 +86,10 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
 
   void _onRemoveListingImage(RemoveListingImage event, Emitter<CreateListingState> emit) {
     final currentState = state;
-    if (currentState is ListingImagesEntered) {
-      currentState.images.removeAt(event.index);
-      final images = [...currentState.images];
+    if (currentState is ListingDataEntering && currentState.images != null) {
+      final images = [...currentState.images!]..removeAt(event.index);
       emit(CreateListingInitial());
-      emit(ListingImagesEntered(
+      emit(ListingDataEntering(
         name: currentState.name,
         shortDesc: currentState.shortDesc,
         detailedDesc: currentState.detailedDesc,
@@ -109,10 +102,10 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
 
   void _onRemoveListingSpot(RemoveListingSpot event, Emitter<CreateListingState> emit) {
     final currentState = state;
-    if (currentState is ListingImagesEntered) {
+    if (currentState is ListingDataEntering && currentState.spots != null) {
       if (event.rowName != null) {
-        final newSpots = currentState.spots.where((spot) => spot.rowName! != event.rowName).toList();
-        emit(ListingImagesEntered(
+        final newSpots = currentState.spots!.where((spot) => spot.rowName! != event.rowName).toList();
+        emit(ListingDataEntering(
           name: currentState.name,
           shortDesc: currentState.shortDesc,
           detailedDesc: currentState.detailedDesc,
@@ -121,38 +114,16 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
           images: currentState.images,
         ));
       } else {
-        currentState.spots.removeAt(event.index);
-        final newSpots = [...currentState.spots];
+        currentState.spots!.removeAt(event.index);
+        final newSpots = [...currentState.spots!];
         emit(CreateListingInitial());
-        emit(ListingImagesEntered(
+        emit(ListingDataEntering(
           name: currentState.name,
           shortDesc: currentState.shortDesc,
           detailedDesc: currentState.detailedDesc,
           type: currentState.type,
           spots: newSpots,
           images: currentState.images,
-        ));
-      }
-    } else if (currentState is ListingSpotsEntered) {
-      if (event.rowName != null) {
-        final newSpots = currentState.spots.where((spot) => spot.rowName! != event.rowName).toList();
-        emit(ListingSpotsEntered(
-          name: currentState.name,
-          shortDesc: currentState.shortDesc,
-          detailedDesc: currentState.detailedDesc,
-          type: currentState.type,
-          spots: newSpots,
-        ));
-      } else {
-        currentState.spots.removeAt(event.index);
-        final newSpots = [...currentState.spots];
-        emit(CreateListingInitial());
-        emit(ListingSpotsEntered(
-          name: currentState.name,
-          shortDesc: currentState.shortDesc,
-          detailedDesc: currentState.detailedDesc,
-          type: currentState.type,
-          spots: newSpots,
         ));
       }
     }
@@ -160,16 +131,8 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
 
   void _onSelectListingType(SelectListingType event, Emitter<CreateListingState> emit) async {
     final currentState = state;
-    if (currentState is ListingSpotsEntered) {
-      emit(ListingSpotsEntered(
-        name: currentState.name,
-        shortDesc: currentState.shortDesc,
-        detailedDesc: currentState.detailedDesc,
-        type: event.type,
-        spots: const [],
-      ));
-    } else if (currentState is ListingImagesEntered) {
-      emit(ListingImagesEntered(
+    if (currentState is ListingDataEntering) {
+      emit(ListingDataEntering(
         name: currentState.name,
         shortDesc: currentState.shortDesc,
         detailedDesc: currentState.detailedDesc,
@@ -177,31 +140,14 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
         spots: const [],
         images: currentState.images,
       ));
-    } else if (currentState is ListingDataEntered) {
-      emit(ListingSpotsEntered(
-        name: currentState.name,
-        shortDesc: currentState.shortDesc,
-        detailedDesc: currentState.detailedDesc,
-        type: event.type,
-        spots: const [],
-      ));
     }
   }
 
   void _onAddListingSpot(AddListingSpot event, Emitter<CreateListingState> emit) async {
     final currentState = state;
-    if (currentState is ListingSpotsEntered) {
-      final spots = [...currentState.spots, event.spot];
-      emit(ListingSpotsEntered(
-        name: currentState.name,
-        shortDesc: currentState.shortDesc,
-        detailedDesc: currentState.detailedDesc,
-        type: currentState.type,
-        spots: spots,
-      ));
-    } else if (currentState is ListingImagesEntered) {
-      final spots = [...currentState.spots, event.spot];
-      emit(ListingImagesEntered(
+    if (currentState is ListingDataEntering && currentState.spots != null) {
+      final spots = [...currentState.spots!, event.spot];
+      emit(ListingDataEntering(
         name: currentState.name,
         shortDesc: currentState.shortDesc,
         detailedDesc: currentState.detailedDesc,
@@ -214,21 +160,21 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
 
   void _onEditListingSpot(EditListingSpot event, Emitter<CreateListingState> emit) async {
     final currentState = state;
-    if (currentState is ListingSpotsEntered) {
+    if (currentState is ListingDataEntering && currentState.spots != null) {
       if (event.rowName != null && event.prevRowName != null) {
         if (event.rowName == event.prevRowName) {
-          final currentSpots = currentState.spots.where((spot) => spot.rowName! == event.prevRowName).toList().length;
+          final currentSpots = currentState.spots!.where((spot) => spot.rowName! == event.prevRowName).toList().length;
           if (event.availableSpots >= currentSpots) {
             for (int i = 0; i < event.availableSpots - currentSpots; i++) {
-              currentState.spots.add(Spot(availableSpots: 1, rowName: event.rowName));
+              currentState.spots!.add(Spot(availableSpots: 1, rowName: event.rowName));
             }
           } else {
             int found = 0;
-            for (int i = 0; i < currentState.spots.length; i++) {
-              if (currentState.spots[i].rowName == event.rowName) {
+            for (int i = 0; i < currentState.spots!.length; i++) {
+              if (currentState.spots![i].rowName == event.rowName) {
                 found++;
                 if (found > event.availableSpots) {
-                  currentState.spots.removeAt(i);
+                  currentState.spots!.removeAt(i);
                   i--;
                 }
               }
@@ -236,73 +182,20 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
           }
         } else {
           for (int i = 0; i < event.availableSpots; i++) {
-            final index = currentState.spots.indexWhere((spot) => spot.rowName! == event.prevRowName);
+            final index = currentState.spots!.indexWhere((spot) => spot.rowName! == event.prevRowName);
             if (index < 0) {
-              currentState.spots.add(Spot(availableSpots: 1, rowName: event.rowName));
+              currentState.spots!.add(Spot(availableSpots: 1, rowName: event.rowName));
             } else {
-              currentState.spots[index].rowName = event.rowName;
+              currentState.spots![index].rowName = event.rowName;
             }
           }
         }
-        List<Spot> spots = currentState.spots;
+        List<Spot> spots = currentState.spots!;
         if (event.rowName != event.prevRowName) {
-          spots = currentState.spots.where((spot) => spot.rowName != event.prevRowName).toList();
+          spots = currentState.spots!.where((spot) => spot.rowName != event.prevRowName).toList();
         }
         emit(CreateListingInitial());
-        emit(ListingSpotsEntered(
-          name: currentState.name,
-          shortDesc: currentState.shortDesc,
-          detailedDesc: currentState.detailedDesc,
-          type: currentState.type,
-          spots: spots,
-        ));
-        return;
-      }
-      currentState.spots.elementAt(event.index).availableSpots = event.availableSpots;
-      emit(CreateListingInitial());
-      emit(ListingSpotsEntered(
-        name: currentState.name,
-        shortDesc: currentState.shortDesc,
-        detailedDesc: currentState.detailedDesc,
-        type: currentState.type,
-        spots: currentState.spots,
-      ));
-    } else if (currentState is ListingImagesEntered) {
-      if (event.rowName != null && event.prevRowName != null) {
-        if (event.rowName == event.prevRowName) {
-          final currentSpots = currentState.spots.where((spot) => spot.rowName! == event.prevRowName).toList().length;
-          if (event.availableSpots >= currentSpots) {
-            for (int i = 0; i < event.availableSpots - currentSpots; i++) {
-              currentState.spots.add(Spot(availableSpots: 1, rowName: event.rowName));
-            }
-          } else {
-            int found = 0;
-            for (int i = 0; i < currentState.spots.length; i++) {
-              if (currentState.spots[i].rowName == event.rowName) {
-                found++;
-                if (found > event.availableSpots) {
-                  currentState.spots.removeAt(i);
-                  i--;
-                }
-              }
-            }
-          }
-        } else {
-          for (int i = 0; i < event.availableSpots; i++) {
-            final index = currentState.spots.indexWhere((spot) => spot.rowName! == event.prevRowName);
-            if (index < 0) {
-              currentState.spots.add(Spot(availableSpots: 1, rowName: event.rowName));
-            } else {
-              currentState.spots[index].rowName = event.rowName;
-            }
-          }
-        }
-        List<Spot> spots = currentState.spots;
-        if (event.rowName != event.prevRowName) {
-          spots = currentState.spots.where((spot) => spot.rowName != event.prevRowName).toList();
-        }
-        emit(CreateListingInitial());
-        emit(ListingImagesEntered(
+        emit(ListingDataEntering(
           name: currentState.name,
           shortDesc: currentState.shortDesc,
           detailedDesc: currentState.detailedDesc,
@@ -312,9 +205,9 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
         ));
         return;
       }
-      currentState.spots.elementAt(event.index).availableSpots = event.availableSpots;
+      currentState.spots!.elementAt(event.index).availableSpots = event.availableSpots;
       emit(CreateListingInitial());
-      emit(ListingImagesEntered(
+      emit(ListingDataEntering(
         name: currentState.name,
         shortDesc: currentState.shortDesc,
         detailedDesc: currentState.detailedDesc,
@@ -327,34 +220,35 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
 
   void _onSubmitListing(SubmitListing event, Emitter<CreateListingState> emit) async {
     final currentState = state;
-    if (currentState is ListingImagesEntered) {
+    if (currentState is ListingDataEntering && currentState.images != null && currentState.images!.length > 2) {
       final name = currentState.name;
       final shortDesc = currentState.shortDesc;
       final detailedDesc = currentState.detailedDesc;
-      final type = currentState.type.rawValue;
+      final type = currentState.type!.rawValue;
       emit(CreateListingInProgress(
         name: currentState.name,
         shortDesc: currentState.shortDesc,
         detailedDesc: currentState.detailedDesc,
-        type: currentState.type,
-        spots: currentState.spots,
-        images: currentState.images,
+        type: currentState.type!,
+        spots: currentState.spots!,
+        images: currentState.images!,
       ));
-      final imagePaths = currentState.images.map((i) => i.path).toList();
-      final response = await _postListingImagesUseCase(params: imagePaths);
-      final savedUrls = response.data ?? [];
+      final imagePaths = currentState.images!.map((i) => i.path).toList();
+      final cloudinaryResponse = await _postListingImagesUseCase(params: imagePaths);
+      final savedUrls = cloudinaryResponse.data ?? [];
       if (savedUrls.isEmpty) {
-        emit(CreateListingFailure(
+        emit(ListingDataEntering(
           name: currentState.name,
           shortDesc: currentState.shortDesc,
           detailedDesc: currentState.detailedDesc,
-          type: currentState.type,
-          spots: currentState.spots,
-          images: currentState.images,
+          type: currentState.type!,
+          spots: currentState.spots!,
+          images: currentState.images!,
+          errorMessage: "Unable to upload images. Try again later.",
         ));
         return;
       }
-      final List<SpotParams> spots = currentState.spots
+      final List<SpotParams> spots = currentState.spots!
           .map((spot) => SpotParams(availableSpots: spot.availableSpots, rowName: spot.rowName))
           .toList();
       final params = CreateListingRequestParams(
@@ -366,8 +260,22 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
         images: savedUrls,
       );
 
-      _postListingUseCase(params: params);
-      print(savedUrls);
+      final response = await _postListingUseCase(params: params);
+      if (response is DataFailed) {
+        print(response.error);
+      } else {
+        print(response.data?.id);
+      }
+    } else if (currentState is ListingDataEntering) {
+      emit(ListingDataEntering(
+        name: currentState.name,
+        shortDesc: currentState.shortDesc,
+        detailedDesc: currentState.detailedDesc,
+        type: currentState.type,
+        spots: currentState.spots,
+        images: currentState.images,
+        errorMessage: "Please enter at lease 3 images.",
+      ));
     }
   }
 

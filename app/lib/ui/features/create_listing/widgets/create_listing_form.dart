@@ -1,5 +1,6 @@
 import 'package:app/blocs/create_listing_bloc/create_listing_bloc.dart';
 import 'package:app/res/text_styles.dart';
+import 'package:app/ui/features/create_listing/widgets/text_label.dart';
 import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -70,34 +71,8 @@ class _CreateListingFormState extends State<CreateListingForm> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "The listing name:",
-                  style: textStyles.subheaderText,
-                ),
-                const SizedBox(
-                  width: 10.0,
-                ),
-                Tooltip(
-                    margin: EdgeInsets.symmetric(horizontal: mediaQuery.size.width * 0.25),
-                    padding: const EdgeInsets.all(10.0),
-                    triggerMode: TooltipTriggerMode.tap,
-                    waitDuration: Duration.zero,
-                    showDuration: const Duration(seconds: 3),
-                    message: "This is the name of the listing eg. name of your restaurant.",
-                    child: Container(
-                      padding: const EdgeInsets.all(2.0),
-                      decoration: const BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
-                      child: const Icon(
-                        Icons.question_mark,
-                        color: Colors.white,
-                        size: 15.0,
-                      ),
-                    )),
-              ],
-            ),
+            const TextLabel(
+                title: "The listing name:", tooltip: "This is the name of the listing eg. name of your restaurant."),
             const SizedBox(
               height: 10.0,
             ),
@@ -138,34 +113,10 @@ class _CreateListingFormState extends State<CreateListingForm> {
             const SizedBox(
               height: 10.0,
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "A short description:",
-                  style: textStyles.subheaderText,
-                ),
-                const SizedBox(
-                  width: 10.0,
-                ),
-                Tooltip(
-                    margin: EdgeInsets.symmetric(horizontal: mediaQuery.size.width * 0.25),
-                    padding: const EdgeInsets.all(10.0),
-                    triggerMode: TooltipTriggerMode.tap,
-                    waitDuration: Duration.zero,
-                    showDuration: const Duration(seconds: 3),
-                    message:
-                        "This is a short description of the listing. It will be displayed to the user in the home screen.",
-                    child: Container(
-                      padding: const EdgeInsets.all(2.0),
-                      decoration: const BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
-                      child: const Icon(
-                        Icons.question_mark,
-                        color: Colors.white,
-                        size: 15.0,
-                      ),
-                    )),
-              ],
+            const TextLabel(
+              title: "A short description:",
+              tooltip:
+                  "This is a short description of the listing. It will be displayed to the user in the home screen.",
             ),
             const SizedBox(
               height: 10.0,
@@ -207,35 +158,10 @@ class _CreateListingFormState extends State<CreateListingForm> {
             const SizedBox(
               height: 10.0,
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "Detailed description:",
-                  style: textStyles.subheaderText,
-                ),
-                const SizedBox(
-                  width: 10.0,
-                ),
-                Tooltip(
-                    margin: EdgeInsets.symmetric(horizontal: mediaQuery.size.width * 0.25),
-                    padding: const EdgeInsets.all(10.0),
-                    triggerMode: TooltipTriggerMode.tap,
-                    waitDuration: Duration.zero,
-                    showDuration: const Duration(seconds: 3),
-                    message:
-                        "This is a detailed description of the listing. It will be displayed to the user when the user enters the details screen of your listing.",
-                    child: Container(
-                      padding: const EdgeInsets.all(2.0),
-                      decoration: const BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
-                      child: const Icon(
-                        Icons.question_mark,
-                        color: Colors.white,
-                        size: 15.0,
-                      ),
-                    )),
-              ],
-            ),
+            const TextLabel(
+                title: "Detailed description:",
+                tooltip:
+                    "This is a detailed description of the listing. It will be displayed to the user when the user enters the details screen of your listing."),
             const SizedBox(
               height: 10.0,
             ),

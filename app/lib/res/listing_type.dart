@@ -6,15 +6,15 @@ extension ListingTypeExtension on ListingType {
   String get rawValue {
     switch (this) {
       case ListingType.restaurant:
-        return 'Restaurant';
+        return 'restaurant';
       case ListingType.sportcenter:
-        return 'Sport Center';
+        return 'sportcenter';
       case ListingType.theatre:
-        return 'Theatre';
+        return 'theatre';
       case ListingType.cinema:
-        return 'Cinema';
+        return 'cinema';
       default:
-        return 'Unknown';
+        return 'unknown';
     }
   }
 

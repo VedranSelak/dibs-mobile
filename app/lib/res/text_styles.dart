@@ -35,9 +35,9 @@ class TextStyles {
 
   TextStyle get errorText => _theme.bodyText1!.copyWith(
         color: Colors.redAccent,
-        fontSize: 15.0,
+        fontSize: 14.0,
         fontFamily: "WorkSans",
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w500,
       );
 
   TextStyle get accentText => _theme.bodyText1!.copyWith(

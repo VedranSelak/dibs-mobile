@@ -67,14 +67,8 @@ class BottomInputPopupWidget {
                                   return 'Please enter a name';
                                 }
                                 final state = context.read<CreateListingBloc>().state;
-                                if (state is ListingSpotsEntered && availableSpots == null) {
-                                  final hasRow = state.spots.any((spot) => spot.rowName == value);
-                                  if (hasRow) {
-                                    return 'Row name already used';
-                                  }
-                                }
-                                if (state is ListingImagesEntered && availableSpots == null) {
-                                  final hasRow = state.spots.any((spot) => spot.rowName == value);
+                                if (state is ListingDataEntering && state.spots != null && availableSpots == null) {
+                                  final hasRow = state.spots!.any((spot) => spot.rowName == value);
                                   if (hasRow) {
                                     return 'Row name already used';
                                   }
