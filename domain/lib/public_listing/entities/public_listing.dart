@@ -1,3 +1,4 @@
+import 'package:domain/public_listing/entities/spot_entity.dart';
 import 'package:equatable/equatable.dart';
 
 class PublicListing extends Equatable {
@@ -8,6 +9,8 @@ class PublicListing extends Equatable {
     required this.shortDescription,
     required this.detailedDescription,
     required this.type,
+    required this.imageUrls,
+    this.spots,
   });
 
   final int id;
@@ -16,7 +19,9 @@ class PublicListing extends Equatable {
   final String shortDescription;
   final String detailedDescription;
   final String type;
+  final List<String> imageUrls;
+  final List<SpotEntity>? spots;
 
   @override
-  List<Object> get props => [id, ownerId, name, shortDescription, detailedDescription, type];
+  List<Object?> get props => [id, ownerId, name, shortDescription, detailedDescription, type, imageUrls, spots];
 }

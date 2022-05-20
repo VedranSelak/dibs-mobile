@@ -21,7 +21,7 @@ class ListingDetailsBloc extends Bloc<ListingDetailsEvent, ListingDetailsState> 
     if (response is DataFailed) {
       print(response.error.toString());
     } else {
-      print(response.data);
+      emit(DetailsFetchSuccess(listing: response.data!));
     }
   }
 }

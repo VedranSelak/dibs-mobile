@@ -22,9 +22,9 @@ class DetailsFetchFailed extends ListingDetailsState {
 }
 
 class DetailsFetchSuccess extends ListingDetailsState {
-  const DetailsFetchSuccess({required this.listings});
-  final List<PublicListing> listings;
+  const DetailsFetchSuccess({required this.listing});
+  final PublicListing listing;
 
   @override
-  List<Object?> get props => [listings];
+  List<Object?> get props => [listing];
 }
