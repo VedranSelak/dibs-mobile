@@ -92,8 +92,10 @@ extension ListingTypeExtension on ListingType {
         return Icons.local_restaurant;
     }
   }
+}
 
-  ListingType mapValueToType(String value) {
+class ListingHelper {
+  static ListingType mapValueToType(String value) {
     switch (value) {
       case 'restaurant':
         return ListingType.restaurant;

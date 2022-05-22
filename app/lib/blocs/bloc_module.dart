@@ -1,4 +1,5 @@
 import 'package:app/blocs/create_listing_bloc/create_listing_bloc.dart';
+import 'package:app/blocs/create_reservation_bloc/create_reservation_bloc.dart';
 import 'package:app/blocs/listing_bloc/listing_bloc.dart';
 import 'package:app/blocs/login_bloc/login_bloc.dart';
 import 'package:app/blocs/signup_bloc/signup_bloc.dart';
@@ -19,5 +20,6 @@ class BlocModule extends BaseDiModule {
     GetIt.I.registerFactory<UserTypeBloc>(UserTypeBloc.new);
     GetIt.I.registerFactory<CreateListingBloc>(CreateListingBloc.new);
     GetIt.I.registerFactory<ListingDetailsBloc>(ListingDetailsBloc.new);
+    GetIt.I.registerFactory<CreateReservationBloc>(CreateReservationBloc.new);
   }
 }

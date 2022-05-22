@@ -1,6 +1,7 @@
 import "package:app/application.dart";
 import 'package:app/blocs/bloc_module.dart';
 import 'package:app/blocs/create_listing_bloc/create_listing_bloc.dart';
+import 'package:app/blocs/create_reservation_bloc/create_reservation_bloc.dart';
 import 'package:app/blocs/listing_bloc/listing_bloc.dart';
 import 'package:app/blocs/listing_details_bloc/listing_details_bloc.dart';
 import 'package:app/blocs/login_bloc/login_bloc.dart';
@@ -40,6 +41,9 @@ void main() async {
       ),
       BlocProvider<ListingDetailsBloc>(
         create: (context) => GetIt.I.get<ListingDetailsBloc>(),
+      ),
+      BlocProvider<CreateReservationBloc>(
+        create: (context) => GetIt.I.get<CreateReservationBloc>(),
       ),
     ],
     child: Application(),

@@ -1,5 +1,6 @@
 import 'package:app/blocs/listing_details_bloc/listing_details_bloc.dart';
 import 'package:app/res/dimensions.dart';
+import 'package:app/res/listing_type.dart';
 import 'package:app/res/text_styles.dart';
 import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:app/ui/widgets/dialogs/create_reservation_popup.dart';
@@ -135,7 +136,11 @@ class _ListingDeatilsScreenState extends State<ListingDeatilsScreen> {
                     PrimaryButton(
                       buttonText: 'Make a reservation',
                       onPress: () {
-                        // CreateReservationPopup(context: context, type: ).onTapped();
+                        CreateReservationPopup(
+                          context: context,
+                          type: ListingHelper.mapValueToType(state.listing.type),
+                          listingId: state.listing.id,
+                        ).onTapped();
                       },
                       backgroundColor: Colors.blueAccent,
                     ),
