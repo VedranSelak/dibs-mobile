@@ -92,4 +92,19 @@ extension ListingTypeExtension on ListingType {
         return Icons.local_restaurant;
     }
   }
+
+  ListingType mapValueToType(String value) {
+    switch (value) {
+      case 'restaurant':
+        return ListingType.restaurant;
+      case 'sportcenter':
+        return ListingType.sportcenter;
+      case 'theatre':
+        return ListingType.theatre;
+      case 'cinema':
+        return ListingType.cinema;
+      default:
+        return ListingType.restaurant;
+    }
+  }
 }

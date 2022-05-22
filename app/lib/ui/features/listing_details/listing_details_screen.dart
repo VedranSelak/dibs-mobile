@@ -1,8 +1,10 @@
 import 'package:app/blocs/listing_details_bloc/listing_details_bloc.dart';
-import 'package:app/res/assets.dart';
 import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
+import 'package:app/ui/widgets/buttons/primary_button.dart';
+import 'package:app/ui/widgets/dialogs/create_reservation_popup.dart';
 import 'package:app/ui/widgets/screen_wrappers/simple_screen_wrapper.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,65 +54,94 @@ class _ListingDeatilsScreenState extends State<ListingDeatilsScreen> {
                   margin: const EdgeInsets.all(5.0),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                    child: Stack(
-                      children: [
-                        const Center(
-                          child: SpinKitWave(
-                            color: Colors.blueAccent,
-                          ),
-                        ),
-                        FadeInImage.assetNetwork(
-                          fit: BoxFit.cover,
-                          width: 1000.0,
-                          image: item,
-                          placeholder: Assets.transparentImage,
-                        ),
-                      ],
+                    child: CachedNetworkImage(
+                      fit: BoxFit.cover,
+                      width: 1000.0,
+                      imageUrl: item,
+                      placeholder: (context, url) => const SpinKitWave(color: Colors.blueAccent),
                     ),
                   ),
                 );
               }).toList();
-              return Column(
-                children: [
-                  SizedBox(
-                    height: dimensions.fullHeight * 0.4,
-                    child: CarouselSlider(
-                      items: imageSliders,
-                      carouselController: _controller,
-                      options: CarouselOptions(
-                          height: dimensions.fullHeight * 0.35,
-                          autoPlay: false,
-                          enlargeCenterPage: true,
-                          aspectRatio: 2.0,
-                          onPageChanged: (index, reason) {
-                            setState(() {
-                              _current = index;
-                            });
-                          }),
+              return SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: dimensions.fullHeight * 0.4,
+                      child: CarouselSlider(
+                        items: imageSliders,
+                        carouselController: _controller,
+                        options: CarouselOptions(
+                            height: dimensions.fullHeight * 0.35,
+                            autoPlay: false,
+                            enlargeCenterPage: true,
+                            aspectRatio: 2.0,
+                            onPageChanged: (index, reason) {
+                              setState(() {
+                                _current = index;
+                              });
+                            }),
+                      ),
                     ),
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: state.listing.imageUrls.asMap().entries.map((entry) {
-                        return GestureDetector(
-                          onTap: () => _controller.animateToPage(entry.key),
-                          child: Container(
-                            width: 12.0,
-                            height: 12.0,
-                            margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.black.withOpacity(_current == entry.key ? 0.9 : 0.4)),
-                          ),
-                        );
-                      }).toList()),
-                  const SizedBox(height: 20.0),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    width: dimensions.fullWidth,
-                    child: Text(state.listing.name, style: textStyles.labelHeaderText),
-                  ),
-                ],
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: state.listing.imageUrls.asMap().entries.map((entry) {
+                          return GestureDetector(
+                            onTap: () => _controller.animateToPage(entry.key),
+                            child: Container(
+                              width: 12.0,
+                              height: 12.0,
+                              margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.black.withOpacity(_current == entry.key ? 0.9 : 0.4)),
+                            ),
+                          );
+                        }).toList()),
+                    const SizedBox(height: 20.0),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      width: dimensions.fullWidth,
+                      child: Text(state.listing.name, style: textStyles.labelHeaderText),
+                    ),
+                    const SizedBox(height: 10.0),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      width: dimensions.fullWidth,
+                      child: Text(state.listing.shortDescription, style: textStyles.secondaryLabel),
+                    ),
+                    const SizedBox(height: 20.0),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      width: dimensions.fullWidth,
+                      child: Text('Description:', style: textStyles.labelText),
+                    ),
+                    const SizedBox(height: 10.0),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      width: dimensions.fullWidth,
+                      child: Text(
+                        state.listing.detailedDescription,
+                        style: textStyles.secondaryLabel,
+                      ),
+                    ),
+                    const SizedBox(height: 20.0),
+                    Text(
+                      'Do you like this place?',
+                      style: textStyles.subheaderText,
+                    ),
+                    const SizedBox(height: 20.0),
+                    PrimaryButton(
+                      buttonText: 'Make a reservation',
+                      onPress: () {
+                        // CreateReservationPopup(context: context, type: ).onTapped();
+                      },
+                      backgroundColor: Colors.blueAccent,
+                    ),
+                    const SizedBox(height: 30.0),
+                  ],
+                ),
               );
             }
             return const Center(

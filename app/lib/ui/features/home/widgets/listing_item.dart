@@ -31,13 +31,19 @@ class ListingItem extends StatelessWidget {
             const SizedBox(
               width: 10.0,
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(listing.name, style: textStyles.labelText),
-                Text(listing.shortDescription, style: textStyles.secondaryLabel),
-              ],
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    listing.name,
+                    style: textStyles.labelText,
+                    maxLines: 1,
+                  ),
+                  Text(listing.shortDescription, style: textStyles.secondaryLabel),
+                ],
+              ),
             )
           ],
         ),
