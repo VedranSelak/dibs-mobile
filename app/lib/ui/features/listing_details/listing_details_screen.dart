@@ -1,7 +1,9 @@
 import 'package:app/blocs/listing_details_bloc/listing_details_bloc.dart';
+import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:app/res/dimensions.dart';
 import 'package:app/res/listing_type.dart';
 import 'package:app/res/text_styles.dart';
+import 'package:app/ui/features/login/login_screen.dart';
 import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:app/ui/widgets/dialogs/create_reservation_popup.dart';
 import 'package:app/ui/widgets/screen_wrappers/simple_screen_wrapper.dart';
@@ -37,7 +39,6 @@ class _ListingDeatilsScreenState extends State<ListingDeatilsScreen> {
   Widget build(BuildContext context) {
     final dimensions = Dimensions.of(context);
     final textStyles = TextStyles.of(context);
-
     return SimpleScreenWrapper(
       title: 'Details',
       onBackPressed: () {
@@ -128,21 +129,49 @@ class _ListingDeatilsScreenState extends State<ListingDeatilsScreen> {
                       ),
                     ),
                     const SizedBox(height: 20.0),
-                    Text(
-                      'Do you like this place?',
-                      style: textStyles.subheaderText,
-                    ),
-                    const SizedBox(height: 20.0),
-                    PrimaryButton(
-                      buttonText: 'Make a reservation',
-                      onPress: () {
-                        CreateReservationPopup(
-                          context: context,
-                          type: ListingHelper.mapValueToType(state.listing.type),
-                          listingId: state.listing.id,
-                        ).onTapped();
+                    BlocBuilder<UserTypeBloc, UserTypeState>(
+                      builder: (context, userTypeState) {
+                        if (userTypeState is GuestType) {
+                          return Column(
+                            children: [
+                              Text(
+                                "Log in to be able to create a reservation!",
+                                style: textStyles.subheaderText,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 20.0),
+                              PrimaryButton(
+                                buttonText: 'Log in',
+                                onPress: () {
+                                  Get.toNamed<dynamic>(LoginScreen.routeName);
+                                },
+                                backgroundColor: Colors.blueAccent,
+                              ),
+                            ],
+                          );
+                        }
+                        return Column(
+                          children: [
+                            Text(
+                              'Do you like this place?',
+                              style: textStyles.subheaderText,
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 20.0),
+                            PrimaryButton(
+                              buttonText: 'Make a reservation',
+                              onPress: () {
+                                CreateReservationPopup(
+                                  context: context,
+                                  type: ListingHelper.mapValueToType(state.listing.type),
+                                  listingId: state.listing.id,
+                                ).onTapped();
+                              },
+                              backgroundColor: Colors.blueAccent,
+                            ),
+                          ],
+                        );
                       },
-                      backgroundColor: Colors.blueAccent,
                     ),
                     const SizedBox(height: 30.0),
                   ],
