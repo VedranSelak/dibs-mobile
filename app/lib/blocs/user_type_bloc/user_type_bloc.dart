@@ -12,6 +12,7 @@ part "user_type_state.dart";
 class UserTypeBloc extends Bloc<UserTypeEvent, UserTypeState> {
   UserTypeBloc() : super(GuestType()) {
     on<GetUserType>(_onGetUserType);
+    on<SetGuest>(_onSetGuest);
   }
 
   final GetUserUseCase _getUserUseCase = GetIt.I.get<GetUserUseCase>();
@@ -21,10 +22,16 @@ class UserTypeBloc extends Bloc<UserTypeEvent, UserTypeState> {
     print(user);
     if (user == null) {
       emit(GuestType());
+    } else if (user.isTokenExpired) {
+      emit(ExpiredUser(user: user));
     } else if (user.type == AccountType.user.rawValue) {
       emit(UserType(user: user));
     } else if (user.type == AccountType.owner.rawValue) {
       emit(OwnerType(user: user));
     }
+  }
+
+  void _onSetGuest(SetGuest event, Emitter<UserTypeState> emit) async {
+    emit(GuestType());
   }
 }

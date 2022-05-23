@@ -9,10 +9,12 @@ class UserModel extends User {
     required int id,
     required String type,
     required String accessToken,
+    required bool isTokenExpired,
   }) : super(
           id: id,
           type: type,
           accessToken: accessToken,
+          isTokenExpired: isTokenExpired,
         );
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);

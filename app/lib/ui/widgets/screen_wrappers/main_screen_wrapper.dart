@@ -37,51 +37,90 @@ class _MainScreenWrapperState extends State<MainScreenWrapper> {
     final dimensions = Dimensions.of(context);
     return GetBuilder<MainController>(
       builder: (controller) {
-        return Scaffold(
-          body: SafeArea(
-            child: IndexedStack(
-              index: controller.tabIndex,
-              children: [
-                widget.child,
-                const ProfileScreen(),
-              ],
-            ),
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              final state = context.read<UserTypeBloc>().state;
-              if (state is GuestType) {
-                AlertDialogWidget(
-                  context: context,
-                  title: "You aren't logged in",
-                  description: "To be able to take advantage the apps whole functionality please create an account.",
-                  acceptButton: PrimaryButton(
-                    buttonText: 'Log in',
-                    backgroundColor: Colors.blueAccent,
-                    onPress: () {
-                      Get.back<dynamic>();
-                      // ignore: cascade_invocations
-                      Get.toNamed<dynamic>(LoginScreen.routeName);
-                    },
-                  ),
-                  rejectButton: PrimaryButton(
-                    buttonText: 'Cancel',
-                    backgroundColor: Colors.grey,
-                    onPress: () {
-                      Get.back<dynamic>();
-                    },
-                  ),
-                ).showAlertDialog();
-              } else {
-                Overlay.of(context)?.insert(entry);
+        return BlocListener<UserTypeBloc, UserTypeState>(
+          listener: (context, state) {
+            if (state is ExpiredUser) {
+              AlertDialogWidget(
+                context: context,
+                title: 'Session expired',
+                description:
+                    'Your session has expired. This is done for your safety, please log in again to user your account.',
+                acceptButton: PrimaryButton(
+                  buttonText: 'Log in',
+                  onPress: () {
+                    context.read<UserTypeBloc>().add(SetGuest());
+                    Get.back<dynamic>();
+                    // ignore: cascade_invocations
+                    Get.toNamed<dynamic>(LoginScreen.routeName);
+                  },
+                  backgroundColor: Colors.blueAccent,
+                ),
+                rejectButton: PrimaryButton(
+                  buttonText: 'Go as Guest',
+                  onPress: () {
+                    context.read<UserTypeBloc>().add(SetGuest());
+                    Get.back<dynamic>();
+                  },
+                  backgroundColor: Colors.grey,
+                ),
+              ).showAlertDialog();
+            }
+          },
+          child: WillPopScope(
+            onWillPop: () async {
+              if (context.read<UserTypeBloc>().state is ExpiredUser) {
+                return false;
               }
+              return true;
             },
-            child: const Icon(Icons.add),
-          ),
-          bottomNavigationBar: SizedBox(
-            height: dimensions.bottomNavBarHeight,
-            child: BottomAppBarWidget(controller: controller),
+            child: Scaffold(
+              body: SafeArea(
+                child: IndexedStack(
+                  index: controller.tabIndex,
+                  children: [
+                    widget.child,
+                    const ProfileScreen(),
+                  ],
+                ),
+              ),
+              floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  final state = context.read<UserTypeBloc>().state;
+                  if (state is GuestType) {
+                    AlertDialogWidget(
+                      context: context,
+                      title: "You aren't logged in",
+                      description:
+                          "To be able to take advantage the apps whole functionality please create an account.",
+                      acceptButton: PrimaryButton(
+                        buttonText: 'Log in',
+                        backgroundColor: Colors.blueAccent,
+                        onPress: () {
+                          Get.back<dynamic>();
+                          // ignore: cascade_invocations
+                          Get.toNamed<dynamic>(LoginScreen.routeName);
+                        },
+                      ),
+                      rejectButton: PrimaryButton(
+                        buttonText: 'Cancel',
+                        backgroundColor: Colors.grey,
+                        onPress: () {
+                          Get.back<dynamic>();
+                        },
+                      ),
+                    ).showAlertDialog();
+                  } else {
+                    Overlay.of(context)?.insert(entry);
+                  }
+                },
+                child: const Icon(Icons.add),
+              ),
+              bottomNavigationBar: SizedBox(
+                height: dimensions.bottomNavBarHeight,
+                child: BottomAppBarWidget(controller: controller),
+              ),
+            ),
           ),
         );
       },

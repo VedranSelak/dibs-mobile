@@ -5,7 +5,7 @@ abstract class UserTypeState extends Equatable {
   const UserTypeState();
 
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [];
 }
 
 class GuestType extends UserTypeState {}
@@ -15,7 +15,7 @@ class OwnerType extends UserTypeState {
   final User user;
 
   @override
-  List<Object?> get props => [user];
+  List<Object> get props => [user];
 }
 
 class UserType extends UserTypeState {
@@ -23,5 +23,13 @@ class UserType extends UserTypeState {
   final User user;
 
   @override
-  List<Object?> get props => [user];
+  List<Object> get props => [user];
+}
+
+class ExpiredUser extends UserTypeState {
+  const ExpiredUser({required this.user});
+  final User user;
+
+  @override
+  List<Object> get props => [user];
 }

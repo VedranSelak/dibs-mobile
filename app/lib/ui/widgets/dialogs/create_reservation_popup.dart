@@ -92,7 +92,7 @@ class CreateReservationPopup {
                               final month = months[date.month - 1];
                               final hour = date.hour < 10 ? "0${date.hour}" : date.hour;
                               final minute = date.minute < 10 ? "0${date.minute}" : date.minute;
-                              buttonText.value = '$weekDay. $month. ${date.year}. at $hour:$minute';
+                              buttonText.value = '$weekDay. ${date.day}. $month. ${date.year}. at $hour:$minute';
                               timestamp = date.millisecondsSinceEpoch;
                             },
                           );

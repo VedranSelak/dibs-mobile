@@ -8,3 +8,5 @@ abstract class UserTypeEvent extends Equatable {
 }
 
 class GetUserType extends UserTypeEvent {}
+
+class SetGuest extends UserTypeEvent {}
