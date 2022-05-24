@@ -7,6 +7,7 @@ import 'package:app/ui/features/home/widgets/listing_item.dart';
 import 'package:app/ui/widgets/screen_wrappers/main_screen_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -73,8 +74,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       );
                     } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
+                      return const Expanded(
+                        child: Center(
+                          child: SpinKitWave(
+                            color: Colors.blueAccent,
+                          ),
+                        ),
                       );
                     }
                   },

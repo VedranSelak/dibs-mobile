@@ -1,4 +1,5 @@
 import 'package:app/blocs/listing_bloc/listing_bloc.dart';
+import 'package:app/blocs/reservations_bloc/reservations_bloc.dart';
 import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:app/ui/widgets/bottom_navigation/main_controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,6 +34,7 @@ class BottomAppBarWidget extends StatelessWidget {
             tooltip: "Reservations",
             onPressed: () {
               controller.changeTabIndex(1);
+              context.read<ReservationsBloc>().add(FetchUpcomingReservations());
             },
           ),
           IconButton(

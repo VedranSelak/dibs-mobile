@@ -1,7 +1,12 @@
+import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
+import 'package:app/ui/features/login/login_screen.dart';
 import 'package:app/ui/features/reservations/navigation/reservations_controller.dart';
+import 'package:app/ui/features/reservations/widgets/upcoming_reservations_screen.dart';
+import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class ReservationsScreen extends StatefulWidget {
@@ -22,24 +27,51 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
   @override
   Widget build(BuildContext context) {
     final dimensions = Dimensions.of(context);
+    final textStyles = TextStyles.of(context);
     return GetBuilder<ReservationsController>(builder: (controller) {
       return Container(
         padding: const EdgeInsets.all(20.0),
         width: dimensions.fullWidth,
-        height: dimensions.fullHeight,
-        child: Column(
-          children: [
-            const SizedBox(height: 20.0),
-            _buildTopNavigation(context, controller),
-            IndexedStack(
-              index: controller.tabIndex,
-              children: const [
-                Text('Upcoming'),
-                Text('Recent'),
+        height: dimensions.mainContentHeight,
+        child: BlocBuilder<UserTypeBloc, UserTypeState>(builder: (context, state) {
+          if (state is GuestType) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'You are a guest',
+                  style: textStyles.headerText,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20.0),
+                Text(
+                  'To be able to view your resevations you have to be logged into your account. Please log in to your account.',
+                  style: textStyles.descriptiveText,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 30.0),
+                PrimaryButton(
+                    buttonText: 'Log in',
+                    onPress: () {
+                      Get.toNamed<dynamic>(LoginScreen.routeName);
+                    },
+                    backgroundColor: Colors.blueAccent),
               ],
-            ),
-          ],
-        ),
+            );
+          }
+          return Column(
+            children: [
+              const SizedBox(height: 20.0),
+              _buildTopNavigation(context, controller),
+              const SizedBox(height: 20.0),
+              controller.tabIndex == 0
+                  ? const UpcomingReservationsScreen()
+                  : controller.tabIndex == 1
+                      ? const Text('Recent')
+                      : Container(),
+            ],
+          );
+        }),
       );
     });
   }

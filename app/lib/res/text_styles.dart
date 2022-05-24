@@ -68,9 +68,23 @@ class TextStyles {
         fontWeight: FontWeight.w600,
       );
 
+  TextStyle get regularText => _theme.bodyText1!.copyWith(
+        color: Colors.black,
+        fontSize: 17.0,
+        fontFamily: "WorkSans",
+        fontWeight: FontWeight.w500,
+      );
+
   TextStyle get secondaryLabel => _theme.bodyText1!.copyWith(
         color: Colors.grey,
         fontSize: 15.0,
+        fontFamily: "WorkSans",
+        fontWeight: FontWeight.w500,
+      );
+
+  TextStyle get secondaryLabelSmall => _theme.bodyText1!.copyWith(
+        color: Colors.grey,
+        fontSize: 13.0,
         fontFamily: "WorkSans",
         fontWeight: FontWeight.w500,
       );
