@@ -54,6 +54,13 @@ class TextStyles {
         fontWeight: FontWeight.w500,
       );
 
+  TextStyle get whiteText => _theme.bodyText1!.copyWith(
+        color: Colors.white,
+        fontSize: 15.0,
+        fontFamily: "WorkSans",
+        fontWeight: FontWeight.w500,
+      );
+
   TextStyle get labelText => _theme.bodyText1!.copyWith(
         color: Colors.black,
         fontSize: 17.0,

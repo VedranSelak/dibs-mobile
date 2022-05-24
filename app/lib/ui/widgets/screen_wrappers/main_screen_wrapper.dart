@@ -2,6 +2,7 @@ import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:app/res/dimensions.dart';
 import 'package:app/ui/features/login/login_screen.dart';
 import 'package:app/ui/features/profile/profile_screen.dart';
+import 'package:app/ui/features/reservations/reservations_screen.dart';
 import 'package:app/ui/widgets/bottom_navigation/bottom_app_bar.dart';
 import 'package:app/ui/widgets/bottom_navigation/main_controller.dart';
 import 'package:app/ui/widgets/dialogs/alert_dialog.dart';
@@ -79,6 +80,8 @@ class _MainScreenWrapperState extends State<MainScreenWrapper> {
                   index: controller.tabIndex,
                   children: [
                     widget.child,
+                    const ReservationsScreen(),
+                    Container(),
                     const ProfileScreen(),
                   ],
                 ),

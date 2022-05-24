@@ -76,4 +76,9 @@ class AuthApiImpl implements AuthApiRepository {
     userData['accessToken'] = token;
     return UserModel.fromJson(userData);
   }
+
+  @override
+  Future<void> logoutUser() async {
+    await const FlutterSecureStorage().delete(key: kAccessTokenKey);
+  }
 }

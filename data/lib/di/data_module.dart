@@ -12,6 +12,7 @@ import 'package:dio/dio.dart';
 import 'package:domain/auth/common/auth_api_repository.dart';
 import 'package:domain/auth/usecases/get_user_usecase.dart';
 import 'package:domain/auth/usecases/login_usecase.dart';
+import 'package:domain/auth/usecases/logout_user_usecase.dart';
 import 'package:domain/auth/usecases/signup_usecase.dart';
 import 'package:domain/placeholder_api/common/placeholder_api_repository.dart';
 import 'package:domain/placeholder_api/usecases/get_posts_usecase.dart';
@@ -57,6 +58,7 @@ class DataModule extends BaseDiModule {
     GetIt.I.registerFactory(() => LoginUseCase(authRepository));
     GetIt.I.registerFactory(() => SignUpUseCase(authRepository));
     GetIt.I.registerFactory(() => GetUserUseCase(authRepository));
+    GetIt.I.registerFactory(() => LogoutUserUseCase(authRepository));
 
     // listing usecases
     GetIt.I.registerFactory(() => GetAllListingsUseCase(publicListingRepository));
