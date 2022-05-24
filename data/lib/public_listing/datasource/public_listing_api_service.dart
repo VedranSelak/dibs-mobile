@@ -19,4 +19,7 @@ abstract class PublicListingApiService {
     @Body() CreateListingRequestParams params,
     @Header('Authorization') String header,
   );
+
+  @GET('/listings/{id}')
+  Future<HttpResponse<PublicListingModel>> getListingById(@Path('id') int id);
 }

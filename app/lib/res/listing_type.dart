@@ -93,3 +93,20 @@ extension ListingTypeExtension on ListingType {
     }
   }
 }
+
+class ListingHelper {
+  static ListingType mapValueToType(String value) {
+    switch (value) {
+      case 'restaurant':
+        return ListingType.restaurant;
+      case 'sportcenter':
+        return ListingType.sportcenter;
+      case 'theatre':
+        return ListingType.theatre;
+      case 'cinema':
+        return ListingType.cinema;
+      default:
+        return ListingType.restaurant;
+    }
+  }
+}

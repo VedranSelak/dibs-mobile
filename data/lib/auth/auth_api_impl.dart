@@ -65,7 +65,20 @@ class AuthApiImpl implements AuthApiRepository {
       return null;
     }
     final Map<String, dynamic> userData = Jwt.parseJwt(token);
+    final DateTime? expiryDate = Jwt.getExpiryDate(token);
+    if (expiryDate != null && expiryDate.isBefore(DateTime.now())) {
+      userData['isTokenExpired'] = true;
+    } else if (expiryDate != null && expiryDate.isAfter(DateTime.now())) {
+      userData['isTokenExpired'] = false;
+    } else {
+      userData['isTokenExpired'] = true;
+    }
     userData['accessToken'] = token;
     return UserModel.fromJson(userData);
+  }
+
+  @override
+  Future<void> logoutUser() async {
+    await const FlutterSecureStorage().delete(key: kAccessTokenKey);
   }
 }

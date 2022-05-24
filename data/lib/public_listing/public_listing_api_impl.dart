@@ -85,4 +85,23 @@ class PublicListingApiImpl implements PublicListingApiRepository {
       return DataFailed(e);
     }
   }
+
+  @override
+  Future<DataState<PublicListing>> getListingById(int id) async {
+    try {
+      final httpResponse = await publicListingApiService.getListingById(id);
+
+      if (httpResponse.response.statusCode == 200) {
+        return DataSuccess(httpResponse.data);
+      }
+      return DataFailed(DioError(
+        error: httpResponse.response.statusMessage,
+        response: httpResponse.response,
+        type: DioErrorType.response,
+        requestOptions: httpResponse.response.requestOptions,
+      ));
+    } on DioError catch (e) {
+      return DataFailed(e);
+    }
+  }
 }

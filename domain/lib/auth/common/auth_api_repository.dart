@@ -8,4 +8,5 @@ abstract class AuthApiRepository {
   Future<DataState<TokenResponse>> login(LoginRequestParams params);
   Future<DataState<TokenResponse>> signUp(SignUpRequestParams params);
   Future<User?> getUser();
+  Future<void> logoutUser();
 }

@@ -1,5 +1,4 @@
 import 'package:app/res/listing_type.dart';
-import 'package:app/ui/features/create_listing/create_listing_screen.dart';
 import 'package:app/ui/features/create_listing/create_listing_success_screen.dart';
 import 'package:app/ui/features/create_listing/enter_listing_spots_screen.dart';
 import 'package:app/ui/features/home/home_screen.dart';
@@ -14,7 +13,6 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
-import "package:meta/meta.dart";
 
 part "create_listing_event.dart";
 part "create_listing_state.dart";

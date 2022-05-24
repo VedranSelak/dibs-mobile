@@ -5,6 +5,8 @@ import 'package:app/ui/features/create_listing/enter_listing_spots_screen.dart';
 import 'package:app/ui/features/home/home_screen.dart';
 import 'package:app/ui/features/login/login_screen.dart';
 import 'package:app/ui/features/profile/profile_screen.dart';
+import 'package:app/ui/features/reservations/navigation/reservations_binding.dart';
+import 'package:app/ui/features/reservations/reservations_screen.dart';
 import 'package:app/ui/features/signup/signup_screen.dart';
 import 'package:app/ui/widgets/bottom_navigation/bottom_navigation_binding.dart';
 import "package:flutter/material.dart";
@@ -55,6 +57,11 @@ class Application extends StatelessWidget {
     GetPage<CreateListingSuccessScreen>(
       name: CreateListingSuccessScreen.routeName,
       page: CreateListingSuccessScreen.new,
+    ),
+    GetPage<ReservationsScreen>(
+      name: ReservationsScreen.routeName,
+      page: ReservationsScreen.new,
+      binding: ReservationsBinding(),
     ),
   ];
 }

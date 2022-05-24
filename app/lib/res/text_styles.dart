@@ -18,6 +18,13 @@ class TextStyles {
         fontWeight: FontWeight.w600,
       );
 
+  TextStyle get labelHeaderText => _theme.bodyText1!.copyWith(
+        color: Colors.black,
+        fontSize: 30.0,
+        fontFamily: "WorkSans",
+        fontWeight: FontWeight.w600,
+      );
+
   TextStyle get subheaderText => _theme.bodyText1!.copyWith(
         color: Colors.blueAccent,
         fontSize: 20.0,
@@ -42,6 +49,13 @@ class TextStyles {
 
   TextStyle get accentText => _theme.bodyText1!.copyWith(
         color: Colors.blueAccent,
+        fontSize: 15.0,
+        fontFamily: "WorkSans",
+        fontWeight: FontWeight.w500,
+      );
+
+  TextStyle get whiteText => _theme.bodyText1!.copyWith(
+        color: Colors.white,
         fontSize: 15.0,
         fontFamily: "WorkSans",
         fontWeight: FontWeight.w500,
