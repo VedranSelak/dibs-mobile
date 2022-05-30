@@ -13,19 +13,15 @@ class CreateRoomInitial extends CreateRoomState {}
 class RoomDataEntering extends CreateRoomState {
   const RoomDataEntering({
     required this.name,
-    required this.shortDesc,
-    required this.detailedDesc,
-    required this.type,
-    required this.images,
-    this.errorMessage,
+    required this.description,
+    required this.capacity,
+    this.image,
   });
   final String name;
-  final String shortDesc;
-  final String detailedDesc;
-  final ListingType? type;
-  final List<XFile>? images;
-  final String? errorMessage;
+  final String description;
+  final int capacity;
+  final XFile? image;
 
   @override
-  List<Object?> get props => [name, shortDesc, detailedDesc, type, images, errorMessage];
+  List<Object?> get props => [name, description, capacity, image];
 }
