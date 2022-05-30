@@ -10,6 +10,8 @@ dependencies:
   equatable: ^2.0.3
   common:
     path: ../common
+  data:
+    path: ../data
 
 
 dev_dependencies:

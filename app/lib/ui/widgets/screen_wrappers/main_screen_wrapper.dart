@@ -57,7 +57,7 @@ class _MainScreenWrapperState extends State<MainScreenWrapper> {
                   backgroundColor: Colors.blueAccent,
                 ),
                 rejectButton: PrimaryButton(
-                  buttonText: 'Go as Guest',
+                  buttonText: 'Cancel',
                   onPress: () {
                     context.read<UserTypeBloc>().add(SetGuest());
                     Get.back<dynamic>();

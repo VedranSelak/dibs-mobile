@@ -1,5 +1,6 @@
 import 'package:common/params/create_reservation_request.dart';
 import 'package:data/public_listing/dtos/created_model.dart';
+import 'package:data/reservation/dtos/reservation_model.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import "package:common/utils/constants.dart";
@@ -13,6 +14,16 @@ abstract class ReservationApiService {
   @POST('/reservations')
   Future<HttpResponse<CreatedModel>> postReservation(
     @Body() CreateReservationRequestParams params,
+    @Header('Authorization') String header,
+  );
+
+  @GET('/reservations/upcoming')
+  Future<HttpResponse<List<ReservationModel>>> getUpcomingReservations(
+    @Header('Authorization') String header,
+  );
+
+  @GET('/reservations/recent')
+  Future<HttpResponse<List<ReservationModel>>> getRecentReservations(
     @Header('Authorization') String header,
   );
 }

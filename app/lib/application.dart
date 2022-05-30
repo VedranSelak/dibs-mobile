@@ -2,6 +2,7 @@ import 'package:app/ui/features/create_listing/create_listing_screen.dart';
 import 'package:app/ui/features/create_listing/create_listing_success_screen.dart';
 import 'package:app/ui/features/create_listing/enter_images_screen.dart';
 import 'package:app/ui/features/create_listing/enter_listing_spots_screen.dart';
+import 'package:app/ui/features/create_room/create_room_screen.dart';
 import 'package:app/ui/features/home/home_screen.dart';
 import 'package:app/ui/features/login/login_screen.dart';
 import 'package:app/ui/features/profile/profile_screen.dart';
@@ -62,6 +63,10 @@ class Application extends StatelessWidget {
       name: ReservationsScreen.routeName,
       page: ReservationsScreen.new,
       binding: ReservationsBinding(),
+    ),
+    GetPage<CreateRoomScreen>(
+      name: CreateRoomScreen.routeName,
+      page: CreateRoomScreen.new,
     ),
   ];
 }

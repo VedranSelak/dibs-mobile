@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 class ReservationsBinding extends Bindings {
   @override
   void dependencies() {
-    print("VEKA");
     Get.put<ReservationsController>(ReservationsController());
   }
 }

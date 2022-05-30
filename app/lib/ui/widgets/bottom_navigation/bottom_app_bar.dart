@@ -1,9 +1,12 @@
 import 'package:app/blocs/listing_bloc/listing_bloc.dart';
+import 'package:app/blocs/reservations_bloc/reservations_bloc.dart';
 import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
+import 'package:app/ui/features/reservations/navigation/reservations_controller.dart';
 import 'package:app/ui/widgets/bottom_navigation/main_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class BottomAppBarWidget extends StatelessWidget {
   const BottomAppBarWidget({required this.controller, Key? key}) : super(key: key);
@@ -33,6 +36,12 @@ class BottomAppBarWidget extends StatelessWidget {
             tooltip: "Reservations",
             onPressed: () {
               controller.changeTabIndex(1);
+              final ReservationsController resController = Get.find();
+              if (resController.tabIndex == 0) {
+                context.read<ReservationsBloc>().add(FetchUpcomingReservations());
+              } else {
+                context.read<ReservationsBloc>().add(FetchRecentReservations());
+              }
             },
           ),
           IconButton(
