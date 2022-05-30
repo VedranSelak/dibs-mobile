@@ -3,6 +3,7 @@ import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
 import 'package:app/ui/features/login/login_screen.dart';
 import 'package:app/ui/features/reservations/navigation/reservations_controller.dart';
+import 'package:app/ui/features/reservations/widgets/recent_reservations_screen.dart';
 import 'package:app/ui/features/reservations/widgets/upcoming_reservations_screen.dart';
 import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +68,7 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
               controller.tabIndex == 0
                   ? const UpcomingReservationsScreen()
                   : controller.tabIndex == 1
-                      ? const Text('Recent')
+                      ? const RecentReservationsScreen()
                       : Container(),
             ],
           );

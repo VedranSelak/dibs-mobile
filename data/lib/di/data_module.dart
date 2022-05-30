@@ -22,6 +22,7 @@ import 'package:domain/public_listing/usecases/get_listing_details_usecase.dart'
 import 'package:domain/public_listing/usecases/post_listing_images_usecase.dart';
 import 'package:domain/public_listing/usecases/post_listing_usecase.dart';
 import 'package:domain/reservation/common/reservation_repository.dart';
+import 'package:domain/reservation/usecases/get_recent_reservations_usecase.dart';
 import 'package:domain/reservation/usecases/get_upcoming_reservations_usecase.dart';
 import 'package:domain/reservation/usecases/post_reservation_usecase.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -70,5 +71,6 @@ class DataModule extends BaseDiModule {
     // reservation usecases
     GetIt.I.registerFactory(() => PostReservationUseCase(reservationRepository));
     GetIt.I.registerFactory(() => GetUpcomingReservationsUseCase(reservationRepository));
+    GetIt.I.registerFactory(() => GetRecentReservationsUseCase(reservationRepository));
   }
 }

@@ -2,6 +2,7 @@ import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
 import 'package:app/ui/features/create_listing/create_listing_screen.dart';
+import 'package:app/ui/features/create_room/create_room_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -46,7 +47,10 @@ class MainScreenOverlay extends StatelessWidget {
                           Icons.meeting_room_outlined,
                           color: Colors.white,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          entry.remove();
+                          Get.toNamed<dynamic>(CreateRoomScreen.routeName);
+                        },
                       ),
                     )
                   ],

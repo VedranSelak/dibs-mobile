@@ -21,4 +21,9 @@ abstract class ReservationApiService {
   Future<HttpResponse<List<ReservationModel>>> getUpcomingReservations(
     @Header('Authorization') String header,
   );
+
+  @GET('/reservations/recent')
+  Future<HttpResponse<List<ReservationModel>>> getRecentReservations(
+    @Header('Authorization') String header,
+  );
 }

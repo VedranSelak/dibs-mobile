@@ -6,4 +6,5 @@ import 'package:domain/reservation/entities/reservation.dart';
 abstract class ReservationRepository {
   Future<DataState<Created>> postReservation(CreateReservationRequestParams params);
   Future<DataState<List<Reservation>>> getUpcomingReservations();
+  Future<DataState<List<Reservation>>> getRecentReservations();
 }

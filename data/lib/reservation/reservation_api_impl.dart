@@ -80,4 +80,38 @@ class ReservationApiImpl implements ReservationRepository {
       return DataFailed(e);
     }
   }
+
+  @override
+  Future<DataState<List<Reservation>>> getRecentReservations() async {
+    try {
+      const storage = FlutterSecureStorage();
+      final String? token = await storage.read(key: kAccessTokenKey);
+      if (token == null) {
+        return DataFailed(DioError(
+          response: Response<dynamic>(
+            requestOptions: RequestOptions(path: ""),
+            statusCode: 401,
+          ),
+          type: DioErrorType.response,
+          requestOptions: RequestOptions(path: ""),
+        ));
+      }
+
+      final httpResponse = await reservationApiService.getRecentReservations(
+        'Bearer $token',
+      );
+
+      if (httpResponse.response.statusCode == 200) {
+        return DataSuccess(httpResponse.data);
+      }
+      return DataFailed(DioError(
+        error: httpResponse.response.statusMessage,
+        response: httpResponse.response,
+        type: DioErrorType.response,
+        requestOptions: httpResponse.response.requestOptions,
+      ));
+    } on DioError catch (e) {
+      return DataFailed(e);
+    }
+  }
 }
