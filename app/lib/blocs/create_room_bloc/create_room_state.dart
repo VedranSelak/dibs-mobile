@@ -16,12 +16,14 @@ class RoomDataEntering extends CreateRoomState {
     required this.description,
     required this.capacity,
     this.image,
+    this.users,
   });
   final String name;
   final String description;
   final int capacity;
   final XFile? image;
+  final List<SearchUser>? users;
 
   @override
-  List<Object?> get props => [name, description, capacity, image];
+  List<Object?> get props => [name, description, capacity, image, users];
 }

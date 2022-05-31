@@ -22,3 +22,13 @@ class EnterRoomData extends CreateRoomEvent {
 }
 
 class AddRoomImage extends CreateRoomEvent {}
+
+class AddUser extends CreateRoomEvent {
+  const AddUser({
+    required this.user,
+  });
+  final SearchUser user;
+
+  @override
+  List<Object?> get props => [user];
+}

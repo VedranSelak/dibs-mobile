@@ -7,10 +7,16 @@ import 'package:app/res/text_styles.dart';
 import 'package:app/ui/features/create_listing/widgets/text_label.dart';
 import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:app/ui/widgets/screen_wrappers/simple_screen_wrapper.dart';
+import 'package:common/resources/data_state.dart';
+import 'package:domain/private_room/entities/search_user.dart';
+import 'package:domain/private_room/usecases/search_users_usecase.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 
 class RoomInviteScreen extends StatelessWidget {
   const RoomInviteScreen({Key? key}) : super(key: key);
@@ -36,6 +42,7 @@ class RoomInviteScreen extends StatelessWidget {
           SimpleScreenWrapper(
             title: "Enter room image",
             shouldGoUnderAppBar: false,
+            shouldResize: false,
             onBackPressed: () {
               onBack(context);
             },
@@ -45,6 +52,86 @@ class RoomInviteScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
                 children: [
+                  const SizedBox(height: 30.0),
+                  const TextLabel(
+                    title: "Invite people:",
+                    tooltip: "Search and select people you would like to invite to your private room.",
+                  ),
+                  const SizedBox(height: 10.0),
+                  TypeAheadField(
+                    hideOnEmpty: true,
+                    textFieldConfiguration: const TextFieldConfiguration(
+                      autofocus: true,
+                      decoration: InputDecoration(
+                        suffixIcon: Icon(CupertinoIcons.search),
+                        hintText: 'Search users ...',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    suggestionsCallback: (pattern) async {
+                      final usecase = GetIt.I.get<SearchUsersUseCase>();
+                      final response = await usecase(params: pattern);
+                      if (response is DataFailed) {
+                        return <SearchUser>[];
+                      } else {
+                        return response.data!;
+                      }
+                    },
+                    itemBuilder: (context, SearchUser suggestion) {
+                      return ListTile(
+                        leading: const Icon(Icons.person),
+                        title: Text('${suggestion.firstName} ${suggestion.lastName}'),
+                      );
+                    },
+                    onSuggestionSelected: (SearchUser suggestion) {
+                      context.read<CreateRoomBloc>().add(AddUser(user: suggestion));
+                    },
+                  ),
+                  const SizedBox(height: 20.0),
+                  BlocBuilder<CreateRoomBloc, CreateRoomState>(
+                    builder: (context, state) {
+                      if (state is RoomDataEntering && state.users != null && state.users!.isNotEmpty) {
+                        final List<String> usersList = [];
+                        final buffer = StringBuffer();
+                        final tooltipBuffer = StringBuffer();
+                        for (final user in state.users!) {
+                          usersList.add('${user.firstName} ${user.lastName}');
+                        }
+                        buffer.writeAll(usersList, ', ');
+                        tooltipBuffer.writeAll(usersList, '\n');
+                        return Row(
+                          children: [
+                            Text(
+                              'People invited:',
+                              style: textStyles.accentText,
+                            ),
+                            const SizedBox(width: 5.0),
+                            Expanded(
+                              child: Tooltip(
+                                margin: EdgeInsets.symmetric(horizontal: mediaQuery.size.width * 0.25),
+                                padding: const EdgeInsets.all(10.0),
+                                triggerMode: TooltipTriggerMode.tap,
+                                waitDuration: Duration.zero,
+                                showDuration: const Duration(seconds: 3),
+                                message: tooltipBuffer.toString(),
+                                child: Text(
+                                  buffer.toString(),
+                                  style: textStyles.secondaryLabel,
+                                  softWrap: false,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                      return Center(
+                        child: Text('No people invited yet.', style: textStyles.secondaryLabel),
+                      );
+                    },
+                  ),
+                  Expanded(child: Container()),
                   const TextLabel(
                     title: "Upload an image:",
                     tooltip: "This is the image that will be displayed to the room participants.",
