@@ -51,5 +51,3 @@ class CreateListingInProgress extends CreateListingState {
   @override
   List<Object> get props => [name, shortDesc, detailedDesc, type, images, spots];
 }
-
-class CreateListingSuccess extends CreateListingState {}

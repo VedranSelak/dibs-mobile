@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:app/blocs/create_listing_bloc/create_listing_bloc.dart';
 import 'package:app/blocs/create_room_bloc/create_room_bloc.dart';
 import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
@@ -19,8 +18,9 @@ import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 
 class RoomInviteScreen extends StatelessWidget {
-  const RoomInviteScreen({Key? key}) : super(key: key);
+  RoomInviteScreen({Key? key}) : super(key: key);
   static const String routeName = "/room-invite";
+  final TextEditingController controller = TextEditingController();
 
   void onBack(BuildContext context) {
     Get.back<dynamic>();
@@ -59,10 +59,16 @@ class RoomInviteScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 10.0),
                   TypeAheadField(
-                    hideOnEmpty: true,
-                    textFieldConfiguration: const TextFieldConfiguration(
+                    noItemsFoundBuilder: (context) {
+                      return Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text('No users found', style: textStyles.secondaryLabel),
+                      );
+                    },
+                    textFieldConfiguration: TextFieldConfiguration(
                       autofocus: true,
-                      decoration: InputDecoration(
+                      controller: controller,
+                      decoration: const InputDecoration(
                         suffixIcon: Icon(CupertinoIcons.search),
                         hintText: 'Search users ...',
                         border: OutlineInputBorder(),
@@ -84,6 +90,7 @@ class RoomInviteScreen extends StatelessWidget {
                       );
                     },
                     onSuggestionSelected: (SearchUser suggestion) {
+                      controller.clear();
                       context.read<CreateRoomBloc>().add(AddUser(user: suggestion));
                     },
                   ),
@@ -169,12 +176,23 @@ class RoomInviteScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 5.0),
+                  BlocBuilder<CreateRoomBloc, CreateRoomState>(
+                    builder: (context, state) {
+                      if (state is RoomDataEntering && state.errorMessage != null) {
+                        return SizedBox(
+                          width: dimensions.fullWidth,
+                          child: Text(state.errorMessage!, style: textStyles.errorText),
+                        );
+                      }
+                      return Text('', style: textStyles.errorText);
+                    },
+                  ),
                   Expanded(child: Container()),
                   const SizedBox(height: 20.0),
                   PrimaryButton(
                     buttonText: "Submit",
                     onPress: () {
-                      context.read<CreateListingBloc>().add(SubmitListing());
+                      context.read<CreateRoomBloc>().add(SubmitRoom());
                     },
                     backgroundColor: Colors.blueAccent,
                   ),
@@ -185,31 +203,30 @@ class RoomInviteScreen extends StatelessWidget {
           ),
           BlocBuilder<CreateRoomBloc, CreateRoomState>(
             builder: (context, state) {
-              //if (state is CreateRoomInProgress) {
-              return Container();
-              return Container(
-                padding: EdgeInsets.symmetric(horizontal: dimensions.fullWidth * 0.15),
-                width: dimensions.fullWidth,
-                height: dimensions.fullHeight,
-                color: Colors.black.withOpacity(0.5),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SpinKitWave(
-                      color: Colors.lightBlue,
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    Text(
-                      "Creating your room. This may take a while...",
-                      style: textStyles.buttonText,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              );
-              //}
+              if (state is CreatingRoom) {
+                return Container(
+                  padding: EdgeInsets.symmetric(horizontal: dimensions.fullWidth * 0.15),
+                  width: dimensions.fullWidth,
+                  height: dimensions.fullHeight,
+                  color: Colors.black.withOpacity(0.5),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SpinKitWave(
+                        color: Colors.lightBlue,
+                      ),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      Text(
+                        "Creating your room. This may take a while...",
+                        style: textStyles.buttonText,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                );
+              }
               return Container();
             },
           ),

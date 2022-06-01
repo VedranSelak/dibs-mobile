@@ -32,3 +32,5 @@ class AddUser extends CreateRoomEvent {
   @override
   List<Object?> get props => [user];
 }
+
+class SubmitRoom extends CreateRoomEvent {}

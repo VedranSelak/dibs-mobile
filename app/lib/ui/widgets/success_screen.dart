@@ -5,9 +5,10 @@ import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CreateListingSuccessScreen extends StatelessWidget {
-  const CreateListingSuccessScreen({Key? key}) : super(key: key);
-  static const String routeName = "/create-listing-success";
+class SuccessScreen extends StatelessWidget {
+  const SuccessScreen({required this.isListing, Key? key}) : super(key: key);
+  static const String routeName = "/success";
+  final bool isListing;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,9 @@ class CreateListingSuccessScreen extends StatelessWidget {
             Container(
               margin: EdgeInsets.symmetric(horizontal: dimensions.fullWidth * 0.15),
               child: Text(
-                "You have successfully created your public listing. The listing is currently in review and is not active. After the review is passed the listing will be visible to users.",
+                isListing
+                    ? "You have successfully created your public listing. The listing is currently in review and is not active. After the review is passed the listing will be visible to users."
+                    : "Your have successfully create a private room. You will be able to see your room in the rooms tab of the application.",
                 style: textStyles.descriptiveText,
                 textAlign: TextAlign.center,
               ),

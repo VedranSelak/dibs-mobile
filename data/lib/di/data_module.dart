@@ -18,6 +18,7 @@ import 'package:domain/auth/usecases/logout_user_usecase.dart';
 import 'package:domain/auth/usecases/signup_usecase.dart';
 import 'package:domain/placeholder_api/common/placeholder_api_repository.dart';
 import 'package:domain/placeholder_api/usecases/get_posts_usecase.dart';
+import 'package:domain/private_room/usecases/create_private_room_usecase.dart';
 import 'package:domain/private_room/usecases/search_users_usecase.dart';
 import 'package:domain/public_listing/common/public_listing_api_repository.dart';
 import 'package:domain/private_room/common/private_room_api_repository.dart';
@@ -82,5 +83,6 @@ class DataModule extends BaseDiModule {
 
     // room usecases
     GetIt.I.registerFactory(() => SearchUsersUseCase(privateRoomRepository));
+    GetIt.I.registerFactory(() => CreateRoomUseCase(privateRoomRepository));
   }
 }
