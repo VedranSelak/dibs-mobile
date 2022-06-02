@@ -96,6 +96,12 @@ class RoomInviteScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20.0),
                   BlocBuilder<CreateRoomBloc, CreateRoomState>(
+                    buildWhen: (prevState, newState) {
+                      if (newState is CreatingRoom) {
+                        return false;
+                      }
+                      return true;
+                    },
                     builder: (context, state) {
                       if (state is RoomDataEntering && state.users != null && state.users!.isNotEmpty) {
                         final List<String> usersList = [];
@@ -160,6 +166,12 @@ class RoomInviteScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                       child: BlocBuilder<CreateRoomBloc, CreateRoomState>(
+                        buildWhen: (prevState, newState) {
+                          if (newState is CreatingRoom) {
+                            return false;
+                          }
+                          return true;
+                        },
                         builder: (context, state) {
                           if (state is RoomDataEntering && state.image != null) {
                             return ClipRRect(
@@ -177,6 +189,12 @@ class RoomInviteScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 5.0),
                   BlocBuilder<CreateRoomBloc, CreateRoomState>(
+                    buildWhen: (prevState, newState) {
+                      if (newState is CreatingRoom) {
+                        return false;
+                      }
+                      return true;
+                    },
                     builder: (context, state) {
                       if (state is RoomDataEntering && state.errorMessage != null) {
                         return SizedBox(
