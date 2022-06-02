@@ -10,13 +10,27 @@ abstract class CreateRoomEvent extends Equatable {
 class EnterRoomData extends CreateRoomEvent {
   const EnterRoomData({
     required this.name,
-    required this.shortDesc,
-    required this.detailedDesc,
+    required this.description,
+    required this.capacity,
   });
   final String name;
-  final String shortDesc;
-  final String detailedDesc;
+  final String description;
+  final int capacity;
 
   @override
-  List<Object?> get props => [name, shortDesc, detailedDesc];
+  List<Object?> get props => [name, description, capacity];
 }
+
+class AddRoomImage extends CreateRoomEvent {}
+
+class AddUser extends CreateRoomEvent {
+  const AddUser({
+    required this.user,
+  });
+  final SearchUser user;
+
+  @override
+  List<Object?> get props => [user];
+}
+
+class SubmitRoom extends CreateRoomEvent {}

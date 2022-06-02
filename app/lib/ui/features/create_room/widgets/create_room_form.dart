@@ -1,4 +1,4 @@
-import 'package:app/blocs/create_listing_bloc/create_listing_bloc.dart';
+import 'package:app/blocs/create_room_bloc/create_room_bloc.dart';
 import 'package:app/res/text_styles.dart';
 import 'package:app/ui/features/create_listing/widgets/text_label.dart';
 import 'package:app/ui/widgets/buttons/primary_button.dart';
@@ -185,7 +185,12 @@ class _CreateRoomFormState extends State<CreateRoomForm> {
                   buttonText: "Next",
                   backgroundColor: Colors.blueAccent,
                   onPress: () {
-                    if (_formKey.currentState!.validate()) {}
+                    if (_formKey.currentState!.validate()) {
+                      context.read<CreateRoomBloc>().add(EnterRoomData(
+                          name: widget.nameController.text,
+                          description: widget.descController.text,
+                          capacity: availableSpots.value));
+                    }
                   },
                 )),
           ],

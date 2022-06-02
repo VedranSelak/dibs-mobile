@@ -46,7 +46,7 @@ class PublicListingApiImpl implements PublicListingApiRepository {
 
       final List<String> uploadedUrls = uploadedImages.map((i) => i.secureUrl).toList();
       return DataSuccess(uploadedUrls);
-    } on CloudinaryException catch (e) {
+    } on CloudinaryException catch (_) {
       return const DataSuccess([]);
     }
   }

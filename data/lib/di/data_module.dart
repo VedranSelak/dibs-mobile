@@ -4,6 +4,8 @@ import 'package:data/auth/datasource/auth_api_service.dart';
 import 'package:data/auth/di/auth_api_module.dart';
 import 'package:data/placeholder_api/datasource/placeholder_api_repository.dart';
 import 'package:data/placeholder_api/di/placeholder_api_module.dart';
+import 'package:data/private_room/datasource/private_room_api_service.dart';
+import 'package:data/private_room/di/private_room_api_module.dart';
 import 'package:data/public_listing/datasource/public_listing_api_service.dart';
 import 'package:data/public_listing/di/public_listing_api_module.dart';
 import 'package:data/reservation/datasource/reservation_api_service.dart';
@@ -16,7 +18,10 @@ import 'package:domain/auth/usecases/logout_user_usecase.dart';
 import 'package:domain/auth/usecases/signup_usecase.dart';
 import 'package:domain/placeholder_api/common/placeholder_api_repository.dart';
 import 'package:domain/placeholder_api/usecases/get_posts_usecase.dart';
+import 'package:domain/private_room/usecases/create_private_room_usecase.dart';
+import 'package:domain/private_room/usecases/search_users_usecase.dart';
 import 'package:domain/public_listing/common/public_listing_api_repository.dart';
+import 'package:domain/private_room/common/private_room_api_repository.dart';
 import 'package:domain/public_listing/usecases/get_all_listings_usecase.dart';
 import 'package:domain/public_listing/usecases/get_listing_details_usecase.dart';
 import 'package:domain/public_listing/usecases/post_listing_images_usecase.dart';
@@ -33,6 +38,7 @@ class DataModule extends BaseDiModule {
   final _authApiService = AuthApiService(Dio(BaseOptions(contentType: "application/json")));
   final _publicListingApiService = PublicListingApiService(Dio(BaseOptions(contentType: "application/json")));
   final _reservationApiService = ReservationApiService(Dio(BaseOptions(contentType: "application/json")));
+  final _privateRoomApiService = PrivateRoomApiService(Dio(BaseOptions(contentType: "application/json")));
 
   @override
   void inject() {
@@ -45,6 +51,7 @@ class DataModule extends BaseDiModule {
     AuthApiModule(_authApiService);
     PublicListingApiModule(_publicListingApiService, _cloudinaryPublic);
     ReservationApiModule(_reservationApiService);
+    PrivateRoomApiModule(_privateRoomApiService, _cloudinaryPublic);
     useCases();
   }
 
@@ -53,6 +60,7 @@ class DataModule extends BaseDiModule {
     final authRepository = GetIt.I.get<AuthApiRepository>();
     final publicListingRepository = GetIt.I.get<PublicListingApiRepository>();
     final reservationRepository = GetIt.I.get<ReservationRepository>();
+    final privateRoomRepository = GetIt.I.get<PrivateRoomApiRepository>();
 
     GetIt.I.registerFactory(() => GetPostsUseCase(placeholderRepository));
 
@@ -72,5 +80,9 @@ class DataModule extends BaseDiModule {
     GetIt.I.registerFactory(() => PostReservationUseCase(reservationRepository));
     GetIt.I.registerFactory(() => GetUpcomingReservationsUseCase(reservationRepository));
     GetIt.I.registerFactory(() => GetRecentReservationsUseCase(reservationRepository));
+
+    // room usecases
+    GetIt.I.registerFactory(() => SearchUsersUseCase(privateRoomRepository));
+    GetIt.I.registerFactory(() => CreateRoomUseCase(privateRoomRepository));
   }
 }

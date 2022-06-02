@@ -1,7 +1,7 @@
 import 'package:app/res/listing_type.dart';
-import 'package:app/ui/features/create_listing/create_listing_success_screen.dart';
 import 'package:app/ui/features/create_listing/enter_listing_spots_screen.dart';
 import 'package:app/ui/features/home/home_screen.dart';
+import 'package:app/ui/widgets/success_screen.dart';
 import 'package:common/params/create_listing_request.dart';
 import 'package:common/resources/data_state.dart';
 import 'package:domain/public_listing/usecases/post_listing_images_usecase.dart';
@@ -286,9 +286,12 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
           ));
         }
       } else {
-        Get.offAllNamed<dynamic>(CreateListingSuccessScreen.routeName,
+        Get.offAll<dynamic>(
+            const SuccessScreen(
+              isListing: true,
+            ),
             predicate: ModalRoute.withName(HomeScreen.routeName));
-        emit(CreateListingSuccess());
+        emit(CreateListingInitial());
       }
     } else if (currentState is ListingDataEntering) {
       emit(ListingDataEntering(

@@ -37,7 +37,9 @@ class EnterImagesScreen extends StatelessWidget {
           SimpleScreenWrapper(
             title: "Enter listing images",
             shouldGoUnderAppBar: false,
-            onBackPressed: () {},
+            onBackPressed: () {
+              onBack(context);
+            },
             child: Container(
               width: dimensions.fullWidth,
               height: dimensions.fullHeight,
