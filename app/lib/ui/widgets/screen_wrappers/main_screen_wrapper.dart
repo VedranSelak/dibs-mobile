@@ -3,6 +3,7 @@ import 'package:app/res/dimensions.dart';
 import 'package:app/ui/features/login/login_screen.dart';
 import 'package:app/ui/features/profile/profile_screen.dart';
 import 'package:app/ui/features/reservations/reservations_screen.dart';
+import 'package:app/ui/features/rooms/rooms_screen.dart';
 import 'package:app/ui/widgets/bottom_navigation/bottom_app_bar.dart';
 import 'package:app/ui/widgets/bottom_navigation/main_controller.dart';
 import 'package:app/ui/widgets/dialogs/alert_dialog.dart';
@@ -81,7 +82,7 @@ class _MainScreenWrapperState extends State<MainScreenWrapper> {
                   children: [
                     widget.child,
                     const ReservationsScreen(),
-                    Container(),
+                    const RoomsScreen(),
                     const ProfileScreen(),
                   ],
                 ),

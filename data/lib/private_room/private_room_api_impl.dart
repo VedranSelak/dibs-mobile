@@ -1,10 +1,14 @@
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:common/params/create_room_request.dart';
+import 'package:common/params/invite_request.dart';
 import 'package:common/resources/data_state.dart';
 import 'package:common/utils/constants.dart';
 import 'package:data/private_room/datasource/private_room_api_service.dart';
 import 'package:dio/dio.dart';
 import 'package:domain/private_room/common/private_room_api_repository.dart';
+import 'package:domain/private_room/entities/invite.dart';
+import 'package:domain/private_room/entities/private_room.dart';
+import 'package:domain/private_room/entities/rooms_response.dart';
 import 'package:domain/private_room/entities/search_user.dart';
 import 'package:domain/public_listing/entities/created.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -99,6 +103,144 @@ class PrivateRoomApiImpl implements PrivateRoomApiRepository {
         type: DioErrorType.response,
         requestOptions: RequestOptions(path: ""),
       ));
+    }
+  }
+
+  @override
+  Future<DataState<List<PrivateRoom>>> getYourRooms() async {
+    try {
+      const storage = FlutterSecureStorage();
+      final String? token = await storage.read(key: kAccessTokenKey);
+      if (token == null) {
+        return DataFailed(DioError(
+          response: Response<dynamic>(
+            requestOptions: RequestOptions(path: ""),
+            statusCode: 401,
+          ),
+          type: DioErrorType.response,
+          requestOptions: RequestOptions(path: ""),
+        ));
+      }
+
+      final httpResponse = await privateRoomApiService.getYourRooms(
+        'Bearer $token',
+      );
+
+      if (httpResponse.response.statusCode == 200) {
+        return DataSuccess(httpResponse.data);
+      }
+      return DataFailed(DioError(
+        error: httpResponse.response.statusMessage,
+        response: httpResponse.response,
+        type: DioErrorType.response,
+        requestOptions: httpResponse.response.requestOptions,
+      ));
+    } on DioError catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<List<RoomsResponse>>> getRooms() async {
+    try {
+      const storage = FlutterSecureStorage();
+      final String? token = await storage.read(key: kAccessTokenKey);
+      if (token == null) {
+        return DataFailed(DioError(
+          response: Response<dynamic>(
+            requestOptions: RequestOptions(path: ""),
+            statusCode: 401,
+          ),
+          type: DioErrorType.response,
+          requestOptions: RequestOptions(path: ""),
+        ));
+      }
+
+      final httpResponse = await privateRoomApiService.getRooms(
+        'Bearer $token',
+      );
+
+      if (httpResponse.response.statusCode == 200) {
+        return DataSuccess(httpResponse.data);
+      }
+      return DataFailed(DioError(
+        error: httpResponse.response.statusMessage,
+        response: httpResponse.response,
+        type: DioErrorType.response,
+        requestOptions: httpResponse.response.requestOptions,
+      ));
+    } on DioError catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<List<Invite>>> getInvites() async {
+    try {
+      const storage = FlutterSecureStorage();
+      final String? token = await storage.read(key: kAccessTokenKey);
+      if (token == null) {
+        return DataFailed(DioError(
+          response: Response<dynamic>(
+            requestOptions: RequestOptions(path: ""),
+            statusCode: 401,
+          ),
+          type: DioErrorType.response,
+          requestOptions: RequestOptions(path: ""),
+        ));
+      }
+
+      final httpResponse = await privateRoomApiService.getInvites(
+        'Bearer $token',
+      );
+
+      if (httpResponse.response.statusCode == 200) {
+        return DataSuccess(httpResponse.data);
+      }
+      return DataFailed(DioError(
+        error: httpResponse.response.statusMessage,
+        response: httpResponse.response,
+        type: DioErrorType.response,
+        requestOptions: httpResponse.response.requestOptions,
+      ));
+    } on DioError catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<Created>> respondToInvite(InviteRequestParams params) async {
+    try {
+      const storage = FlutterSecureStorage();
+      final String? token = await storage.read(key: kAccessTokenKey);
+      if (token == null) {
+        return DataFailed(DioError(
+          response: Response<dynamic>(
+            requestOptions: RequestOptions(path: ""),
+            statusCode: 401,
+          ),
+          type: DioErrorType.response,
+          requestOptions: RequestOptions(path: ""),
+        ));
+      }
+
+      final httpResponse = await privateRoomApiService.respondToInvite(
+        params.id,
+        params.body,
+        'Bearer $token',
+      );
+
+      if (httpResponse.response.statusCode == 200) {
+        return DataSuccess(httpResponse.data);
+      }
+      return DataFailed(DioError(
+        error: httpResponse.response.statusMessage,
+        response: httpResponse.response,
+        type: DioErrorType.response,
+        requestOptions: httpResponse.response.requestOptions,
+      ));
+    } on DioError catch (e) {
+      return DataFailed(e);
     }
   }
 }

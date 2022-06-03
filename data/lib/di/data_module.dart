@@ -19,6 +19,10 @@ import 'package:domain/auth/usecases/signup_usecase.dart';
 import 'package:domain/placeholder_api/common/placeholder_api_repository.dart';
 import 'package:domain/placeholder_api/usecases/get_posts_usecase.dart';
 import 'package:domain/private_room/usecases/create_private_room_usecase.dart';
+import 'package:domain/private_room/usecases/get_invites_usecase.dart';
+import 'package:domain/private_room/usecases/get_rooms_usecase.dart';
+import 'package:domain/private_room/usecases/get_your_rooms_usecase.dart';
+import 'package:domain/private_room/usecases/respond_to_invite_usecase.dart';
 import 'package:domain/private_room/usecases/search_users_usecase.dart';
 import 'package:domain/public_listing/common/public_listing_api_repository.dart';
 import 'package:domain/private_room/common/private_room_api_repository.dart';
@@ -84,5 +88,9 @@ class DataModule extends BaseDiModule {
     // room usecases
     GetIt.I.registerFactory(() => SearchUsersUseCase(privateRoomRepository));
     GetIt.I.registerFactory(() => CreateRoomUseCase(privateRoomRepository));
+    GetIt.I.registerFactory(() => GetYourRoomsUseCase(privateRoomRepository));
+    GetIt.I.registerFactory(() => GetRoomsUseCase(privateRoomRepository));
+    GetIt.I.registerFactory(() => GetInvitesUseCase(privateRoomRepository));
+    GetIt.I.registerFactory(() => RespondToInviteUseCase(privateRoomRepository));
   }
 }
