@@ -48,4 +48,10 @@ abstract class PrivateRoomApiService {
     @Body() UserResponseParams body,
     @Header('Authorization') String header,
   );
+
+  @PATCH('/rooms/leave/{id}')
+  Future<HttpResponse<CreatedModel>> leaveRoom(
+    @Path('id') int id,
+    @Header('Authorization') String header,
+  );
 }

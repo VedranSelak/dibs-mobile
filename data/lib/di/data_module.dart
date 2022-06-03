@@ -22,6 +22,7 @@ import 'package:domain/private_room/usecases/create_private_room_usecase.dart';
 import 'package:domain/private_room/usecases/get_invites_usecase.dart';
 import 'package:domain/private_room/usecases/get_rooms_usecase.dart';
 import 'package:domain/private_room/usecases/get_your_rooms_usecase.dart';
+import 'package:domain/private_room/usecases/leave_room_usecase.dart';
 import 'package:domain/private_room/usecases/respond_to_invite_usecase.dart';
 import 'package:domain/private_room/usecases/search_users_usecase.dart';
 import 'package:domain/public_listing/common/public_listing_api_repository.dart';
@@ -92,5 +93,6 @@ class DataModule extends BaseDiModule {
     GetIt.I.registerFactory(() => GetRoomsUseCase(privateRoomRepository));
     GetIt.I.registerFactory(() => GetInvitesUseCase(privateRoomRepository));
     GetIt.I.registerFactory(() => RespondToInviteUseCase(privateRoomRepository));
+    GetIt.I.registerFactory(() => LeaveRoomUseCase(privateRoomRepository));
   }
 }

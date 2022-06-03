@@ -21,3 +21,11 @@ class RespondToInvite extends RoomsEvent {
   @override
   List<Object> get props => [id, response];
 }
+
+class LeaveRoom extends RoomsEvent {
+  const LeaveRoom({required this.id});
+  final int id;
+
+  @override
+  List<Object> get props => [id];
+}

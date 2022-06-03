@@ -1,9 +1,14 @@
+import 'package:app/blocs/rooms_bloc/rooms_bloc.dart';
 import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
+import 'package:app/ui/widgets/buttons/primary_button.dart';
+import 'package:app/ui/widgets/dialogs/alert_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:domain/private_room/entities/participant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 
 class RoomsListItem extends StatelessWidget {
   const RoomsListItem({
@@ -71,7 +76,29 @@ class RoomsListItem extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              AlertDialogWidget(
+                context: context,
+                title: 'Leave room "$name""',
+                description:
+                    "Are you sure you want to leave the room. If you leave the room you will not be able to come back without another invite.",
+                acceptButton: PrimaryButton(
+                  buttonText: "Leave",
+                  onPress: () {
+                    context.read<RoomsBloc>().add(LeaveRoom(id: id));
+                    Get.back<dynamic>();
+                  },
+                  backgroundColor: Colors.red,
+                ),
+                rejectButton: PrimaryButton(
+                  buttonText: "Cancel",
+                  onPress: () {
+                    Get.back<dynamic>();
+                  },
+                  backgroundColor: Colors.grey,
+                ),
+              ).showAlertDialog();
+            },
             icon: const Icon(
               Icons.logout,
               color: Colors.red,

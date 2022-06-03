@@ -8,13 +8,13 @@ import 'package:domain/private_room/entities/rooms_response.dart';
 import 'package:domain/private_room/usecases/get_invites_usecase.dart';
 import 'package:domain/private_room/usecases/get_rooms_usecase.dart';
 import 'package:domain/private_room/usecases/get_your_rooms_usecase.dart';
+import 'package:domain/private_room/usecases/leave_room_usecase.dart';
 import 'package:domain/private_room/usecases/respond_to_invite_usecase.dart';
 import "package:equatable/equatable.dart";
 import 'package:flutter/material.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
-import "package:meta/meta.dart";
 
 part "rooms_event.dart";
 part "rooms_state.dart";
@@ -25,12 +25,14 @@ class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
     on<FetchRooms>(_onFetchRooms);
     on<FetchInvites>(_onFetchInvites);
     on<RespondToInvite>(_onRespondToInvite);
+    on<LeaveRoom>(_onLeaveRoom);
   }
 
   final GetYourRoomsUseCase _getYourRoomsUseCase = GetIt.I.get<GetYourRoomsUseCase>();
   final GetRoomsUseCase _getRoomsUseCase = GetIt.I.get<GetRoomsUseCase>();
   final GetInvitesUseCase _getInvitesUseCase = GetIt.I.get<GetInvitesUseCase>();
   final RespondToInviteUseCase _respondToInviteUseCase = GetIt.I.get<RespondToInviteUseCase>();
+  final LeaveRoomUseCase _leaveRoomUseCase = GetIt.I.get<LeaveRoomUseCase>();
 
   void _onFetchYourRooms(FetchYourRooms event, Emitter<RoomsState> emit) async {
     emit(FetchingYourRooms());
@@ -51,7 +53,9 @@ class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
   }
 
   void _onFetchRooms(FetchRooms event, Emitter<RoomsState> emit) async {
-    emit(FetchingRooms());
+    if (state is RoomsFetched) {
+      emit(FetchingRooms());
+    }
     final response = await _getRoomsUseCase(params: null);
     if (response is DataFailed) {
       if (response.error?.response?.statusCode != null && response.error?.response?.statusCode == 401) {
@@ -69,7 +73,7 @@ class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
   }
 
   void _onFetchInvites(FetchInvites event, Emitter<RoomsState> emit) async {
-    if (state is! FetchInvites) {
+    if (state is! InvitesFetched) {
       emit(FetchingInvites());
     }
     final response = await _getInvitesUseCase(params: null);
@@ -112,6 +116,28 @@ class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
         backgroundColor: Colors.green,
       );
       add(FetchInvites());
+    }
+  }
+
+  void _onLeaveRoom(LeaveRoom event, Emitter<RoomsState> emit) async {
+    final response = await _leaveRoomUseCase(params: event.id);
+    if (response is DataFailed) {
+      if (response.error?.response?.statusCode != null && response.error?.response?.statusCode == 401) {
+        emit(FetchRoomsFailed(statusCode: response.error?.response?.statusCode, message: 'Your session has expired'));
+      } else if (response.error?.response?.statusCode != null && response.error?.response?.statusCode == 400) {
+        final Map errorObject = json.decode(response.error?.response.toString() ?? "") as Map;
+        emit(
+            FetchRoomsFailed(statusCode: response.error?.response?.statusCode, message: errorObject['msg'] as String?));
+      } else {
+        emit(const FetchRoomsFailed(message: 'Something went wrong, try again later'));
+      }
+    } else {
+      Fluttertoast.showToast(
+        msg: 'Left the room',
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+      );
+      add(FetchRooms());
     }
   }
 }

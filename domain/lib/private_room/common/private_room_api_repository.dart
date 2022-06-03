@@ -14,4 +14,5 @@ abstract class PrivateRoomApiRepository {
   Future<DataState<List<RoomsResponse>>> getRooms();
   Future<DataState<List<Invite>>> getInvites();
   Future<DataState<Created>> respondToInvite(InviteRequestParams params);
+  Future<DataState<Created>> leaveRoom(int id);
 }
