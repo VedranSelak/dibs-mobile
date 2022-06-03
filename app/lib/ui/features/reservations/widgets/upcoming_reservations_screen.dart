@@ -43,7 +43,6 @@ class _UpcomingReservationsScreenState extends State<UpcomingReservationsScreen>
           return RefreshIndicator(
             onRefresh: () async {
               context.read<ReservationsBloc>().add(FetchUpcomingReservations());
-              const Duration(seconds: 1);
             },
             child: ListView.builder(
               physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),

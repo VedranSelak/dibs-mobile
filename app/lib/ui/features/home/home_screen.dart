@@ -54,23 +54,28 @@ class _HomeScreenState extends State<HomeScreen> {
                     if (listingState is ListingsFetchSuccess) {
                       final listings = listingState.listings;
                       return Expanded(
-                        child: ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: listings.length,
-                          itemBuilder: (context, index) {
-                            if (state is OwnerType && index == 0) {
-                              return Column(
-                                children: [
-                                  const CreatePublicListingCard(),
-                                  const SizedBox(
-                                    height: 20.0,
-                                  ),
-                                  ListingItem(listing: listings[index]),
-                                ],
-                              );
-                            }
-                            return ListingItem(listing: listings[index]);
+                        child: RefreshIndicator(
+                          onRefresh: () async {
+                            context.read<ListingBloc>().add(FetchListings());
                           },
+                          child: ListView.builder(
+                            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                            itemCount: listings.length,
+                            itemBuilder: (context, index) {
+                              if (state is OwnerType && index == 0) {
+                                return Column(
+                                  children: [
+                                    const CreatePublicListingCard(),
+                                    const SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    ListingItem(listing: listings[index]),
+                                  ],
+                                );
+                              }
+                              return ListingItem(listing: listings[index]);
+                            },
+                          ),
                         ),
                       );
                     } else {

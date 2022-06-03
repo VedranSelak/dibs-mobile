@@ -1,7 +1,9 @@
 import 'package:app/res/text_styles.dart';
 import 'package:app/ui/features/listing_details/listing_details_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:domain/public_listing/entities/public_listing.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 class ListingItem extends StatelessWidget {
@@ -15,18 +17,27 @@ class ListingItem extends StatelessWidget {
       onTap: () {
         Get.to<dynamic>(ListingDeatilsScreen(title: listing.name, id: listing.id));
       },
-      child: SizedBox(
-        height: 80.0,
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        height: 100.0,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
+            SizedBox(
+              width: 100.0,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  imageUrl: listing.imageUrls[0],
+                  placeholder: (context, _) {
+                    return const SpinKitWave(
+                      size: 20.0,
+                      color: Colors.blueAccent,
+                    );
+                  },
                 ),
               ),
-              child: const Icon(Icons.image, size: 80),
             ),
             const SizedBox(
               width: 10.0,
