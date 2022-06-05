@@ -7,6 +7,7 @@ import 'package:app/blocs/listing_bloc/listing_bloc.dart';
 import 'package:app/blocs/listing_details_bloc/listing_details_bloc.dart';
 import 'package:app/blocs/login_bloc/login_bloc.dart';
 import 'package:app/blocs/reservations_bloc/reservations_bloc.dart';
+import 'package:app/blocs/room_details_bloc/room_details_bloc.dart';
 import 'package:app/blocs/rooms_bloc/rooms_bloc.dart';
 import 'package:app/blocs/signup_bloc/signup_bloc.dart';
 import 'package:app/blocs/test_bloc/test_bloc.dart';
@@ -56,6 +57,9 @@ void main() async {
       ),
       BlocProvider<RoomsBloc>(
         create: (context) => GetIt.I.get<RoomsBloc>(),
+      ),
+      BlocProvider<RoomDetailsBloc>(
+        create: (context) => GetIt.I.get<RoomDetailsBloc>(),
       ),
     ],
     child: Application(),

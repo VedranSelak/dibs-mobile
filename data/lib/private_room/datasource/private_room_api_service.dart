@@ -1,6 +1,7 @@
 import 'package:common/params/create_room_request.dart';
 import 'package:common/params/invite_request.dart';
 import 'package:data/private_room/dtos/invite_model.dart';
+import 'package:data/private_room/dtos/private_room_details_model.dart';
 import 'package:data/private_room/dtos/private_room_model.dart';
 import 'package:data/private_room/dtos/rooms_response_model.dart';
 import 'package:data/private_room/dtos/search_user_model.dart';
@@ -51,6 +52,12 @@ abstract class PrivateRoomApiService {
 
   @PATCH('/rooms/leave/{id}')
   Future<HttpResponse<CreatedModel>> leaveRoom(
+    @Path('id') int id,
+    @Header('Authorization') String header,
+  );
+
+  @GET('/rooms/{id}')
+  Future<HttpResponse<PrivateRoomDetailsModel>> getRoomDetails(
     @Path('id') int id,
     @Header('Authorization') String header,
   );
