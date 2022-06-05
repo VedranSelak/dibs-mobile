@@ -1,4 +1,3 @@
-import 'package:app/blocs/reservations_bloc/reservations_bloc.dart';
 import 'package:app/blocs/rooms_bloc/rooms_bloc.dart';
 import 'package:app/ui/features/rooms/widgets/your_room_list_item.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +37,7 @@ class _YourRoomsScreenState extends State<YourRoomsScreen> {
                   final room = state.rooms[index];
 
                   return YourRoomListItem(
+                    id: room.id,
                     imageUrl: room.imageUrl,
                     description: room.description,
                     name: room.name,

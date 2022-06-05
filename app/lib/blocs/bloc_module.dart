@@ -10,6 +10,7 @@ import 'package:app/blocs/signup_bloc/signup_bloc.dart';
 import 'package:app/blocs/test_bloc/test_bloc.dart';
 import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:app/blocs/listing_details_bloc/listing_details_bloc.dart';
+import 'package:app/blocs/your_room_bloc/your_room_bloc.dart';
 import 'package:common/base_di_module.dart';
 import 'package:get_it/get_it.dart';
 
@@ -29,5 +30,6 @@ class BlocModule extends BaseDiModule {
     GetIt.I.registerFactory<CreateRoomBloc>(CreateRoomBloc.new);
     GetIt.I.registerFactory<RoomsBloc>(RoomsBloc.new);
     GetIt.I.registerFactory<RoomDetailsBloc>(RoomDetailsBloc.new);
+    GetIt.I.registerFactory<YourRoomBloc>(YourRoomBloc.new);
   }
 }

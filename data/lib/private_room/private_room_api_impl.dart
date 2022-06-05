@@ -11,6 +11,7 @@ import 'package:domain/private_room/entities/private_room.dart';
 import 'package:domain/private_room/entities/private_room_details.dart';
 import 'package:domain/private_room/entities/rooms_response.dart';
 import 'package:domain/private_room/entities/search_user.dart';
+import 'package:domain/private_room/entities/your_room_details.dart';
 import 'package:domain/public_listing/entities/created.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -297,6 +298,41 @@ class PrivateRoomApiImpl implements PrivateRoomApiRepository {
       }
 
       final httpResponse = await privateRoomApiService.getRoomDetails(
+        id,
+        'Bearer $token',
+      );
+
+      if (httpResponse.response.statusCode == 200) {
+        return DataSuccess(httpResponse.data);
+      }
+      return DataFailed(DioError(
+        error: httpResponse.response.statusMessage,
+        response: httpResponse.response,
+        type: DioErrorType.response,
+        requestOptions: httpResponse.response.requestOptions,
+      ));
+    } on DioError catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<YourRoomDetails>> getYourRoom(int id) async {
+    try {
+      const storage = FlutterSecureStorage();
+      final String? token = await storage.read(key: kAccessTokenKey);
+      if (token == null) {
+        return DataFailed(DioError(
+          response: Response<dynamic>(
+            requestOptions: RequestOptions(path: ""),
+            statusCode: 401,
+          ),
+          type: DioErrorType.response,
+          requestOptions: RequestOptions(path: ""),
+        ));
+      }
+
+      final httpResponse = await privateRoomApiService.getYourRoom(
         id,
         'Bearer $token',
       );

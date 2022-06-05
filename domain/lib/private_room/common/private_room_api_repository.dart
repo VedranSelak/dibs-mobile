@@ -6,6 +6,7 @@ import 'package:domain/private_room/entities/private_room.dart';
 import 'package:domain/private_room/entities/private_room_details.dart';
 import 'package:domain/private_room/entities/rooms_response.dart';
 import 'package:domain/private_room/entities/search_user.dart';
+import 'package:domain/private_room/entities/your_room_details.dart';
 import 'package:domain/public_listing/entities/created.dart';
 
 abstract class PrivateRoomApiRepository {
@@ -17,4 +18,5 @@ abstract class PrivateRoomApiRepository {
   Future<DataState<Created>> respondToInvite(InviteRequestParams params);
   Future<DataState<Created>> leaveRoom(int id);
   Future<DataState<PrivateRoomDetails>> getRoomDetails(int id);
+  Future<DataState<YourRoomDetails>> getYourRoom(int id);
 }

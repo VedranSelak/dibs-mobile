@@ -12,6 +12,7 @@ import 'package:app/blocs/rooms_bloc/rooms_bloc.dart';
 import 'package:app/blocs/signup_bloc/signup_bloc.dart';
 import 'package:app/blocs/test_bloc/test_bloc.dart';
 import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
+import 'package:app/blocs/your_room_bloc/your_room_bloc.dart';
 import 'package:data/di/data_module.dart';
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -60,6 +61,9 @@ void main() async {
       ),
       BlocProvider<RoomDetailsBloc>(
         create: (context) => GetIt.I.get<RoomDetailsBloc>(),
+      ),
+      BlocProvider<YourRoomBloc>(
+        create: (context) => GetIt.I.get<YourRoomBloc>(),
       ),
     ],
     child: Application(),

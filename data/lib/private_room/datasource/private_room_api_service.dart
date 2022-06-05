@@ -5,6 +5,7 @@ import 'package:data/private_room/dtos/private_room_details_model.dart';
 import 'package:data/private_room/dtos/private_room_model.dart';
 import 'package:data/private_room/dtos/rooms_response_model.dart';
 import 'package:data/private_room/dtos/search_user_model.dart';
+import 'package:data/private_room/dtos/your_room_details_model.dart';
 import 'package:data/public_listing/dtos/created_model.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
@@ -30,6 +31,12 @@ abstract class PrivateRoomApiService {
 
   @GET('/rooms/your')
   Future<HttpResponse<List<PrivateRoomModel>>> getYourRooms(
+    @Header('Authorization') String header,
+  );
+
+  @GET('/rooms/your/{id}')
+  Future<HttpResponse<YourRoomDetailsModel>> getYourRoom(
+    @Path('id') int id,
     @Header('Authorization') String header,
   );
 

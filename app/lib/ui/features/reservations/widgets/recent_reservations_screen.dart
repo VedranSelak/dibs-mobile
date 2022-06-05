@@ -42,13 +42,14 @@ class _RecentReservationsScreenState extends State<RecentReservationsScreen> {
               physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
               itemCount: state.reservations.length,
               itemBuilder: (context, index) {
-                final listing = state.reservations[index].publicListing;
+                final place = state.reservations[index].place;
                 final reservation = state.reservations[index];
                 final date = _getDateString(reservation.arrivalTimestamp);
 
                 return RecentListItem(
-                  imageUrl: listing.imageUrls[0],
-                  name: listing.name,
+                  imageUrl: place.imageUrl,
+                  name: place.name,
+                  isPrivate: reservation.isPrivate,
                   date: date,
                 );
               },

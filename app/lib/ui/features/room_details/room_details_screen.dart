@@ -21,7 +21,6 @@ class RoomDeatilsScreen extends StatefulWidget {
 }
 
 class _RoomDeatilsScreenState extends State<RoomDeatilsScreen> {
-  final TextEditingController _numberOfPeople = TextEditingController();
   final ValueNotifier<String> buttonText = ValueNotifier<String>('Choose time & data');
   final ValueNotifier<int> hours = ValueNotifier<int>(1);
   final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

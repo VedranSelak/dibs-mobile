@@ -79,6 +79,24 @@ class _PrivateRoomApiService implements PrivateRoomApiService {
   }
 
   @override
+  Future<HttpResponse<YourRoomDetailsModel>> getYourRoom(id, header) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': header};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<YourRoomDetailsModel>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/rooms/your/${id}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = YourRoomDetailsModel.fromJson(_result.data!);
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+  @override
   Future<HttpResponse<List<RoomsResponseModel>>> getRooms(header) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

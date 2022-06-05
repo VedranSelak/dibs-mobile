@@ -1,4 +1,4 @@
-import 'package:data/public_listing/dtos/public_listing_model.dart';
+import 'package:data/reservation/dtos/place_model.dart';
 import 'package:equatable/equatable.dart';
 
 class Reservation extends Equatable {
@@ -9,17 +9,17 @@ class Reservation extends Equatable {
     required this.arrivalTimestamp,
     required this.stayApprox,
     required this.numOfParticipants,
-    required this.publicListing,
+    required this.place,
   });
 
   final int id;
-  final int spotId;
+  final int? spotId;
   final bool isPrivate;
   final int arrivalTimestamp;
   final int stayApprox;
   final int numOfParticipants;
-  final PublicListingModel publicListing;
+  final PlaceModel place;
 
   @override
-  List<Object?> get props => [id, spotId, isPrivate, arrivalTimestamp, stayApprox, numOfParticipants, publicListing];
+  List<Object?> get props => [id, spotId, isPrivate, arrivalTimestamp, stayApprox, numOfParticipants, place];
 }
