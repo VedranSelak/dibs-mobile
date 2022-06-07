@@ -3,6 +3,7 @@ import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
 import 'package:app/ui/features/your_room/navigation/your_room_controller.dart';
 import 'package:app/ui/features/your_room/widgets/room_reservation_list_item.dart';
+import 'package:app/ui/features/your_room/widgets/view_all_screen.dart';
 import 'package:app/ui/widgets/screen_wrappers/simple_screen_wrapper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,15 @@ class _YourRoomScreenState extends State<YourRoomScreen> {
           child: BlocBuilder<YourRoomBloc, YourRoomState>(
             builder: (context, state) {
               if (state is YourRoomFetchSuccess) {
+                final containerHeight = controller.tabIndex == 0
+                    ? state.room.reservations.length > 3
+                        ? 240.0
+                        : double.parse((80 * state.room.reservations.length).toString())
+                    : state.room.recent.length > 3
+                        ? 240.0
+                        : double.parse((80 * state.room.recent.length).toString());
+                final count = controller.tabIndex == 0 ? state.room.reservations.length : state.room.recent.length;
+
                 return SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   child: Column(
@@ -106,38 +116,83 @@ class _YourRoomScreenState extends State<YourRoomScreen> {
                         child: _buildTopNavigation(context, controller),
                       ),
                       const SizedBox(height: 20.0),
-                      SizedBox(
-                        height: 400.0,
-                        child: ListView.builder(
-                          itemCount:
-                              controller.tabIndex == 0 ? state.room.reservations.length : state.room.recent.length,
-                          itemBuilder: (context, index) {
-                            String date = '';
-                            String time = '';
-                            String fullName = '';
-                            int stay;
-                            if (controller.tabIndex == 0) {
-                              date = _getDateString(state.room.reservations[index].arrivalTimestamp);
-                              time = _getArrivalTimeString(state.room.reservations[index].arrivalTimestamp);
-                              fullName =
-                                  '${state.room.reservations[index].user.firstName} ${state.room.reservations[index].user.lastName}';
-                              stay = (state.room.reservations[index].stayApprox -
-                                      state.room.reservations[index].arrivalTimestamp) ~/
-                                  3600000;
-                            } else {
-                              date = _getDateString(state.room.recent[index].arrivalTimestamp);
-                              time = _getArrivalTimeString(state.room.recent[index].arrivalTimestamp);
-                              fullName =
-                                  '${state.room.recent[index].user.firstName} ${state.room.recent[index].user.lastName}';
-                              stay =
-                                  (state.room.recent[index].stayApprox - state.room.recent[index].arrivalTimestamp) ~/
-                                      3600000;
-                            }
+                      Stack(
+                        children: [
+                          containerHeight == 0
+                              ? SizedBox(
+                                  height: 80,
+                                  child: Center(
+                                    child: Text(
+                                      'There are no reservations in this section',
+                                      style: textStyles.descriptiveText,
+                                    ),
+                                  ),
+                                )
+                              : SizedBox(
+                                  height: containerHeight,
+                                  child: ListView.builder(
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    itemCount: count,
+                                    itemBuilder: (context, index) {
+                                      String date = '';
+                                      String time = '';
+                                      String fullName = '';
+                                      int stay;
+                                      if (controller.tabIndex == 0) {
+                                        date = _getDateString(state.room.reservations[index].arrivalTimestamp);
+                                        time = _getArrivalTimeString(state.room.reservations[index].arrivalTimestamp);
+                                        fullName =
+                                            '${state.room.reservations[index].user.firstName} ${state.room.reservations[index].user.lastName}';
+                                        stay = (state.room.reservations[index].stayApprox -
+                                                state.room.reservations[index].arrivalTimestamp) ~/
+                                            3600000;
+                                      } else {
+                                        date = _getDateString(state.room.recent[index].arrivalTimestamp);
+                                        time = _getArrivalTimeString(state.room.recent[index].arrivalTimestamp);
+                                        fullName =
+                                            '${state.room.recent[index].user.firstName} ${state.room.recent[index].user.lastName}';
+                                        stay = (state.room.recent[index].stayApprox -
+                                                state.room.recent[index].arrivalTimestamp) ~/
+                                            3600000;
+                                      }
 
-                            return RoomReservationListItem(fullName: fullName, date: date, time: time, stay: stay);
-                          },
-                        ),
+                                      return RoomReservationListItem(
+                                          fullName: fullName, date: date, time: time, stay: stay);
+                                    },
+                                  ),
+                                ),
+                          count != 0
+                              ? Container(
+                                  height: containerHeight,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Colors.white.withAlpha(0),
+                                        Colors.grey.shade50,
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              : Container(),
+                        ],
                       ),
+                      count > 3
+                          ? TextButton(
+                              onPressed: () {
+                                final title = controller.tabIndex == 0 ? 'Upcoming' : 'Recent';
+                                final reservations =
+                                    controller.tabIndex == 0 ? state.room.reservations : state.room.recent;
+                                Get.to<dynamic>(ViewAllScreen(title: title, reservations: reservations));
+                              },
+                              child: Text(
+                                'View all',
+                                style: textStyles.accentText,
+                              ),
+                            )
+                          : Container(),
+                      const SizedBox(height: 30.0),
                     ],
                   ),
                 );
