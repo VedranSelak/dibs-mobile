@@ -1,3 +1,4 @@
+import 'package:app/blocs/owner_mode_cubit/owner_mode_cubit.dart';
 import 'package:app/blocs/reservations_bloc/reservations_bloc.dart';
 import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:app/res/dimensions.dart';
@@ -87,6 +88,7 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
                                 setState(() {
                                   _switchValue = value;
                                 });
+                                context.read<OwnerModeCubit>().toggleMode();
                                 if (value) {
                                   if (controller.tabIndex == 0) {
                                     context.read<ReservationsBloc>().add(FetchUpcomingListingReservations());

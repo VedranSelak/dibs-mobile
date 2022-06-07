@@ -1,4 +1,5 @@
 import 'package:app/blocs/listing_bloc/listing_bloc.dart';
+import 'package:app/blocs/owner_mode_cubit/owner_mode_cubit.dart';
 import 'package:app/blocs/reservations_bloc/reservations_bloc.dart';
 import 'package:app/blocs/rooms_bloc/rooms_bloc.dart';
 import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
@@ -39,10 +40,18 @@ class BottomAppBarWidget extends StatelessWidget {
             onPressed: () {
               controller.changeTabIndex(1);
               final ReservationsController resController = Get.find();
-              if (resController.tabIndex == 0) {
-                context.read<ReservationsBloc>().add(FetchUpcomingReservations());
+              if (context.read<OwnerModeCubit>().state) {
+                if (resController.tabIndex == 0) {
+                  context.read<ReservationsBloc>().add(FetchUpcomingListingReservations());
+                } else {
+                  context.read<ReservationsBloc>().add(FetchRecentListingReservations());
+                }
               } else {
-                context.read<ReservationsBloc>().add(FetchRecentReservations());
+                if (resController.tabIndex == 0) {
+                  context.read<ReservationsBloc>().add(FetchUpcomingReservations());
+                } else {
+                  context.read<ReservationsBloc>().add(FetchRecentReservations());
+                }
               }
             },
           ),
