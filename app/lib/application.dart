@@ -8,6 +8,7 @@ import 'package:app/ui/features/login/login_screen.dart';
 import 'package:app/ui/features/profile/profile_screen.dart';
 import 'package:app/ui/features/reservations/navigation/reservations_binding.dart';
 import 'package:app/ui/features/reservations/reservations_screen.dart';
+import 'package:app/ui/features/rooms/rooms_screen.dart';
 import 'package:app/ui/features/signup/signup_screen.dart';
 import 'package:app/ui/widgets/bottom_navigation/bottom_navigation_binding.dart';
 import "package:flutter/material.dart";
@@ -67,6 +68,10 @@ class Application extends StatelessWidget {
     GetPage<RoomInviteScreen>(
       name: RoomInviteScreen.routeName,
       page: RoomInviteScreen.new,
+    ),
+    GetPage<RoomsScreen>(
+      name: RoomsScreen.routeName,
+      page: RoomsScreen.new,
     ),
   ];
 }

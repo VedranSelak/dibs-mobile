@@ -1,5 +1,11 @@
 import 'package:common/params/create_room_request.dart';
+import 'package:common/params/invite_request.dart';
+import 'package:data/private_room/dtos/invite_model.dart';
+import 'package:data/private_room/dtos/private_room_details_model.dart';
+import 'package:data/private_room/dtos/private_room_model.dart';
+import 'package:data/private_room/dtos/rooms_response_model.dart';
 import 'package:data/private_room/dtos/search_user_model.dart';
+import 'package:data/private_room/dtos/your_room_details_model.dart';
 import 'package:data/public_listing/dtos/created_model.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
@@ -20,6 +26,46 @@ abstract class PrivateRoomApiService {
   @POST('/rooms')
   Future<HttpResponse<CreatedModel>> createRoom(
     @Body() CreateRoomRequestParams body,
+    @Header('Authorization') String header,
+  );
+
+  @GET('/rooms/your')
+  Future<HttpResponse<List<PrivateRoomModel>>> getYourRooms(
+    @Header('Authorization') String header,
+  );
+
+  @GET('/rooms/your/{id}')
+  Future<HttpResponse<YourRoomDetailsModel>> getYourRoom(
+    @Path('id') int id,
+    @Header('Authorization') String header,
+  );
+
+  @GET('/rooms')
+  Future<HttpResponse<List<RoomsResponseModel>>> getRooms(
+    @Header('Authorization') String header,
+  );
+
+  @GET('/invites')
+  Future<HttpResponse<List<InviteModel>>> getInvites(
+    @Header('Authorization') String header,
+  );
+
+  @PATCH('/invites/{id}')
+  Future<HttpResponse<CreatedModel>> respondToInvite(
+    @Path('id') int id,
+    @Body() UserResponseParams body,
+    @Header('Authorization') String header,
+  );
+
+  @PATCH('/rooms/leave/{id}')
+  Future<HttpResponse<CreatedModel>> leaveRoom(
+    @Path('id') int id,
+    @Header('Authorization') String header,
+  );
+
+  @GET('/rooms/{id}')
+  Future<HttpResponse<PrivateRoomDetailsModel>> getRoomDetails(
+    @Path('id') int id,
     @Header('Authorization') String header,
   );
 }

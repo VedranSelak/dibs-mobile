@@ -9,13 +9,12 @@ part of 'reservation_model.dart';
 ReservationModel _$ReservationModelFromJson(Map<String, dynamic> json) =>
     ReservationModel(
       id: json['id'] as int,
-      spotId: json['spotId'] as int,
+      spotId: json['spotId'] as int?,
       arrivalTimestamp: json['arrivalTimestamp'] as int,
       stayApprox: json['stayApprox'] as int,
       isPrivate: json['isPrivate'] as bool,
       numOfParticipants: json['numOfParticipants'] as int,
-      publicListing: PublicListingModel.fromJson(
-          json['publicListing'] as Map<String, dynamic>),
+      place: PlaceModel.fromJson(json['place'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ReservationModelToJson(ReservationModel instance) =>
@@ -26,5 +25,5 @@ Map<String, dynamic> _$ReservationModelToJson(ReservationModel instance) =>
       'arrivalTimestamp': instance.arrivalTimestamp,
       'stayApprox': instance.stayApprox,
       'numOfParticipants': instance.numOfParticipants,
-      'publicListing': instance.publicListing,
+      'place': instance.place,
     };

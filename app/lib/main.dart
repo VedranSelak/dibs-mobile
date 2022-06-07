@@ -7,9 +7,12 @@ import 'package:app/blocs/listing_bloc/listing_bloc.dart';
 import 'package:app/blocs/listing_details_bloc/listing_details_bloc.dart';
 import 'package:app/blocs/login_bloc/login_bloc.dart';
 import 'package:app/blocs/reservations_bloc/reservations_bloc.dart';
+import 'package:app/blocs/room_details_bloc/room_details_bloc.dart';
+import 'package:app/blocs/rooms_bloc/rooms_bloc.dart';
 import 'package:app/blocs/signup_bloc/signup_bloc.dart';
 import 'package:app/blocs/test_bloc/test_bloc.dart';
 import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
+import 'package:app/blocs/your_room_bloc/your_room_bloc.dart';
 import 'package:data/di/data_module.dart';
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -52,6 +55,15 @@ void main() async {
       ),
       BlocProvider<CreateRoomBloc>(
         create: (context) => GetIt.I.get<CreateRoomBloc>(),
+      ),
+      BlocProvider<RoomsBloc>(
+        create: (context) => GetIt.I.get<RoomsBloc>(),
+      ),
+      BlocProvider<RoomDetailsBloc>(
+        create: (context) => GetIt.I.get<RoomDetailsBloc>(),
+      ),
+      BlocProvider<YourRoomBloc>(
+        create: (context) => GetIt.I.get<YourRoomBloc>(),
       ),
     ],
     child: Application(),

@@ -9,11 +9,13 @@ class RecentListItem extends StatelessWidget {
     required this.imageUrl,
     required this.name,
     required this.date,
+    required this.isPrivate,
     Key? key,
   }) : super(key: key);
   final String imageUrl;
   final String name;
   final String date;
+  final bool isPrivate;
 
   @override
   Widget build(BuildContext context) {
@@ -25,21 +27,39 @@ class RecentListItem extends StatelessWidget {
       height: 70.0,
       child: Row(
         children: [
-          SizedBox(
-            width: 70.0,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: CachedNetworkImage(
-                fit: BoxFit.cover,
-                imageUrl: imageUrl,
-                placeholder: (context, _) {
-                  return const SpinKitWave(
-                    size: 20.0,
-                    color: Colors.blueAccent,
-                  );
-                },
+          Stack(
+            children: [
+              SizedBox(
+                width: 70.0,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: imageUrl,
+                    placeholder: (context, _) {
+                      return const SpinKitWave(
+                        size: 20.0,
+                        color: Colors.blueAccent,
+                      );
+                    },
+                  ),
+                ),
               ),
-            ),
+              isPrivate
+                  ? Positioned(
+                      top: 2,
+                      right: 2,
+                      child: Container(
+                        padding: const EdgeInsets.all(2.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.blueAccent,
+                        ),
+                        child: const Icon(Icons.meeting_room_outlined, size: 15.0, color: Colors.white),
+                      ),
+                    )
+                  : Container(),
+            ],
           ),
           const SizedBox(width: 10.0),
           Column(

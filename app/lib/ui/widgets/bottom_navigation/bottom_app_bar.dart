@@ -1,7 +1,9 @@
 import 'package:app/blocs/listing_bloc/listing_bloc.dart';
 import 'package:app/blocs/reservations_bloc/reservations_bloc.dart';
+import 'package:app/blocs/rooms_bloc/rooms_bloc.dart';
 import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:app/ui/features/reservations/navigation/reservations_controller.dart';
+import 'package:app/ui/features/rooms/navigation/rooms_controller.dart';
 import 'package:app/ui/widgets/bottom_navigation/main_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +50,15 @@ class BottomAppBarWidget extends StatelessWidget {
             icon: const Icon(Icons.meeting_room_outlined),
             color: controller.tabIndex == 2 ? Colors.blueAccent : Colors.black,
             tooltip: "Rooms",
-            onPressed: () {},
+            onPressed: () {
+              controller.changeTabIndex(2);
+              final RoomsController roomsController = Get.find();
+              if (roomsController.tabIndex == 0) {
+                context.read<RoomsBloc>().add(FetchYourRooms());
+              } else if (roomsController.tabIndex == 1) {
+                context.read<RoomsBloc>().add(FetchRooms());
+              }
+            },
           ),
           IconButton(
             icon: const Icon(CupertinoIcons.person),

@@ -43,21 +43,21 @@ class _UpcomingReservationsScreenState extends State<UpcomingReservationsScreen>
           return RefreshIndicator(
             onRefresh: () async {
               context.read<ReservationsBloc>().add(FetchUpcomingReservations());
-              const Duration(seconds: 1);
             },
             child: ListView.builder(
               physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
               itemCount: state.reservations.length,
               itemBuilder: (context, index) {
-                final listing = state.reservations[index].publicListing;
+                final place = state.reservations[index].place;
                 final reservation = state.reservations[index];
                 final arrivalTime = _getArrivalTimeString(reservation.arrivalTimestamp);
                 final date = _getDateString(reservation.arrivalTimestamp);
 
                 return UpcomingListItem(
-                  imageUrl: listing.imageUrls[0],
+                  imageUrl: place.imageUrl,
                   arrivalTime: arrivalTime,
-                  name: listing.name,
+                  name: place.name,
+                  isPrivate: reservation.isPrivate,
                   date: date,
                 );
               },
