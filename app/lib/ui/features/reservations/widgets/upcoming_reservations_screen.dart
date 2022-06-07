@@ -1,11 +1,13 @@
 import 'package:app/blocs/reservations_bloc/reservations_bloc.dart';
+import 'package:app/ui/features/reservations/widgets/listing_reservation_list_item.dart';
 import 'package:app/ui/features/reservations/widgets/upcoming_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class UpcomingReservationsScreen extends StatefulWidget {
-  const UpcomingReservationsScreen({Key? key}) : super(key: key);
+  const UpcomingReservationsScreen({required this.ownerMode, Key? key}) : super(key: key);
+  final bool ownerMode;
 
   @override
   State<UpcomingReservationsScreen> createState() => _UpcomingReservationsScreenState();
@@ -15,7 +17,11 @@ class _UpcomingReservationsScreenState extends State<UpcomingReservationsScreen>
   @override
   void initState() {
     super.initState();
-    context.read<ReservationsBloc>().add(FetchUpcomingReservations());
+    if (widget.ownerMode) {
+      context.read<ReservationsBloc>().add(FetchUpcomingListingReservations());
+    } else {
+      context.read<ReservationsBloc>().add(FetchUpcomingReservations());
+    }
   }
 
   String _getArrivalTimeString(int milliseconds) {
@@ -59,6 +65,31 @@ class _UpcomingReservationsScreenState extends State<UpcomingReservationsScreen>
                   name: place.name,
                   isPrivate: reservation.isPrivate,
                   date: date,
+                );
+              },
+            ),
+          );
+        } else if (state is ListingReservationsFetched) {
+          return RefreshIndicator(
+            onRefresh: () async {
+              context.read<ReservationsBloc>().add(FetchUpcomingListingReservations());
+            },
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+              itemCount: state.reservations.length,
+              itemBuilder: (context, index) {
+                final fullName =
+                    '${state.reservations[index].user.firstName} ${state.reservations[index].user.lastName}';
+                final reservation = state.reservations[index];
+                final arrivalTime = _getArrivalTimeString(reservation.arrivalTimestamp);
+                final date = _getDateString(reservation.arrivalTimestamp);
+
+                return ListingReservationListItem(
+                  fullName: fullName,
+                  arrivalTime: arrivalTime,
+                  date: date,
+                  numOfPeople: reservation.numOfParticipants,
+                  stay: (reservation.stayApprox - reservation.arrivalTimestamp) ~/ 3600000,
                 );
               },
             ),

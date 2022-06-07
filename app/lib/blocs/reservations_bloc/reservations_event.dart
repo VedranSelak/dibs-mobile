@@ -10,3 +10,7 @@ abstract class ReservationsEvent extends Equatable {
 class FetchUpcomingReservations extends ReservationsEvent {}
 
 class FetchRecentReservations extends ReservationsEvent {}
+
+class FetchUpcomingListingReservations extends ReservationsEvent {}
+
+class FetchRecentListingReservations extends ReservationsEvent {}

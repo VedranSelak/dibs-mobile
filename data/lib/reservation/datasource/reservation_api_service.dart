@@ -1,6 +1,7 @@
 import 'package:common/params/create_reservation_request.dart';
 import 'package:common/params/create_room_reservation_request.dart';
 import 'package:data/public_listing/dtos/created_model.dart';
+import 'package:data/reservation/dtos/listing_reservation_model.dart';
 import 'package:data/reservation/dtos/reservation_model.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
@@ -31,6 +32,16 @@ abstract class ReservationApiService {
   @POST('/reservations/room')
   Future<HttpResponse<CreatedModel>> postRoomReservation(
     @Body() CreateRoomReservationRequestParams params,
+    @Header('Authorization') String header,
+  );
+
+  @GET('/reservations/upcoming/listing')
+  Future<HttpResponse<List<ListingReservationModel>>> getUpcomingListingReservations(
+    @Header('Authorization') String header,
+  );
+
+  @GET('/reservations/recent/listing')
+  Future<HttpResponse<List<ListingReservationModel>>> getRecentListingReservations(
     @Header('Authorization') String header,
   );
 }
