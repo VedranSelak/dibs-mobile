@@ -17,11 +17,6 @@ class _UpcomingReservationsScreenState extends State<UpcomingReservationsScreen>
   @override
   void initState() {
     super.initState();
-    if (widget.ownerMode) {
-      context.read<ReservationsBloc>().add(FetchUpcomingListingReservations());
-    } else {
-      context.read<ReservationsBloc>().add(FetchUpcomingReservations());
-    }
   }
 
   String _getArrivalTimeString(int milliseconds) {

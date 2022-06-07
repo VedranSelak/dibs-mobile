@@ -28,7 +28,7 @@ class _PrivateRoomApiService implements PrivateRoomApiService {
     final _result = await _dio.fetch<List<dynamic>>(
         _setStreamType<HttpResponse<List<SearchUserModel>>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/users/${search}',
+                .compose(_dio.options, '/users/search/${search}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!

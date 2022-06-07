@@ -4,6 +4,7 @@ import 'package:app/blocs/create_room_bloc/create_room_bloc.dart';
 import 'package:app/blocs/listing_bloc/listing_bloc.dart';
 import 'package:app/blocs/login_bloc/login_bloc.dart';
 import 'package:app/blocs/owner_mode_cubit/owner_mode_cubit.dart';
+import 'package:app/blocs/profile_bloc/profile_bloc.dart';
 import 'package:app/blocs/reservations_bloc/reservations_bloc.dart';
 import 'package:app/blocs/room_details_bloc/room_details_bloc.dart';
 import 'package:app/blocs/rooms_bloc/rooms_bloc.dart';
@@ -33,5 +34,6 @@ class BlocModule extends BaseDiModule {
     GetIt.I.registerFactory<RoomDetailsBloc>(RoomDetailsBloc.new);
     GetIt.I.registerFactory<YourRoomBloc>(YourRoomBloc.new);
     GetIt.I.registerFactory<OwnerModeCubit>(OwnerModeCubit.new);
+    GetIt.I.registerFactory<ProfileBloc>(ProfileBloc.new);
   }
 }

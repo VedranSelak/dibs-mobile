@@ -15,7 +15,6 @@ class _YourRoomsScreenState extends State<YourRoomsScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<RoomsBloc>().add(FetchYourRooms());
   }
 
   @override

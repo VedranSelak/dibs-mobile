@@ -17,7 +17,7 @@ part 'private_room_api_service.g.dart';
 abstract class PrivateRoomApiService {
   factory PrivateRoomApiService(Dio dio, {String baseUrl}) = _PrivateRoomApiService;
 
-  @GET('/users/{search}')
+  @GET('/users/search/{search}')
   Future<HttpResponse<List<SearchUserModel>>> searchUsers(
     @Path('search') String search,
     @Header('Authorization') String header,

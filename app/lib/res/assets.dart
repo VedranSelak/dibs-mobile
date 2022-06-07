@@ -5,4 +5,5 @@ class Assets {
   static String userImage = "$imagePath/user_image.jpg";
   static String successCheckmark = "$imagePath/success_checkmark.png";
   static String transparentImage = "$imagePath/transparent.png";
+  static String defaultProfileImage = "$imagePath/default_profile.jpg";
 }
