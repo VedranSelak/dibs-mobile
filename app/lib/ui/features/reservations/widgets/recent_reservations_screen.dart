@@ -1,11 +1,13 @@
 import 'package:app/blocs/reservations_bloc/reservations_bloc.dart';
+import 'package:app/ui/features/reservations/widgets/listing_reservation_list_item.dart';
 import 'package:app/ui/features/reservations/widgets/recent_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class RecentReservationsScreen extends StatefulWidget {
-  const RecentReservationsScreen({Key? key}) : super(key: key);
+  const RecentReservationsScreen({required this.ownerMode, Key? key}) : super(key: key);
+  final bool ownerMode;
 
   @override
   State<RecentReservationsScreen> createState() => _RecentReservationsScreenState();
@@ -15,7 +17,18 @@ class _RecentReservationsScreenState extends State<RecentReservationsScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ReservationsBloc>().add(FetchRecentReservations());
+    if (widget.ownerMode) {
+      context.read<ReservationsBloc>().add(FetchRecentListingReservations());
+    } else {
+      context.read<ReservationsBloc>().add(FetchRecentReservations());
+    }
+  }
+
+  String _getArrivalTimeString(int milliseconds) {
+    final date = DateTime.fromMillisecondsSinceEpoch(milliseconds);
+    final hour = date.hour < 10 ? '0${date.hour}' : date.hour;
+    final minute = date.minute < 10 ? '0${date.minute}' : date.hour;
+    return '$hour:$minute';
   }
 
   String _getDateString(int milliseconds) {
@@ -55,7 +68,33 @@ class _RecentReservationsScreenState extends State<RecentReservationsScreen> {
               },
             ),
           );
+        } else if (state is ListingReservationsFetched) {
+          return RefreshIndicator(
+            onRefresh: () async {
+              context.read<ReservationsBloc>().add(FetchRecentListingReservations());
+            },
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+              itemCount: state.reservations.length,
+              itemBuilder: (context, index) {
+                final fullName =
+                    '${state.reservations[index].user.firstName} ${state.reservations[index].user.lastName}';
+                final reservation = state.reservations[index];
+                final arrivalTime = _getArrivalTimeString(reservation.arrivalTimestamp);
+                final date = _getDateString(reservation.arrivalTimestamp);
+
+                return ListingReservationListItem(
+                  fullName: fullName,
+                  arrivalTime: arrivalTime,
+                  date: date,
+                  numOfPeople: reservation.numOfParticipants,
+                  stay: (reservation.stayApprox - reservation.arrivalTimestamp) ~/ 3600000,
+                );
+              },
+            ),
+          );
         }
+
         return const Center(
             child: SpinKitWave(
           color: Colors.blueAccent,

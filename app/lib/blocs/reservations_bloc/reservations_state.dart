@@ -28,3 +28,11 @@ class ReservationsFetched extends ReservationsState {
   @override
   List<Object?> get props => [reservations];
 }
+
+class ListingReservationsFetched extends ReservationsState {
+  const ListingReservationsFetched({required this.reservations});
+  final List<ListingReservation> reservations;
+
+  @override
+  List<Object?> get props => [reservations];
+}

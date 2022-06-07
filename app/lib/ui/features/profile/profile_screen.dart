@@ -1,4 +1,5 @@
 import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
+import 'package:app/ui/features/login/login_screen.dart';
 import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:app/ui/widgets/dialogs/alert_dialog.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,8 @@ class ProfileScreen extends StatelessWidget {
                         onPress: () {
                           context.read<UserTypeBloc>().add(LogoutUser());
                           Get.back<dynamic>();
+                          // ignore: cascade_invocations
+                          Get.toNamed<dynamic>(LoginScreen.routeName);
                         },
                         backgroundColor: Colors.blueAccent,
                       ),
