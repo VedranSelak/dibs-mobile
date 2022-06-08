@@ -30,6 +30,7 @@ import 'package:domain/private_room/usecases/leave_room_usecase.dart';
 import 'package:domain/private_room/usecases/respond_to_invite_usecase.dart';
 import 'package:domain/private_room/usecases/search_users_usecase.dart';
 import 'package:domain/profile/common/profile_api_repository.dart';
+import 'package:domain/profile/usecases/change_profile_image_usecase.dart';
 import 'package:domain/profile/usecases/get_profile_details_usecase.dart';
 import 'package:domain/public_listing/common/public_listing_api_repository.dart';
 import 'package:domain/private_room/common/private_room_api_repository.dart';
@@ -114,5 +115,6 @@ class DataModule extends BaseDiModule {
 
     // profile usecases
     GetIt.I.registerFactory(() => GetProfileDetailsUseCase(profileRepository));
+    GetIt.I.registerFactory(() => ChangeProfileImageUseCase(profileRepository));
   }
 }

@@ -8,3 +8,5 @@ abstract class ProfileEvent extends Equatable {
 }
 
 class FetchProfileDetails extends ProfileEvent {}
+
+class ChangeProfileImage extends ProfileEvent {}

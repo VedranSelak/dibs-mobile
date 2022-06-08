@@ -11,11 +11,12 @@ abstract class ProfileState extends Equatable {
 class ProfileInitial extends ProfileState {}
 
 class ProfileDetailsFetched extends ProfileState {
-  const ProfileDetailsFetched({required this.profile});
+  const ProfileDetailsFetched({required this.profile, this.image});
   final ProfileDetails profile;
+  final XFile? image;
 
   @override
-  List<Object?> get props => [profile];
+  List<Object?> get props => [profile, image];
 }
 
 class FetchProfileFailed extends ProfileState {
