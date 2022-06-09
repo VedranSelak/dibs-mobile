@@ -1,5 +1,6 @@
 import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
+import 'package:app/ui/widgets/avatar_widget.dart';
 import 'package:flutter/material.dart';
 
 class RoomReservationListItem extends StatelessWidget {
@@ -8,12 +9,14 @@ class RoomReservationListItem extends StatelessWidget {
     required this.date,
     required this.time,
     required this.stay,
+    required this.imageUrl,
     Key? key,
   }) : super(key: key);
   final String fullName;
   final String date;
   final String time;
   final int stay;
+  final String? imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,7 @@ class RoomReservationListItem extends StatelessWidget {
       height: 80.0,
       child: Row(
         children: [
-          const Icon(Icons.person, size: 50.0),
+          AvatarWidget(imageUrl: imageUrl, size: 80.0),
           const SizedBox(width: 10.0),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,

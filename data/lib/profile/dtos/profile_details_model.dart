@@ -10,11 +10,17 @@ class ProfileDetailsModel extends ProfileDetails {
     required String firstName,
     required String lastName,
     required String? imageUrl,
+    required String type,
+    required int roomsCount,
+    required int reservationsCount,
   }) : super(
           id: id,
           firstName: firstName,
           lastName: lastName,
           imageUrl: imageUrl,
+          type: type,
+          roomsCount: roomsCount,
+          reservationsCount: reservationsCount,
         );
 
   factory ProfileDetailsModel.fromJson(Map<String, dynamic> json) => _$ProfileDetailsModelFromJson(json);

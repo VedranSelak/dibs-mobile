@@ -4,6 +4,8 @@ import 'package:app/blocs/profile_bloc/profile_bloc.dart';
 import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:app/res/assets.dart';
 import 'package:app/res/dimensions.dart';
+import 'package:app/res/string_extension.dart';
+import 'package:app/res/text_styles.dart';
 import 'package:app/ui/features/login/login_screen.dart';
 import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:app/ui/widgets/dialogs/alert_dialog.dart';
@@ -21,6 +23,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final dimensions = Dimensions.of(context);
+    final textStyles = TextStyles.of(context);
 
     return Container(
       padding: const EdgeInsets.all(20.0),
@@ -118,6 +121,64 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                const SizedBox(height: 20.0),
+                SizedBox(
+                  width: dimensions.fullWidth,
+                  child: Text(
+                    '${state.profile.firstName} ${state.profile.lastName}',
+                    style: textStyles.headerText,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(height: 50.0),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: dimensions.fullWidth * 0.1),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Account type: ',
+                            style: textStyles.subheaderText,
+                          ),
+                          const SizedBox(width: 10.0),
+                          Text(
+                            state.profile.type.capitalizeMe(),
+                            style: textStyles.labelText,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20.0),
+                      Row(
+                        children: [
+                          Text(
+                            'Reservations made: ',
+                            style: textStyles.subheaderText,
+                          ),
+                          const SizedBox(width: 10.0),
+                          Text(
+                            state.profile.reservationsCount.toString(),
+                            style: textStyles.labelText,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20.0),
+                      Row(
+                        children: [
+                          Text(
+                            'Your private rooms: ',
+                            style: textStyles.subheaderText,
+                          ),
+                          const SizedBox(width: 10.0),
+                          Text(
+                            state.profile.roomsCount.toString(),
+                            style: textStyles.labelText,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
               ],
             );
           }

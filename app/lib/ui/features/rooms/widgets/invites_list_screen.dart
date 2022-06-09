@@ -41,6 +41,7 @@ class _InvitesListScreenState extends State<InvitesListScreen> {
                   name: invite.name,
                   firstName: invite.firstName,
                   lastName: invite.lastName,
+                  imageUrl: invite.imageUrl,
                 );
               },
             ),

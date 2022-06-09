@@ -36,6 +36,8 @@ class ListingItem extends StatelessWidget {
                       color: Colors.blueAccent,
                     );
                   },
+                  maxWidthDiskCache: 200,
+                  maxHeightDiskCache: 200,
                 ),
               ),
             ),

@@ -8,9 +8,11 @@ class UserDataModel extends UserData {
   const UserDataModel({
     required String firstName,
     required String lastName,
+    required String? imageUrl,
   }) : super(
           firstName: firstName,
           lastName: lastName,
+          imageUrl: imageUrl,
         );
 
   factory UserDataModel.fromJson(Map<String, dynamic> json) => _$UserDataModelFromJson(json);

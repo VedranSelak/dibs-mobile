@@ -46,20 +46,28 @@ class YourRoomListItem extends StatelessWidget {
                       color: Colors.blueAccent,
                     );
                   },
+                  maxWidthDiskCache: 200,
+                  maxHeightDiskCache: 200,
                 ),
               ),
             ),
             const SizedBox(width: 10.0),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(name, style: textStyles.labelText),
-                const SizedBox(height: 8.0),
-                Text(description, style: textStyles.secondaryLabelSmall),
-              ],
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(name, style: textStyles.labelText),
+                  const SizedBox(height: 8.0),
+                  Text(
+                    description,
+                    style: textStyles.secondaryLabelSmall,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
-            Expanded(child: Container()),
             PopupMenuButton<dynamic>(
                 itemBuilder: (BuildContext context) => [
                       PopupMenuItem<dynamic>(

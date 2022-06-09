@@ -11,12 +11,14 @@ class InviteModel extends Invite {
     required String name,
     required String firstName,
     required String lastName,
+    required String? imageUrl,
   }) : super(
           id: id,
           roomId: roomId,
           name: name,
           firstName: firstName,
           lastName: lastName,
+          imageUrl: imageUrl,
         );
 
   factory InviteModel.fromJson(Map<String, dynamic> json) => _$InviteModelFromJson(json);

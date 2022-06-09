@@ -1,6 +1,7 @@
 import 'package:app/blocs/room_details_bloc/room_details_bloc.dart';
 import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
+import 'package:app/ui/widgets/avatar_widget.dart';
 import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:app/ui/widgets/screen_wrappers/simple_screen_wrapper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -80,7 +81,7 @@ class _RoomDeatilsScreenState extends State<RoomDeatilsScreen> {
                             style: textStyles.accentText,
                           ),
                           const SizedBox(width: 10.0),
-                          const Icon(Icons.person),
+                          AvatarWidget(imageUrl: state.room.owner.imageUrl, size: 30.0),
                           const SizedBox(width: 10.0),
                           Text(
                             '${state.room.owner.firstName} ${state.room.owner.lastName}',

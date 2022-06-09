@@ -85,6 +85,7 @@ class _UpcomingReservationsScreenState extends State<UpcomingReservationsScreen>
                   date: date,
                   numOfPeople: reservation.numOfParticipants,
                   stay: (reservation.stayApprox - reservation.arrivalTimestamp) ~/ 3600000,
+                  imageUrl: reservation.user.imageUrl,
                 );
               },
             ),
