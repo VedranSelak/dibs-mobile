@@ -60,6 +60,7 @@ class _RecentReservationsScreenState extends State<RecentReservationsScreen> {
                 final date = _getDateString(reservation.arrivalTimestamp);
 
                 return RecentListItem(
+                  id: reservation.id,
                   imageUrl: place.imageUrl,
                   name: place.name,
                   isPrivate: reservation.isPrivate,

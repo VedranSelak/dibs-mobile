@@ -55,6 +55,7 @@ class _UpcomingReservationsScreenState extends State<UpcomingReservationsScreen>
                 final date = _getDateString(reservation.arrivalTimestamp);
 
                 return UpcomingListItem(
+                  id: reservation.id,
                   imageUrl: place.imageUrl,
                   arrivalTime: arrivalTime,
                   name: place.name,

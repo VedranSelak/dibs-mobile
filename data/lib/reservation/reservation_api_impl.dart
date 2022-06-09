@@ -219,4 +219,74 @@ class ReservationApiImpl implements ReservationRepository {
       return DataFailed(e);
     }
   }
+
+  @override
+  Future<DataState<Created>> cancelReservation(int id) async {
+    try {
+      const storage = FlutterSecureStorage();
+      final String? token = await storage.read(key: kAccessTokenKey);
+      if (token == null) {
+        return DataFailed(DioError(
+          response: Response<dynamic>(
+            requestOptions: RequestOptions(path: ""),
+            statusCode: 401,
+          ),
+          type: DioErrorType.response,
+          requestOptions: RequestOptions(path: ""),
+        ));
+      }
+
+      final httpResponse = await reservationApiService.cancelReservation(
+        id,
+        'Bearer $token',
+      );
+
+      if (httpResponse.response.statusCode == 201) {
+        return DataSuccess(httpResponse.data);
+      }
+      return DataFailed(DioError(
+        error: httpResponse.response.statusMessage,
+        response: httpResponse.response,
+        type: DioErrorType.response,
+        requestOptions: httpResponse.response.requestOptions,
+      ));
+    } on DioError catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<Created>> removeFromHistory(int id) async {
+    try {
+      const storage = FlutterSecureStorage();
+      final String? token = await storage.read(key: kAccessTokenKey);
+      if (token == null) {
+        return DataFailed(DioError(
+          response: Response<dynamic>(
+            requestOptions: RequestOptions(path: ""),
+            statusCode: 401,
+          ),
+          type: DioErrorType.response,
+          requestOptions: RequestOptions(path: ""),
+        ));
+      }
+
+      final httpResponse = await reservationApiService.removeFromHistory(
+        id,
+        'Bearer $token',
+      );
+
+      if (httpResponse.response.statusCode == 201) {
+        return DataSuccess(httpResponse.data);
+      }
+      return DataFailed(DioError(
+        error: httpResponse.response.statusMessage,
+        response: httpResponse.response,
+        type: DioErrorType.response,
+        requestOptions: httpResponse.response.requestOptions,
+      ));
+    } on DioError catch (e) {
+      return DataFailed(e);
+    }
+  }
 }

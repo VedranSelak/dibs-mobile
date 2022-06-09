@@ -39,12 +39,14 @@ import 'package:domain/public_listing/usecases/get_listing_details_usecase.dart'
 import 'package:domain/public_listing/usecases/post_listing_images_usecase.dart';
 import 'package:domain/public_listing/usecases/post_listing_usecase.dart';
 import 'package:domain/reservation/common/reservation_repository.dart';
+import 'package:domain/reservation/usecases/cancel_reservation_usecase.dart';
 import 'package:domain/reservation/usecases/get_recent_listing_reservations_usecase.dart';
 import 'package:domain/reservation/usecases/get_recent_reservations_usecase.dart';
 import 'package:domain/reservation/usecases/get_upcoming_listing_reservations_usecase.dart';
 import 'package:domain/reservation/usecases/get_upcoming_reservations_usecase.dart';
 import 'package:domain/reservation/usecases/post_reservation_usecase.dart';
 import 'package:domain/reservation/usecases/post_room_reservation_usecase.dart';
+import 'package:domain/reservation/usecases/remove_from_history_usecase.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 
@@ -101,6 +103,8 @@ class DataModule extends BaseDiModule {
     GetIt.I.registerFactory(() => PostRoomReservationUseCase(reservationRepository));
     GetIt.I.registerFactory(() => GetUpcomingListingReservationsUseCase(reservationRepository));
     GetIt.I.registerFactory(() => GetRecentListingReservationsUseCase(reservationRepository));
+    GetIt.I.registerFactory(() => CancelReservationUseCase(reservationRepository));
+    GetIt.I.registerFactory(() => RemoveFromHistoryUseCase(reservationRepository));
 
     // room usecases
     GetIt.I.registerFactory(() => SearchUsersUseCase(privateRoomRepository));
