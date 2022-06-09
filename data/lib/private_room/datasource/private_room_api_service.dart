@@ -68,4 +68,10 @@ abstract class PrivateRoomApiService {
     @Path('id') int id,
     @Header('Authorization') String header,
   );
+
+  @DELETE('/rooms/{id}')
+  Future<HttpResponse<CreatedModel>> deleteRoom(
+    @Path('id') int id,
+    @Header('Authorization') String header,
+  );
 }

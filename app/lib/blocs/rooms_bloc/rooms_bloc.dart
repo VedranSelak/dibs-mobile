@@ -5,6 +5,7 @@ import 'package:common/resources/data_state.dart';
 import 'package:domain/private_room/entities/invite.dart';
 import 'package:domain/private_room/entities/private_room.dart';
 import 'package:domain/private_room/entities/rooms_response.dart';
+import 'package:domain/private_room/usecases/delete_room_usecase.dart';
 import 'package:domain/private_room/usecases/get_invites_usecase.dart';
 import 'package:domain/private_room/usecases/get_rooms_usecase.dart';
 import 'package:domain/private_room/usecases/get_your_rooms_usecase.dart';
@@ -26,6 +27,7 @@ class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
     on<FetchInvites>(_onFetchInvites);
     on<RespondToInvite>(_onRespondToInvite);
     on<LeaveRoom>(_onLeaveRoom);
+    on<DeleteRoom>(_onDeleteRoom);
   }
 
   final GetYourRoomsUseCase _getYourRoomsUseCase = GetIt.I.get<GetYourRoomsUseCase>();
@@ -33,6 +35,7 @@ class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
   final GetInvitesUseCase _getInvitesUseCase = GetIt.I.get<GetInvitesUseCase>();
   final RespondToInviteUseCase _respondToInviteUseCase = GetIt.I.get<RespondToInviteUseCase>();
   final LeaveRoomUseCase _leaveRoomUseCase = GetIt.I.get<LeaveRoomUseCase>();
+  final DeleteRoomUseCase _deleteRoomUseCase = GetIt.I.get<DeleteRoomUseCase>();
 
   void _onFetchYourRooms(FetchYourRooms event, Emitter<RoomsState> emit) async {
     emit(FetchingYourRooms());
@@ -138,6 +141,24 @@ class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
         backgroundColor: Colors.green,
       );
       add(FetchRooms());
+    }
+  }
+
+  void _onDeleteRoom(DeleteRoom event, Emitter<RoomsState> emit) async {
+    final response = await _deleteRoomUseCase(params: event.id);
+    if (response is DataFailed) {
+      Fluttertoast.showToast(
+        msg: 'Something when wrong',
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+      );
+    } else {
+      Fluttertoast.showToast(
+        msg: 'Room deleted',
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+      );
+      add(FetchYourRooms());
     }
   }
 }

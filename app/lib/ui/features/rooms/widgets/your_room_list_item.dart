@@ -1,8 +1,12 @@
+import 'package:app/blocs/rooms_bloc/rooms_bloc.dart';
 import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
 import 'package:app/ui/features/your_room/your_room_screen.dart';
+import 'package:app/ui/widgets/buttons/primary_button.dart';
+import 'package:app/ui/widgets/dialogs/alert_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
@@ -68,19 +72,35 @@ class YourRoomListItem extends StatelessWidget {
                 ],
               ),
             ),
-            PopupMenuButton<dynamic>(
-                itemBuilder: (BuildContext context) => [
-                      PopupMenuItem<dynamic>(
-                        child: Row(
-                          children: [
-                            const Icon(Icons.cancel, color: Colors.red),
-                            const SizedBox(width: 10.0),
-                            Text('Delete room', style: textStyles.regularText),
-                          ],
-                        ),
-                      ),
-                    ],
-                icon: const Icon(Icons.more_vert)),
+            IconButton(
+              icon: const Icon(
+                Icons.delete_outline,
+                color: Colors.red,
+              ),
+              onPressed: () {
+                AlertDialogWidget(
+                  context: context,
+                  title: 'Delete room "$name"',
+                  description:
+                      "Are you sure you want to delete the room. If you delete the room you will not be able to recover it back. Everything related to the room will be deleted.",
+                  acceptButton: PrimaryButton(
+                    buttonText: "Delete",
+                    onPress: () {
+                      context.read<RoomsBloc>().add(DeleteRoom(id: id));
+                      Get.back<dynamic>();
+                    },
+                    backgroundColor: Colors.red,
+                  ),
+                  rejectButton: PrimaryButton(
+                    buttonText: "Cancel",
+                    onPress: () {
+                      Get.back<dynamic>();
+                    },
+                    backgroundColor: Colors.grey,
+                  ),
+                ).showAlertDialog();
+              },
+            ),
           ],
         ),
       ),
