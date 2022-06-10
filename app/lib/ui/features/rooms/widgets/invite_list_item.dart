@@ -1,6 +1,7 @@
 import 'package:app/blocs/rooms_bloc/rooms_bloc.dart';
 import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
+import 'package:app/ui/widgets/avatar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,6 +12,7 @@ class InviteListItem extends StatelessWidget {
     required this.name,
     required this.firstName,
     required this.lastName,
+    required this.imageUrl,
     Key? key,
   }) : super(key: key);
   final int id;
@@ -18,6 +20,7 @@ class InviteListItem extends StatelessWidget {
   final String name;
   final String firstName;
   final String lastName;
+  final String? imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,7 @@ class InviteListItem extends StatelessWidget {
       height: 70.0,
       child: Row(
         children: [
-          const Icon(Icons.person, size: 70.0),
+          AvatarWidget(imageUrl: imageUrl, size: 70.0),
           const SizedBox(width: 10.0),
           Expanded(
             child: Column(

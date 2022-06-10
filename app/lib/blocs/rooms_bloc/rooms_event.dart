@@ -29,3 +29,11 @@ class LeaveRoom extends RoomsEvent {
   @override
   List<Object> get props => [id];
 }
+
+class DeleteRoom extends RoomsEvent {
+  const DeleteRoom({required this.id});
+  final int id;
+
+  @override
+  List<Object> get props => [id];
+}

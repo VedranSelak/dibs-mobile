@@ -12,4 +12,6 @@ abstract class ReservationRepository {
   Future<DataState<Created>> postRoomReservation(CreateRoomReservationRequestParams params);
   Future<DataState<List<ListingReservation>>> getUpcomingListingReservations();
   Future<DataState<List<ListingReservation>>> getRecentListingReservations();
+  Future<DataState<Created>> removeFromHistory(int id);
+  Future<DataState<Created>> cancelReservation(int id);
 }

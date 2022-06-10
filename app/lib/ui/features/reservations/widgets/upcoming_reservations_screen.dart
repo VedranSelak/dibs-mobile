@@ -17,11 +17,6 @@ class _UpcomingReservationsScreenState extends State<UpcomingReservationsScreen>
   @override
   void initState() {
     super.initState();
-    if (widget.ownerMode) {
-      context.read<ReservationsBloc>().add(FetchUpcomingListingReservations());
-    } else {
-      context.read<ReservationsBloc>().add(FetchUpcomingReservations());
-    }
   }
 
   String _getArrivalTimeString(int milliseconds) {
@@ -60,6 +55,7 @@ class _UpcomingReservationsScreenState extends State<UpcomingReservationsScreen>
                 final date = _getDateString(reservation.arrivalTimestamp);
 
                 return UpcomingListItem(
+                  id: reservation.id,
                   imageUrl: place.imageUrl,
                   arrivalTime: arrivalTime,
                   name: place.name,
@@ -90,6 +86,7 @@ class _UpcomingReservationsScreenState extends State<UpcomingReservationsScreen>
                   date: date,
                   numOfPeople: reservation.numOfParticipants,
                   stay: (reservation.stayApprox - reservation.arrivalTimestamp) ~/ 3600000,
+                  imageUrl: reservation.user.imageUrl,
                 );
               },
             ),

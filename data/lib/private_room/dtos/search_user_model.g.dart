@@ -11,6 +11,7 @@ SearchUserModel _$SearchUserModelFromJson(Map<String, dynamic> json) =>
       id: json['id'] as int,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
+      imageUrl: json['imageUrl'] as String?,
     );
 
 Map<String, dynamic> _$SearchUserModelToJson(SearchUserModel instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$SearchUserModelToJson(SearchUserModel instance) =>
       'id': instance.id,
       'firstName': instance.firstName,
       'lastName': instance.lastName,
+      'imageUrl': instance.imageUrl,
     };

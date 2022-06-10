@@ -138,6 +138,7 @@ class _YourRoomScreenState extends State<YourRoomScreen> {
                                       String time = '';
                                       String fullName = '';
                                       int stay;
+                                      String? imageUrl;
                                       if (controller.tabIndex == 0) {
                                         date = _getDateString(state.room.reservations[index].arrivalTimestamp);
                                         time = _getArrivalTimeString(state.room.reservations[index].arrivalTimestamp);
@@ -146,6 +147,7 @@ class _YourRoomScreenState extends State<YourRoomScreen> {
                                         stay = (state.room.reservations[index].stayApprox -
                                                 state.room.reservations[index].arrivalTimestamp) ~/
                                             3600000;
+                                        imageUrl = state.room.reservations[index].user.imageUrl;
                                       } else {
                                         date = _getDateString(state.room.recent[index].arrivalTimestamp);
                                         time = _getArrivalTimeString(state.room.recent[index].arrivalTimestamp);
@@ -154,10 +156,16 @@ class _YourRoomScreenState extends State<YourRoomScreen> {
                                         stay = (state.room.recent[index].stayApprox -
                                                 state.room.recent[index].arrivalTimestamp) ~/
                                             3600000;
+                                        imageUrl = state.room.recent[index].user.imageUrl;
                                       }
 
                                       return RoomReservationListItem(
-                                          fullName: fullName, date: date, time: time, stay: stay);
+                                        fullName: fullName,
+                                        date: date,
+                                        time: time,
+                                        stay: stay,
+                                        imageUrl: imageUrl,
+                                      );
                                     },
                                   ),
                                 ),

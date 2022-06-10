@@ -44,4 +44,16 @@ abstract class ReservationApiService {
   Future<HttpResponse<List<ListingReservationModel>>> getRecentListingReservations(
     @Header('Authorization') String header,
   );
+
+  @DELETE('/reservations/cancel/{id}')
+  Future<HttpResponse<CreatedModel>> cancelReservation(
+    @Path('id') int id,
+    @Header('Authorization') String header,
+  );
+
+  @PATCH('/reservations/remove/{id}')
+  Future<HttpResponse<CreatedModel>> removeFromHistory(
+    @Path('id') int id,
+    @Header('Authorization') String header,
+  );
 }

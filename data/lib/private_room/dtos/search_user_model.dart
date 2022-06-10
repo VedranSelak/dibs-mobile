@@ -9,10 +9,12 @@ class SearchUserModel extends SearchUser {
     required int id,
     required String firstName,
     required String lastName,
+    required String? imageUrl,
   }) : super(
           id: id,
           firstName: firstName,
           lastName: lastName,
+          imageUrl: imageUrl,
         );
 
   factory SearchUserModel.fromJson(Map<String, dynamic> json) => _$SearchUserModelFromJson(json);

@@ -7,6 +7,7 @@ class Invite extends Equatable {
     required this.name,
     required this.firstName,
     required this.lastName,
+    required this.imageUrl,
   });
 
   final int id;
@@ -14,7 +15,8 @@ class Invite extends Equatable {
   final String name;
   final String firstName;
   final String lastName;
+  final String? imageUrl;
 
   @override
-  List<Object?> get props => [id, roomId, name, firstName, lastName];
+  List<Object?> get props => [id, roomId, name, firstName, lastName, imageUrl];
 }

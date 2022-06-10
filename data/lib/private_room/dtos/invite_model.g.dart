@@ -12,6 +12,7 @@ InviteModel _$InviteModelFromJson(Map<String, dynamic> json) => InviteModel(
       name: json['name'] as String,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
+      imageUrl: json['imageUrl'] as String?,
     );
 
 Map<String, dynamic> _$InviteModelToJson(InviteModel instance) =>
@@ -21,4 +22,5 @@ Map<String, dynamic> _$InviteModelToJson(InviteModel instance) =>
       'name': instance.name,
       'firstName': instance.firstName,
       'lastName': instance.lastName,
+      'imageUrl': instance.imageUrl,
     };

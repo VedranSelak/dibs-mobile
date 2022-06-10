@@ -19,4 +19,5 @@ abstract class PrivateRoomApiRepository {
   Future<DataState<Created>> leaveRoom(int id);
   Future<DataState<PrivateRoomDetails>> getRoomDetails(int id);
   Future<DataState<YourRoomDetails>> getYourRoom(int id);
+  Future<DataState<Created>> deleteRoom(int id);
 }

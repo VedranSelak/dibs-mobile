@@ -1,5 +1,6 @@
 import 'package:app/blocs/listing_bloc/listing_bloc.dart';
 import 'package:app/blocs/owner_mode_cubit/owner_mode_cubit.dart';
+import 'package:app/blocs/profile_bloc/profile_bloc.dart';
 import 'package:app/blocs/reservations_bloc/reservations_bloc.dart';
 import 'package:app/blocs/rooms_bloc/rooms_bloc.dart';
 import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
@@ -75,6 +76,7 @@ class BottomAppBarWidget extends StatelessWidget {
             tooltip: "Profile",
             onPressed: () {
               controller.changeTabIndex(3);
+              context.read<ProfileBloc>().add(FetchProfileDetails());
             },
           ),
         ],

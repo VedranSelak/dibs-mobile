@@ -41,7 +41,14 @@ class ViewAllScreen extends StatelessWidget {
           final time = _getArrivalTimeString(reservations[index].arrivalTimestamp);
           final fullName = '${reservations[index].user.firstName} ${reservations[index].user.lastName}';
           final stay = (reservations[index].stayApprox - reservations[index].arrivalTimestamp) ~/ 3600000;
-          return RoomReservationListItem(fullName: fullName, date: date, time: time, stay: stay);
+          final imageUrl = reservations[index].user.imageUrl;
+          return RoomReservationListItem(
+            fullName: fullName,
+            date: date,
+            time: time,
+            stay: stay,
+            imageUrl: imageUrl,
+          );
         },
       ),
     );

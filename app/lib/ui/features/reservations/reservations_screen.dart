@@ -96,7 +96,7 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
                                     context.read<ReservationsBloc>().add(FetchRecentListingReservations());
                                   }
                                 } else {
-                                  if (controller.tabIndex == 1) {
+                                  if (controller.tabIndex == 0) {
                                     context.read<ReservationsBloc>().add(FetchUpcomingReservations());
                                   } else {
                                     context.read<ReservationsBloc>().add(FetchRecentReservations());
@@ -148,6 +148,11 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
             child: InkWell(
               onTap: () {
                 controller.changeTabIndex(0);
+                if (context.read<OwnerModeCubit>().state) {
+                  context.read<ReservationsBloc>().add(FetchUpcomingListingReservations());
+                } else {
+                  context.read<ReservationsBloc>().add(FetchUpcomingReservations());
+                }
               },
               child: Container(
                 decoration: BoxDecoration(

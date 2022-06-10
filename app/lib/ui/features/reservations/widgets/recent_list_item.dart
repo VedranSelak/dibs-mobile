@@ -1,17 +1,21 @@
+import 'package:app/blocs/reservations_bloc/reservations_bloc.dart';
 import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class RecentListItem extends StatelessWidget {
   const RecentListItem({
+    required this.id,
     required this.imageUrl,
     required this.name,
     required this.date,
     required this.isPrivate,
     Key? key,
   }) : super(key: key);
+  final int id;
   final String imageUrl;
   final String name;
   final String date;
@@ -42,6 +46,8 @@ class RecentListItem extends StatelessWidget {
                         color: Colors.blueAccent,
                       );
                     },
+                    maxWidthDiskCache: 200,
+                    maxHeightDiskCache: 200,
                   ),
                 ),
               ),
@@ -75,6 +81,9 @@ class RecentListItem extends StatelessWidget {
           PopupMenuButton<dynamic>(
               itemBuilder: (BuildContext context) => [
                     PopupMenuItem<dynamic>(
+                      onTap: () {
+                        context.read<ReservationsBloc>().add(RemoveFromHistory(id: id));
+                      },
                       child: Row(
                         children: [
                           const Icon(Icons.cancel, color: Colors.red),

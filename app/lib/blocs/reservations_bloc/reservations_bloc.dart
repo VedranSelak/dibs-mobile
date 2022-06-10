@@ -1,16 +1,21 @@
 import 'dart:convert';
 
+import 'package:app/ui/features/reservations/navigation/reservations_controller.dart';
 import 'package:common/resources/data_state.dart';
 import 'package:domain/reservation/entities/listing_reservation.dart';
 import 'package:domain/reservation/entities/reservation.dart';
+import 'package:domain/reservation/usecases/cancel_reservation_usecase.dart';
 import 'package:domain/reservation/usecases/get_recent_listing_reservations_usecase.dart';
 import 'package:domain/reservation/usecases/get_upcoming_listing_reservations_usecase.dart';
 import 'package:domain/reservation/usecases/get_upcoming_reservations_usecase.dart';
 import 'package:domain/reservation/usecases/get_recent_reservations_usecase.dart';
+import 'package:domain/reservation/usecases/remove_from_history_usecase.dart';
 import "package:equatable/equatable.dart";
+import 'package:flutter/material.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
-import "package:meta/meta.dart";
 
 part "reservations_event.dart";
 part "reservations_state.dart";
@@ -21,6 +26,8 @@ class ReservationsBloc extends Bloc<ReservationsEvent, ReservationsState> {
     on<FetchRecentReservations>(_onFetchRecentReservations);
     on<FetchUpcomingListingReservations>(_onFetchUpcomingListingReservations);
     on<FetchRecentListingReservations>(_onFetchRecentListingReservations);
+    on<CancelReservation>(_onCancelReservation);
+    on<RemoveFromHistory>(_onRemoveFromHistory);
   }
 
   final GetUpcomingReservationsUseCase _getUpcomingReservationsUseCase = GetIt.I.get<GetUpcomingReservationsUseCase>();
@@ -29,9 +36,10 @@ class ReservationsBloc extends Bloc<ReservationsEvent, ReservationsState> {
       GetIt.I.get<GetUpcomingListingReservationsUseCase>();
   final GetRecentListingReservationsUseCase _getRecentListingReservationsUseCase =
       GetIt.I.get<GetRecentListingReservationsUseCase>();
+  final CancelReservationUseCase _cancelReservationUseCase = GetIt.I.get<CancelReservationUseCase>();
+  final RemoveFromHistoryUseCase _removeFromHistoryUseCase = GetIt.I.get<RemoveFromHistoryUseCase>();
 
   void _onFetchUpcomingReservations(FetchUpcomingReservations event, Emitter<ReservationsState> emit) async {
-    emit(FetchingReservations());
     final response = await _getUpcomingReservationsUseCase(params: null);
     if (response is DataFailed) {
       if (response.error?.response?.statusCode != null && response.error?.response?.statusCode == 401) {
@@ -104,6 +112,46 @@ class ReservationsBloc extends Bloc<ReservationsEvent, ReservationsState> {
       }
     } else {
       emit(ListingReservationsFetched(reservations: response.data!));
+    }
+  }
+
+  void _onCancelReservation(CancelReservation event, Emitter<ReservationsState> emit) async {
+    final response = await _cancelReservationUseCase(params: event.id);
+    if (response is DataFailed) {
+      Fluttertoast.showToast(
+        msg: 'To late to cancel reservation',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+      );
+    } else {
+      Fluttertoast.showToast(
+        msg: 'Reservation canceled',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+      );
+      add(FetchUpcomingReservations());
+    }
+  }
+
+  void _onRemoveFromHistory(RemoveFromHistory event, Emitter<ReservationsState> emit) async {
+    final response = await _removeFromHistoryUseCase(params: event.id);
+    if (response is DataFailed) {
+      Fluttertoast.showToast(
+        msg: 'Something went wrong',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+      );
+    } else {
+      Fluttertoast.showToast(
+        msg: 'Removed from history',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+      );
+      add(FetchRecentReservations());
     }
   }
 }
