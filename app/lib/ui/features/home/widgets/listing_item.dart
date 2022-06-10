@@ -31,8 +31,9 @@ class ListingItem extends StatelessWidget {
                   fit: BoxFit.cover,
                   imageUrl: listing.imageUrls[0],
                   placeholder: (context, _) {
-                    return const SpinKitWave(
+                    return const SpinKitRing(
                       size: 20.0,
+                      lineWidth: 2,
                       color: Colors.blueAccent,
                     );
                   },

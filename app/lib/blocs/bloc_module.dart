@@ -22,8 +22,10 @@ class BlocModule extends BaseDiModule {
   void inject() {
     /// Blocs
     GetIt.I.registerFactory<TestBloc>(TestBloc.new);
-    GetIt.I.registerFactory<LoginBloc>(LoginBloc.new);
-    GetIt.I.registerFactory<SignUpBloc>(SignUpBloc.new);
+    GetIt.I.registerFactoryParam<LoginBloc, UserTypeBloc, void>(
+        (userTypeBloc, _) => LoginBloc(userTypeBloc: userTypeBloc));
+    GetIt.I.registerFactoryParam<SignUpBloc, UserTypeBloc, void>(
+        (userTypeBloc, _) => SignUpBloc(userTypeBloc: userTypeBloc));
     GetIt.I.registerFactory<ListingBloc>(ListingBloc.new);
     GetIt.I.registerFactory<UserTypeBloc>(UserTypeBloc.new);
     GetIt.I.registerFactory<CreateListingBloc>(CreateListingBloc.new);

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:app/res/account_type.dart';
 import 'package:app/ui/features/home/home_screen.dart';
 import 'package:common/params/signup_request.dart';
@@ -15,12 +16,13 @@ part "signup_event.dart";
 part "signup_state.dart";
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
-  SignUpBloc() : super(SignUpInitial()) {
+  SignUpBloc({required this.userTypeBloc}) : super(SignUpInitial()) {
     on<StartSignUp>(_onStartSignUp);
     on<ChooseAccountType>(_onChooseAccountType);
     on<ResetBloc>(_onResetBloc);
   }
 
+  final UserTypeBloc userTypeBloc;
   final SignUpUseCase _signUpUseCase = GetIt.I.get<SignUpUseCase>();
 
   void _onStartSignUp(StartSignUp event, Emitter<SignUpState> emit) async {
@@ -35,6 +37,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
               type: type.rawValue,
               status: 'inactive'));
       if (response is DataSuccess) {
+        userTypeBloc.add(GetUserType());
         Get.offAllNamed<dynamic>(HomeScreen.routeName);
         emit(SignUpSuccessful());
       } else if (response is DataFailed) {

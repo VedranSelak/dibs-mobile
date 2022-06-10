@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:app/ui/features/home/home_screen.dart';
 import 'package:common/params/login_request.dart';
 import 'package:common/resources/data_state.dart';
@@ -14,11 +15,12 @@ part "login_event.dart";
 part "login_state.dart";
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc() : super(LoginInitial()) {
+  LoginBloc({required this.userTypeBloc}) : super(LoginInitial()) {
     on<StartLogin>(_onStartLogin);
     on<ResetLogin>(_onResetLogin);
   }
 
+  final UserTypeBloc userTypeBloc;
   final LoginUseCase _loginUseCase = GetIt.I.get<LoginUseCase>();
 
   void _onStartLogin(StartLogin event, Emitter<LoginState> emit) async {
@@ -30,6 +32,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginFailed(statusCode: response.error?.response?.statusCode, message: errorObject['msg'] as String?));
     } else {
       Get.offAllNamed<dynamic>(HomeScreen.routeName);
+      userTypeBloc.add(GetUserType());
       emit(LoginSuccessful());
     }
   }

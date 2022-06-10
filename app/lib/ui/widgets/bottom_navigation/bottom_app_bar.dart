@@ -76,7 +76,10 @@ class BottomAppBarWidget extends StatelessWidget {
             tooltip: "Profile",
             onPressed: () {
               controller.changeTabIndex(3);
-              context.read<ProfileBloc>().add(FetchProfileDetails());
+              final userState = context.read<UserTypeBloc>().state;
+              if (userState is! GuestType) {
+                context.read<ProfileBloc>().add(FetchProfileDetails());
+              }
             },
           ),
         ],

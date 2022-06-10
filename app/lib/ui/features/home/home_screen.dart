@@ -88,6 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           context.read<SearchListingsBloc>().add(StartSearchListings(
                                 listings: listingState.listings,
                               ));
+                        } else if (isSearchActive) {
+                          _searchController.clear();
                         }
                         setState(() {
                           isSearchActive = !isSearchActive;
@@ -137,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 } else {
                   return const Expanded(
                     child: Center(
-                      child: SpinKitWave(
+                      child: SpinKitRing(
                         color: Colors.blueAccent,
                       ),
                     ),
@@ -191,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 } else {
                   return const Expanded(
                     child: Center(
-                      child: SpinKitWave(
+                      child: SpinKitRing(
                         color: Colors.blueAccent,
                       ),
                     ),

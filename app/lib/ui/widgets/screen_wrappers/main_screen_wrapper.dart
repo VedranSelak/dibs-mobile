@@ -88,37 +88,40 @@ class _MainScreenWrapperState extends State<MainScreenWrapper> {
                 ),
               ),
               floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-              floatingActionButton: FloatingActionButton(
-                onPressed: () {
-                  final state = context.read<UserTypeBloc>().state;
-                  if (state is GuestType) {
-                    AlertDialogWidget(
-                      context: context,
-                      title: "You aren't logged in",
-                      description:
-                          "To be able to take advantage the apps whole functionality please create an account.",
-                      acceptButton: PrimaryButton(
-                        buttonText: 'Log in',
-                        backgroundColor: Colors.blueAccent,
-                        onPress: () {
-                          Get.back<dynamic>();
-                          // ignore: cascade_invocations
-                          Get.toNamed<dynamic>(LoginScreen.routeName);
-                        },
-                      ),
-                      rejectButton: PrimaryButton(
-                        buttonText: 'Cancel',
-                        backgroundColor: Colors.grey,
-                        onPress: () {
-                          Get.back<dynamic>();
-                        },
-                      ),
-                    ).showAlertDialog();
-                  } else {
-                    Overlay.of(context)?.insert(entry);
-                  }
-                },
-                child: const Icon(Icons.add),
+              floatingActionButton: Visibility(
+                visible: MediaQuery.of(context).viewInsets.bottom == 0,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    final state = context.read<UserTypeBloc>().state;
+                    if (state is GuestType) {
+                      AlertDialogWidget(
+                        context: context,
+                        title: "You aren't logged in",
+                        description:
+                            "To be able to take advantage the apps whole functionality please create an account.",
+                        acceptButton: PrimaryButton(
+                          buttonText: 'Log in',
+                          backgroundColor: Colors.blueAccent,
+                          onPress: () {
+                            Get.back<dynamic>();
+                            // ignore: cascade_invocations
+                            Get.toNamed<dynamic>(LoginScreen.routeName);
+                          },
+                        ),
+                        rejectButton: PrimaryButton(
+                          buttonText: 'Cancel',
+                          backgroundColor: Colors.grey,
+                          onPress: () {
+                            Get.back<dynamic>();
+                          },
+                        ),
+                      ).showAlertDialog();
+                    } else {
+                      Overlay.of(context)?.insert(entry);
+                    }
+                  },
+                  child: const Icon(Icons.add),
+                ),
               ),
               bottomNavigationBar: SizedBox(
                 height: dimensions.bottomNavBarHeight,

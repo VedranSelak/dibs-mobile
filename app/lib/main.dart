@@ -32,17 +32,21 @@ void main() async {
       BlocProvider<TestBloc>(
         create: (context) => GetIt.I.get<TestBloc>(),
       ),
-      BlocProvider<LoginBloc>(
-        create: (context) => GetIt.I.get<LoginBloc>(),
-      ),
-      BlocProvider<SignUpBloc>(
-        create: (context) => GetIt.I.get<SignUpBloc>(),
-      ),
       BlocProvider<ListingBloc>(
         create: (context) => GetIt.I.get<ListingBloc>(),
       ),
       BlocProvider<UserTypeBloc>(
         create: (context) => GetIt.I.get<UserTypeBloc>()..add(GetUserType()),
+      ),
+      BlocProvider<LoginBloc>(
+        create: (context) => GetIt.I.get<LoginBloc>(
+          param1: context.read<UserTypeBloc>(),
+        ),
+      ),
+      BlocProvider<SignUpBloc>(
+        create: (context) => GetIt.I.get<SignUpBloc>(
+          param1: context.read<UserTypeBloc>(),
+        ),
       ),
       BlocProvider<CreateListingBloc>(
         create: (context) => GetIt.I.get<CreateListingBloc>(),
