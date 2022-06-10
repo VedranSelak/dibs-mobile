@@ -39,6 +39,7 @@ import 'package:domain/public_listing/usecases/get_all_listings_usecase.dart';
 import 'package:domain/public_listing/usecases/get_listing_details_usecase.dart';
 import 'package:domain/public_listing/usecases/post_listing_images_usecase.dart';
 import 'package:domain/public_listing/usecases/post_listing_usecase.dart';
+import 'package:domain/public_listing/usecases/search_listings_usecase.dart';
 import 'package:domain/reservation/common/reservation_repository.dart';
 import 'package:domain/reservation/usecases/cancel_reservation_usecase.dart';
 import 'package:domain/reservation/usecases/get_recent_listing_reservations_usecase.dart';
@@ -96,6 +97,7 @@ class DataModule extends BaseDiModule {
     GetIt.I.registerFactory(() => PostListingImagesUseCase(publicListingRepository));
     GetIt.I.registerFactory(() => PostListingUseCase(publicListingRepository));
     GetIt.I.registerFactory(() => GetListingDetailsUseCase(publicListingRepository));
+    GetIt.I.registerFactory(() => SearchListingsUseCase(publicListingRepository));
 
     // reservation usecases
     GetIt.I.registerFactory(() => PostReservationUseCase(reservationRepository));

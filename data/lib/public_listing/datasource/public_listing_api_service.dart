@@ -22,4 +22,7 @@ abstract class PublicListingApiService {
 
   @GET('/listings/{id}')
   Future<HttpResponse<PublicListingModel>> getListingById(@Path('id') int id);
+
+  @GET('/listings/search/{search}')
+  Future<HttpResponse<List<PublicListingModel>>> searchListings(@Path('search') String search);
 }

@@ -11,6 +11,7 @@ import 'package:app/blocs/profile_bloc/profile_bloc.dart';
 import 'package:app/blocs/reservations_bloc/reservations_bloc.dart';
 import 'package:app/blocs/room_details_bloc/room_details_bloc.dart';
 import 'package:app/blocs/rooms_bloc/rooms_bloc.dart';
+import 'package:app/blocs/search_listings_bloc/search_listings_bloc.dart';
 import 'package:app/blocs/signup_bloc/signup_bloc.dart';
 import 'package:app/blocs/test_bloc/test_bloc.dart';
 import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
@@ -72,6 +73,9 @@ void main() async {
       ),
       BlocProvider<ProfileBloc>(
         create: (context) => GetIt.I.get<ProfileBloc>(),
+      ),
+      BlocProvider<SearchListingsBloc>(
+        create: (context) => GetIt.I.get<SearchListingsBloc>(),
       ),
     ],
     child: Application(),
