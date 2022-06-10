@@ -4,6 +4,7 @@ import 'package:app/blocs/create_room_bloc/create_room_bloc.dart';
 import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
 import 'package:app/ui/features/create_listing/widgets/text_label.dart';
+import 'package:app/ui/widgets/avatar_widget.dart';
 import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:app/ui/widgets/screen_wrappers/simple_screen_wrapper.dart';
 import 'package:common/resources/data_state.dart';
@@ -85,7 +86,7 @@ class RoomInviteScreen extends StatelessWidget {
                     },
                     itemBuilder: (context, SearchUser suggestion) {
                       return ListTile(
-                        leading: const Icon(Icons.person),
+                        leading: AvatarWidget(imageUrl: suggestion.imageUrl, size: 40.0),
                         title: Text('${suggestion.firstName} ${suggestion.lastName}'),
                       );
                     },
