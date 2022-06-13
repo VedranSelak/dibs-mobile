@@ -6,4 +6,8 @@ class OwnerModeCubit extends Cubit<bool> {
   void toggleMode() {
     emit(!state);
   }
+
+  void turnOff() {
+    emit(false);
+  }
 }

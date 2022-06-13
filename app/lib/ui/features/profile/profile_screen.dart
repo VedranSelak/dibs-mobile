@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app/blocs/owner_mode_cubit/owner_mode_cubit.dart';
 import 'package:app/blocs/profile_bloc/profile_bloc.dart';
 import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:app/res/assets.dart';
@@ -73,6 +74,7 @@ class ProfileScreen extends StatelessWidget {
                               buttonText: 'Log out',
                               onPress: () {
                                 context.read<UserTypeBloc>().add(LogoutUser());
+                                context.read<OwnerModeCubit>().turnOff();
                                 Get.back<dynamic>();
                                 // ignore: cascade_invocations
                                 Get.toNamed<dynamic>(LoginScreen.routeName);
