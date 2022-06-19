@@ -6,6 +6,7 @@ import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
 import 'package:app/ui/features/home/widgets/create_public_listing_card.dart';
+import 'package:app/ui/features/home/widgets/custom_dropdown.dart';
 import 'package:app/ui/features/home/widgets/listing_item.dart';
 import 'package:app/ui/widgets/screen_wrappers/main_screen_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -115,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildContent(UserTypeState state) {
-    final textStyles = TextStyles.of(context);
+    final dimensions = Dimensions.of(context);
     if (isSearchActive) {
       return Expanded(
         child: Column(
@@ -154,9 +155,71 @@ class _HomeScreenState extends State<HomeScreen> {
       return Expanded(
         child: Column(
           children: [
-            Text(
-              'Listings',
-              style: textStyles.headerText,
+            SizedBox(
+              width: dimensions.fullWidth,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blueAccent, width: 1.0),
+                        borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                      ),
+                      height: 50.0,
+                      child: CustDropDown<int>(
+                        isMultiSelect: true,
+                        borderRadius: 8.0,
+                        hintIcon: Icons.filter_list,
+                        hintText: 'Filter',
+                        items: const [
+                          CustDropdownMenuItem<int>(
+                            value: 0,
+                            child: Text('Restaurnts'),
+                          ),
+                          CustDropdownMenuItem<int>(
+                            value: 1,
+                            child: Text('Sport center'),
+                          ),
+                        ],
+                        onChanged: (int? value) {
+                          print(value);
+                        },
+                      ),
+                    ),
+                  ),
+                  Container(
+                    color: Colors.transparent,
+                    width: 10.0,
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blueAccent, width: 1.0),
+                        borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                      ),
+                      height: 50.0,
+                      child: CustDropDown<int>(
+                        borderRadius: 8.0,
+                        hintIcon: Icons.sort,
+                        hintText: 'Sort',
+                        items: const [
+                          CustDropdownMenuItem<int>(
+                            value: 0,
+                            child: Text('Newest'),
+                          ),
+                          CustDropdownMenuItem<int>(
+                            value: 1,
+                            child: Text('Oldest'),
+                          ),
+                        ],
+                        onChanged: (int? value) {
+                          print(value);
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(
               height: 20.0,

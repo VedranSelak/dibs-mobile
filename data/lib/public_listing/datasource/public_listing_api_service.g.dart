@@ -10,7 +10,7 @@ part of 'public_listing_api_service.dart';
 
 class _PublicListingApiService implements PublicListingApiService {
   _PublicListingApiService(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'http://192.168.0.18:3000/api/v1';
+    baseUrl ??= 'http://192.168.0.19:3000/api/v1';
   }
 
   final Dio _dio;
