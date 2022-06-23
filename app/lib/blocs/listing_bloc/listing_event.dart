@@ -7,4 +7,11 @@ abstract class ListingEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchListings extends ListingEvent {}
+class FetchListings extends ListingEvent {
+  const FetchListings({required this.filters, required this.sort});
+  final List<String> filters;
+  final String sort;
+
+  @override
+  List<Object> get props => [filters, sort];
+}

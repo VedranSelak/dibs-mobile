@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:app/blocs/filters_bloc/filters_bloc.dart';
 import 'package:app/blocs/listing_bloc/listing_bloc.dart';
 import 'package:app/blocs/search_listings_bloc/search_listings_bloc.dart';
 import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:app/res/dimensions.dart';
-import 'package:app/res/text_styles.dart';
 import 'package:app/ui/features/home/widgets/create_public_listing_card.dart';
 import 'package:app/ui/features/home/widgets/custom_dropdown.dart';
 import 'package:app/ui/features/home/widgets/listing_item.dart';
@@ -38,7 +38,11 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
 
-    context.read<ListingBloc>().add(FetchListings());
+    final filterState = context.read<FiltersBloc>().state as FiltersApplied;
+    context.read<ListingBloc>().add(FetchListings(
+          filters: filterState.filters,
+          sort: filterState.sort,
+        ));
   }
 
   @override
@@ -166,24 +170,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                       ),
                       height: 50.0,
-                      child: CustDropDown<int>(
+                      child: CustDropDown(
                         isMultiSelect: true,
                         borderRadius: 8.0,
                         hintIcon: Icons.filter_list,
                         hintText: 'Filter',
                         items: const [
-                          CustDropdownMenuItem<int>(
-                            value: 0,
+                          CustDropdownMenuItem<String>(
+                            value: 'restaurant',
                             child: Text('Restaurnts'),
                           ),
-                          CustDropdownMenuItem<int>(
-                            value: 1,
+                          CustDropdownMenuItem<String>(
+                            value: 'sportcenter',
                             child: Text('Sport center'),
                           ),
                         ],
-                        onChanged: (int? value) {
-                          print(value);
-                        },
+                        onChanged: (String value) {},
                       ),
                     ),
                   ),
@@ -198,23 +200,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                       ),
                       height: 50.0,
-                      child: CustDropDown<int>(
+                      child: CustDropDown(
                         borderRadius: 8.0,
                         hintIcon: Icons.sort,
                         hintText: 'Sort',
                         items: const [
-                          CustDropdownMenuItem<int>(
-                            value: 0,
+                          CustDropdownMenuItem<String>(
+                            value: 'DESC',
                             child: Text('Newest'),
                           ),
-                          CustDropdownMenuItem<int>(
-                            value: 1,
+                          CustDropdownMenuItem<String>(
+                            value: 'ASC',
                             child: Text('Oldest'),
                           ),
                         ],
-                        onChanged: (int? value) {
-                          print(value);
-                        },
+                        onChanged: (String value) {},
                       ),
                     ),
                   ),
@@ -231,7 +231,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Expanded(
                     child: RefreshIndicator(
                       onRefresh: () async {
-                        context.read<ListingBloc>().add(FetchListings());
+                        final filterState = context.read<FiltersBloc>().state as FiltersApplied;
+                        context.read<ListingBloc>().add(FetchListings(
+                              filters: filterState.filters,
+                              sort: filterState.sort,
+                            ));
                       },
                       child: ListView.builder(
                         physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),

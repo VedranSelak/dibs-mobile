@@ -1,3 +1,4 @@
+import 'package:app/blocs/filters_bloc/filters_bloc.dart';
 import 'package:app/blocs/listing_bloc/listing_bloc.dart';
 import 'package:app/blocs/owner_mode_cubit/owner_mode_cubit.dart';
 import 'package:app/blocs/profile_bloc/profile_bloc.dart';
@@ -30,7 +31,11 @@ class BottomAppBarWidget extends StatelessWidget {
             tooltip: "Home",
             onPressed: () {
               controller.changeTabIndex(0);
-              context.read<ListingBloc>().add(FetchListings());
+              final filterState = context.read<FiltersBloc>().state as FiltersApplied;
+              context.read<ListingBloc>().add(FetchListings(
+                    filters: filterState.filters,
+                    sort: filterState.sort,
+                  ));
               context.read<UserTypeBloc>().add(GetUserType());
             },
           ),
@@ -40,18 +45,21 @@ class BottomAppBarWidget extends StatelessWidget {
             tooltip: "Reservations",
             onPressed: () {
               controller.changeTabIndex(1);
-              final ReservationsController resController = Get.find();
-              if (context.read<OwnerModeCubit>().state) {
-                if (resController.tabIndex == 0) {
-                  context.read<ReservationsBloc>().add(FetchUpcomingListingReservations());
+              final userType = context.read<UserTypeBloc>().state;
+              if (userType is! GuestType) {
+                final ReservationsController resController = Get.find();
+                if (context.read<OwnerModeCubit>().state) {
+                  if (resController.tabIndex == 0) {
+                    context.read<ReservationsBloc>().add(FetchUpcomingListingReservations());
+                  } else {
+                    context.read<ReservationsBloc>().add(FetchRecentListingReservations());
+                  }
                 } else {
-                  context.read<ReservationsBloc>().add(FetchRecentListingReservations());
-                }
-              } else {
-                if (resController.tabIndex == 0) {
-                  context.read<ReservationsBloc>().add(FetchUpcomingReservations());
-                } else {
-                  context.read<ReservationsBloc>().add(FetchRecentReservations());
+                  if (resController.tabIndex == 0) {
+                    context.read<ReservationsBloc>().add(FetchUpcomingReservations());
+                  } else {
+                    context.read<ReservationsBloc>().add(FetchRecentReservations());
+                  }
                 }
               }
             },
@@ -62,11 +70,14 @@ class BottomAppBarWidget extends StatelessWidget {
             tooltip: "Rooms",
             onPressed: () {
               controller.changeTabIndex(2);
-              final RoomsController roomsController = Get.find();
-              if (roomsController.tabIndex == 0) {
-                context.read<RoomsBloc>().add(FetchYourRooms());
-              } else if (roomsController.tabIndex == 1) {
-                context.read<RoomsBloc>().add(FetchRooms());
+              final userType = context.read<UserTypeBloc>().state;
+              if (userType is! GuestType) {
+                final RoomsController roomsController = Get.find();
+                if (roomsController.tabIndex == 0) {
+                  context.read<RoomsBloc>().add(FetchYourRooms());
+                } else if (roomsController.tabIndex == 1) {
+                  context.read<RoomsBloc>().add(FetchRooms());
+                }
               }
             },
           ),

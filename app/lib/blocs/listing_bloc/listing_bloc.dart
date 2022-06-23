@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:common/resources/data_state.dart';
+import 'package:common/params/fetch_listings_request.dart';
 import 'package:domain/public_listing/entities/public_listing.dart';
 import 'package:domain/public_listing/usecases/get_all_listings_usecase.dart';
 import "package:equatable/equatable.dart";
@@ -19,7 +20,11 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
   final GetAllListingsUseCase _getAllListingsUseCase = GetIt.I.get<GetAllListingsUseCase>();
 
   void _onFetchListings(FetchListings event, Emitter<ListingState> emit) async {
-    final response = await _getAllListingsUseCase(params: null);
+    final response = await _getAllListingsUseCase(
+        params: FetchListingsRequestParams(
+      filters: event.filters,
+      sort: event.sort,
+    ));
     if (response is DataFailed) {
       final Map errorObject = json.decode(response.error?.response.toString() ?? "") as Map;
       emit(ListingsFetchFailed(

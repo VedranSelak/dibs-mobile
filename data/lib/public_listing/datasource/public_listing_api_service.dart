@@ -12,7 +12,10 @@ abstract class PublicListingApiService {
   factory PublicListingApiService(Dio dio, {String baseUrl}) = _PublicListingApiService;
 
   @GET('/listings')
-  Future<HttpResponse<List<PublicListingModel>>> getAll();
+  Future<HttpResponse<List<PublicListingModel>>> getAll(
+    @Query('filters') List<String> filters,
+    @Query('sort') String sort,
+  );
 
   @POST('/listings')
   Future<HttpResponse<CreatedModel>> postListing(

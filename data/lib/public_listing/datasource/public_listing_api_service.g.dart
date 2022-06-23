@@ -18,9 +18,12 @@ class _PublicListingApiService implements PublicListingApiService {
   String? baseUrl;
 
   @override
-  Future<HttpResponse<List<PublicListingModel>>> getAll() async {
+  Future<HttpResponse<List<PublicListingModel>>> getAll(filters, sort) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'filters': filters,
+      r'sort': sort
+    };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<List<dynamic>>(

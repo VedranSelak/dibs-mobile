@@ -1,5 +1,6 @@
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:common/params/create_listing_request.dart';
+import 'package:common/params/fetch_listings_request.dart';
 import 'package:common/resources/data_state.dart';
 import 'package:common/utils/constants.dart';
 import 'package:data/public_listing/datasource/public_listing_api_service.dart';
@@ -15,9 +16,9 @@ class PublicListingApiImpl implements PublicListingApiRepository {
   final CloudinaryPublic cloudinaryPublic;
 
   @override
-  Future<DataState<List<PublicListing>>> getAll() async {
+  Future<DataState<List<PublicListing>>> getAll(FetchListingsRequestParams params) async {
     try {
-      final httpResponse = await publicListingApiService.getAll();
+      final httpResponse = await publicListingApiService.getAll(params.filters, params.sort);
 
       if (httpResponse.response.statusCode == 200) {
         return DataSuccess(httpResponse.data);

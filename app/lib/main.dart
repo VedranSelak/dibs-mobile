@@ -3,6 +3,7 @@ import 'package:app/blocs/bloc_module.dart';
 import 'package:app/blocs/create_listing_bloc/create_listing_bloc.dart';
 import 'package:app/blocs/create_reservation_bloc/create_reservation_bloc.dart';
 import 'package:app/blocs/create_room_bloc/create_room_bloc.dart';
+import 'package:app/blocs/filters_bloc/filters_bloc.dart';
 import 'package:app/blocs/listing_bloc/listing_bloc.dart';
 import 'package:app/blocs/listing_details_bloc/listing_details_bloc.dart';
 import 'package:app/blocs/login_bloc/login_bloc.dart';
@@ -80,6 +81,9 @@ void main() async {
       ),
       BlocProvider<SearchListingsBloc>(
         create: (context) => GetIt.I.get<SearchListingsBloc>(),
+      ),
+      BlocProvider<FiltersBloc>(
+        create: (context) => GetIt.I.get<FiltersBloc>(),
       ),
     ],
     child: Application(),

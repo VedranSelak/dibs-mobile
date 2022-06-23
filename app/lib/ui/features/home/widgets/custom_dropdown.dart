@@ -1,7 +1,10 @@
+import 'package:app/blocs/filters_bloc/filters_bloc.dart';
+import 'package:app/blocs/listing_bloc/listing_bloc.dart';
 import 'package:app/res/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CustDropDown<T> extends StatefulWidget {
+class CustDropDown extends StatefulWidget {
   const CustDropDown(
       {required this.items,
       required this.onChanged,
@@ -12,12 +15,11 @@ class CustDropDown<T> extends StatefulWidget {
       this.maxListHeight = 200,
       this.defaultSelectedIndex = -1,
       this.isMultiSelect = false,
-      this.selectedItems = const [],
       Key? key,
       this.enabled = true})
       : super(key: key);
 
-  final List<CustDropdownMenuItem> items;
+  final List<CustDropdownMenuItem<String>> items;
   final Function onChanged;
   final String hintText;
   final IconData hintIcon;
@@ -27,7 +29,6 @@ class CustDropDown<T> extends StatefulWidget {
   final int defaultSelectedIndex;
   final bool enabled;
   final bool isMultiSelect;
-  final List<int> selectedItems;
 
   @override
   _CustDropDownState createState() => _CustDropDownState();
@@ -37,14 +38,13 @@ class _CustDropDownState extends State<CustDropDown> with WidgetsBindingObserver
   bool _isOpen = false, _isReverse = false;
   late OverlayEntry _overlayEntry;
   late RenderBox? _renderBox;
-  int? _selectedItem;
-  List<int> _selectedItems = [];
   late Offset dropDownOffset;
+  List<String> _selectedFilters = [];
   final LayerLink _layerLink = LayerLink();
 
   @override
   void initState() {
-    _selectedItems = widget.selectedItems;
+    _selectedFilters = (context.read<FiltersBloc>().state as FiltersApplied).filters;
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (mounted) {
         setState(() {
@@ -67,7 +67,12 @@ class _CustDropDownState extends State<CustDropDown> with WidgetsBindingObserver
     Overlay.of(context)!.insert(_overlayEntry);
   }
 
-  void _removeOverlay() {
+  void _removeOverlay({bool isClose = false}) {
+    if (isClose && widget.isMultiSelect) {
+      setState(() {
+        _selectedFilters = (context.read<FiltersBloc>().state as FiltersApplied).filters;
+      });
+    }
     if (mounted) {
       setState(() {
         _isOpen = false;
@@ -83,13 +88,14 @@ class _CustDropDownState extends State<CustDropDown> with WidgetsBindingObserver
   }
 
   IconData getIconData(CustDropdownMenuItem item) {
+    final state = context.read<FiltersBloc>().state as FiltersApplied;
     if (widget.isMultiSelect) {
-      if (_selectedItems.contains(item.value)) {
+      if (_selectedFilters.contains(item.value)) {
         return Icons.check_box_outlined;
       }
       return Icons.check_box_outline_blank;
     } else {
-      if (_selectedItem == item.value) {
+      if (state.sort == item.value) {
         return Icons.radio_button_checked;
       }
       return Icons.radio_button_unchecked;
@@ -139,7 +145,20 @@ class _CustDropDownState extends State<CustDropDown> with WidgetsBindingObserver
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             if (index == widget.items.length) {
-                              return TextButton(onPressed: () {}, child: Text('Apply', style: textStyles.accentText));
+                              return TextButton(
+                                  onPressed: () {
+                                    final state = context.read<FiltersBloc>().state as FiltersApplied;
+                                    context.read<FiltersBloc>().add(ChangeFilters(
+                                          filters: _selectedFilters,
+                                          sort: state.sort,
+                                        ));
+                                    context.read<ListingBloc>().add(FetchListings(
+                                          filters: _selectedFilters,
+                                          sort: state.sort,
+                                        ));
+                                    _removeOverlay();
+                                  },
+                                  child: Text('Apply', style: textStyles.accentText));
                             }
                             final item = widget.items[index];
                             return InkWell(
@@ -158,21 +177,32 @@ class _CustDropDownState extends State<CustDropDown> with WidgetsBindingObserver
                               ),
                               onTap: () {
                                 if (mounted) {
-                                  setState(() {
-                                    if (!widget.isMultiSelect) {
-                                      _removeOverlay();
-                                      _selectedItem = index;
+                                  final state = context.read<FiltersBloc>().state as FiltersApplied;
+                                  if (!widget.isMultiSelect) {
+                                    _removeOverlay();
+                                    context.read<FiltersBloc>().add(ChangeFilters(
+                                          filters: state.filters,
+                                          sort: item.value,
+                                        ));
+                                    context.read<ListingBloc>().add(FetchListings(
+                                          filters: state.filters,
+                                          sort: item.value,
+                                        ));
+                                  } else {
+                                    if (!_selectedFilters.any((filter) => filter == item.value)) {
+                                      setState(() {
+                                        _selectedFilters = [..._selectedFilters, item.value];
+                                      });
                                     } else {
-                                      if (!_selectedItems.any((i) => i == index)) {
-                                        _selectedItems = [..._selectedItems, index];
-                                      } else {
-                                        _selectedItems = _selectedItems.where((i) => i != index).toList();
-                                      }
-                                      _removeOverlay();
-                                      _addOverlay();
+                                      setState(() {
+                                        _selectedFilters =
+                                            _selectedFilters.where((filter) => filter != item.value).toList();
+                                      });
                                     }
-                                    widget.onChanged(item.value);
-                                  });
+                                    _removeOverlay();
+                                    _addOverlay();
+                                  }
+                                  widget.onChanged(item.value);
                                 }
                               },
                             );
@@ -220,7 +250,7 @@ class _CustDropDownState extends State<CustDropDown> with WidgetsBindingObserver
       child: GestureDetector(
         onTap: widget.enabled
             ? () {
-                _isOpen ? _removeOverlay() : _addOverlay();
+                _isOpen ? _removeOverlay(isClose: true) : _addOverlay();
               }
             : null,
         child: Container(
