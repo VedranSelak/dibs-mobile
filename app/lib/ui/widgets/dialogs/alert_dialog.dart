@@ -17,6 +17,7 @@ class AlertDialogWidget {
 
   void showAlertDialog() async {
     return showDialog<void>(
+      barrierDismissible: false,
       context: context,
       builder: (context) {
         final textStyles = TextStyles.of(context);

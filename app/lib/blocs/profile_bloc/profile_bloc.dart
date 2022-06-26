@@ -30,7 +30,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(
           FetchProfileFailed(statusCode: response.error?.response?.statusCode, message: errorObject['msg'] as String?));
     } else {
-      print(response.data);
       emit(ProfileDetailsFetched(profile: response.data!));
     }
   }

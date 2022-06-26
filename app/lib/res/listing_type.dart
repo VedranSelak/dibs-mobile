@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum ListingType { restaurant, sportcenter, theatre, cinema }
+enum ListingType { restaurant, sportcenter, club, bar }
 
 extension ListingTypeExtension on ListingType {
   String get rawValue {
@@ -9,10 +9,10 @@ extension ListingTypeExtension on ListingType {
         return 'restaurant';
       case ListingType.sportcenter:
         return 'sportcenter';
-      case ListingType.theatre:
-        return 'theatre';
-      case ListingType.cinema:
-        return 'cinema';
+      case ListingType.club:
+        return 'club';
+      case ListingType.bar:
+        return 'bar';
       default:
         return 'unknown';
     }
@@ -24,10 +24,10 @@ extension ListingTypeExtension on ListingType {
         return 'Tables:';
       case ListingType.sportcenter:
         return 'Playing grounds:';
-      case ListingType.theatre:
-        return 'Rows:';
-      case ListingType.cinema:
-        return 'Rows:';
+      case ListingType.club:
+        return 'Tables:';
+      case ListingType.bar:
+        return 'Tables:';
       default:
         return 'Unknown';
     }
@@ -39,10 +39,10 @@ extension ListingTypeExtension on ListingType {
         return 'Create a table';
       case ListingType.sportcenter:
         return 'Create a playing ground';
-      case ListingType.theatre:
-        return 'Create a row';
-      case ListingType.cinema:
-        return 'Create a row';
+      case ListingType.club:
+        return 'Create a table';
+      case ListingType.bar:
+        return 'Create a table';
       default:
         return 'Unknown';
     }
@@ -54,10 +54,10 @@ extension ListingTypeExtension on ListingType {
         return 'Number of seats';
       case ListingType.sportcenter:
         return 'Number of players';
-      case ListingType.theatre:
-        return 'Number of seats';
-      case ListingType.cinema:
-        return 'Number of seats';
+      case ListingType.club:
+        return 'Capacity of table';
+      case ListingType.bar:
+        return 'Capacity of table';
       default:
         return 'Unknown';
     }
@@ -69,10 +69,10 @@ extension ListingTypeExtension on ListingType {
         return 'Table';
       case ListingType.sportcenter:
         return 'Playing ground';
-      case ListingType.theatre:
-        return 'Row';
-      case ListingType.cinema:
-        return 'Row';
+      case ListingType.club:
+        return 'Table';
+      case ListingType.bar:
+        return 'Table';
       default:
         return 'Unknown';
     }
@@ -84,10 +84,10 @@ extension ListingTypeExtension on ListingType {
         return Icons.local_restaurant;
       case ListingType.sportcenter:
         return Icons.sports_baseball;
-      case ListingType.theatre:
-        return Icons.theater_comedy;
-      case ListingType.cinema:
-        return Icons.local_movies;
+      case ListingType.club:
+        return Icons.local_bar;
+      case ListingType.bar:
+        return Icons.wine_bar;
       default:
         return Icons.local_restaurant;
     }
@@ -101,10 +101,8 @@ class ListingHelper {
         return ListingType.restaurant;
       case 'sportcenter':
         return ListingType.sportcenter;
-      case 'theatre':
-        return ListingType.theatre;
-      case 'cinema':
-        return ListingType.cinema;
+      case 'club':
+        return ListingType.club;
       default:
         return ListingType.restaurant;
     }

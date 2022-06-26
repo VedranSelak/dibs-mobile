@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:app/ui/features/reservations/navigation/reservations_controller.dart';
 import 'package:common/resources/data_state.dart';
 import 'package:domain/reservation/entities/listing_reservation.dart';
 import 'package:domain/reservation/entities/reservation.dart';
@@ -14,7 +13,6 @@ import "package:equatable/equatable.dart";
 import 'package:flutter/material.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 
 part "reservations_event.dart";
@@ -40,6 +38,7 @@ class ReservationsBloc extends Bloc<ReservationsEvent, ReservationsState> {
   final RemoveFromHistoryUseCase _removeFromHistoryUseCase = GetIt.I.get<RemoveFromHistoryUseCase>();
 
   void _onFetchUpcomingReservations(FetchUpcomingReservations event, Emitter<ReservationsState> emit) async {
+    emit(FetchingReservations());
     final response = await _getUpcomingReservationsUseCase(params: null);
     if (response is DataFailed) {
       if (response.error?.response?.statusCode != null && response.error?.response?.statusCode == 401) {

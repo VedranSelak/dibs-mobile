@@ -1,3 +1,5 @@
+import 'package:app/blocs/listing_created_cubit/listing_created_cubit.dart';
+import 'package:app/blocs/show_reminder_cubit/show_reminder_cubit.dart';
 import 'package:app/res/listing_type.dart';
 import 'package:app/ui/features/create_listing/enter_listing_spots_screen.dart';
 import 'package:app/ui/features/home/home_screen.dart';
@@ -287,8 +289,11 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
         }
       } else {
         Get.offAll<dynamic>(
-            const SuccessScreen(
+            SuccessScreen(
               isListing: true,
+              beforeClose: (BuildContext context) {
+                context.read<ListingCreatedCubit>().checkHasListing();
+              },
             ),
             predicate: ModalRoute.withName(HomeScreen.routeName));
         emit(CreateListingInitial());

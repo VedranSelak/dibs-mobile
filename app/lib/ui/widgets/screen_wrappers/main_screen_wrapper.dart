@@ -1,3 +1,4 @@
+import 'package:app/blocs/listing_created_cubit/listing_created_cubit.dart';
 import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:app/res/dimensions.dart';
 import 'package:app/ui/features/login/login_screen.dart';
@@ -66,6 +67,8 @@ class _MainScreenWrapperState extends State<MainScreenWrapper> {
                   backgroundColor: Colors.grey,
                 ),
               ).showAlertDialog();
+            } else if (state is OwnerType) {
+              context.read<ListingCreatedCubit>().checkHasListing();
             }
           },
           child: WillPopScope(
@@ -88,37 +91,40 @@ class _MainScreenWrapperState extends State<MainScreenWrapper> {
                 ),
               ),
               floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-              floatingActionButton: FloatingActionButton(
-                onPressed: () {
-                  final state = context.read<UserTypeBloc>().state;
-                  if (state is GuestType) {
-                    AlertDialogWidget(
-                      context: context,
-                      title: "You aren't logged in",
-                      description:
-                          "To be able to take advantage the apps whole functionality please create an account.",
-                      acceptButton: PrimaryButton(
-                        buttonText: 'Log in',
-                        backgroundColor: Colors.blueAccent,
-                        onPress: () {
-                          Get.back<dynamic>();
-                          // ignore: cascade_invocations
-                          Get.toNamed<dynamic>(LoginScreen.routeName);
-                        },
-                      ),
-                      rejectButton: PrimaryButton(
-                        buttonText: 'Cancel',
-                        backgroundColor: Colors.grey,
-                        onPress: () {
-                          Get.back<dynamic>();
-                        },
-                      ),
-                    ).showAlertDialog();
-                  } else {
-                    Overlay.of(context)?.insert(entry);
-                  }
-                },
-                child: const Icon(Icons.add),
+              floatingActionButton: Visibility(
+                visible: MediaQuery.of(context).viewInsets.bottom == 0,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    final state = context.read<UserTypeBloc>().state;
+                    if (state is GuestType) {
+                      AlertDialogWidget(
+                        context: context,
+                        title: "You aren't logged in",
+                        description:
+                            "To be able to take advantage the apps whole functionality please create an account.",
+                        acceptButton: PrimaryButton(
+                          buttonText: 'Log in',
+                          backgroundColor: Colors.blueAccent,
+                          onPress: () {
+                            Get.back<dynamic>();
+                            // ignore: cascade_invocations
+                            Get.toNamed<dynamic>(LoginScreen.routeName);
+                          },
+                        ),
+                        rejectButton: PrimaryButton(
+                          buttonText: 'Cancel',
+                          backgroundColor: Colors.grey,
+                          onPress: () {
+                            Get.back<dynamic>();
+                          },
+                        ),
+                      ).showAlertDialog();
+                    } else {
+                      Overlay.of(context)?.insert(entry);
+                    }
+                  },
+                  child: const Icon(Icons.add),
+                ),
               ),
               bottomNavigationBar: SizedBox(
                 height: dimensions.bottomNavBarHeight,

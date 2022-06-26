@@ -10,7 +10,7 @@ part of 'profile_api_service.dart';
 
 class _ProfileApiService implements ProfileApiService {
   _ProfileApiService(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'http://192.168.0.18:3000/api/v1';
+    baseUrl ??= 'http://192.168.0.19:3000/api/v1';
   }
 
   final Dio _dio;
@@ -50,6 +50,24 @@ class _ProfileApiService implements ProfileApiService {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CreatedModel.fromJson(_result.data!);
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<CheckedModel>> getHasListing(header) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': header};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<CheckedModel>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/users/listing',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = CheckedModel.fromJson(_result.data!);
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
   }

@@ -22,8 +22,6 @@ class ReservationsScreen extends StatefulWidget {
 }
 
 class _ReservationsScreenState extends State<ReservationsScreen> {
-  bool _switchValue = false;
-
   @override
   void initState() {
     Get.put<ReservationsController>(ReservationsController());
@@ -79,45 +77,48 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
                               style: textStyles.accentText,
                             ),
                             const SizedBox(width: 10.0),
-                            FlutterSwitch(
-                              height: 30.0,
-                              width: 65.0,
-                              activeColor: const Color.fromRGBO(34, 186, 82, 1),
-                              value: _switchValue,
-                              onToggle: (value) {
-                                setState(() {
-                                  _switchValue = value;
-                                });
-                                context.read<OwnerModeCubit>().toggleMode();
-                                if (value) {
-                                  if (controller.tabIndex == 0) {
-                                    context.read<ReservationsBloc>().add(FetchUpcomingListingReservations());
+                            BlocBuilder<OwnerModeCubit, bool>(builder: (context, ownerState) {
+                              return FlutterSwitch(
+                                height: 30.0,
+                                width: 65.0,
+                                activeColor: const Color.fromRGBO(34, 186, 82, 1),
+                                value: ownerState,
+                                onToggle: (value) {
+                                  context.read<OwnerModeCubit>().toggleMode();
+                                  if (value) {
+                                    if (controller.tabIndex == 0) {
+                                      context.read<ReservationsBloc>().add(FetchUpcomingListingReservations());
+                                    } else {
+                                      context.read<ReservationsBloc>().add(FetchRecentListingReservations());
+                                    }
                                   } else {
-                                    context.read<ReservationsBloc>().add(FetchRecentListingReservations());
+                                    if (controller.tabIndex == 0) {
+                                      context.read<ReservationsBloc>().add(FetchUpcomingReservations());
+                                    } else {
+                                      context.read<ReservationsBloc>().add(FetchRecentReservations());
+                                    }
                                   }
-                                } else {
-                                  if (controller.tabIndex == 0) {
-                                    context.read<ReservationsBloc>().add(FetchUpcomingReservations());
-                                  } else {
-                                    context.read<ReservationsBloc>().add(FetchRecentReservations());
-                                  }
-                                }
-                              },
-                            ),
+                                },
+                              );
+                            }),
                             Expanded(child: Container()),
-                            _switchValue
-                                ? SizedBox(
-                                    height: 30.0,
-                                    child: TextButton.icon(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.edit_outlined, color: Colors.blueAccent, size: 20.0),
-                                      label: Text(
-                                        'Edit',
-                                        style: textStyles.accentText,
-                                      ),
+                            BlocBuilder<OwnerModeCubit, bool>(builder: (context, ownerState) {
+                              if (ownerState) {
+                                return SizedBox(
+                                  height: 30.0,
+                                  child: TextButton.icon(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.edit_outlined, color: Colors.blueAccent, size: 20.0),
+                                    label: Text(
+                                      'Edit',
+                                      style: textStyles.accentText,
                                     ),
-                                  )
-                                : Container()
+                                  ),
+                                );
+                              } else {
+                                return Container();
+                              }
+                            }),
                           ],
                         ),
                       )
@@ -125,9 +126,9 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
                 _buildTopNavigation(context, controller),
                 const SizedBox(height: 20.0),
                 controller.tabIndex == 0
-                    ? UpcomingReservationsScreen(ownerMode: _switchValue)
+                    ? const UpcomingReservationsScreen()
                     : controller.tabIndex == 1
-                        ? RecentReservationsScreen(ownerMode: _switchValue)
+                        ? const RecentReservationsScreen()
                         : Container(),
               ],
             );

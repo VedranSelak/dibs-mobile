@@ -20,6 +20,7 @@ class Application extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: "Dibs",
       initialRoute: HomeScreen.routeName,
       getPages: _routes,

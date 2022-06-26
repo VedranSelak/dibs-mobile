@@ -35,6 +35,7 @@ class RecentListItem extends StatelessWidget {
             children: [
               SizedBox(
                 width: 70.0,
+                height: 60.0,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: CachedNetworkImage(

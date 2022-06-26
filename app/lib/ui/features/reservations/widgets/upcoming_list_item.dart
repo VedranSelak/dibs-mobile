@@ -32,11 +32,13 @@ class UpcomingListItem extends StatelessWidget {
       width: dimensions.fullWidth,
       height: 100.0,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Stack(
             children: [
               SizedBox(
                 width: 100.0,
+                height: 80.0,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: CachedNetworkImage(

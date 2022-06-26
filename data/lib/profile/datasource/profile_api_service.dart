@@ -1,4 +1,5 @@
 import 'package:common/params/change_profile_image_request.dart';
+import 'package:data/profile/dtos/checked_model.dart';
 import 'package:data/profile/dtos/profile_details_model.dart';
 import 'package:data/public_listing/dtos/created_model.dart';
 import 'package:dio/dio.dart';
@@ -19,6 +20,11 @@ abstract class ProfileApiService {
   @PATCH('/users')
   Future<HttpResponse<CreatedModel>> changeProfileImage(
     @Body() ChangeProfileImageBody body,
+    @Header('Authorization') String header,
+  );
+
+  @GET('/users/listing')
+  Future<HttpResponse<CheckedModel>> getHasListing(
     @Header('Authorization') String header,
   );
 }

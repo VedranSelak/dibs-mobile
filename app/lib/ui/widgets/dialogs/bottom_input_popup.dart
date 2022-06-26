@@ -47,40 +47,6 @@ class BottomInputPopupWidget {
                   const SizedBox(height: 10.0),
                   Text(availableSpots != null ? 'Edit' : type.popupTitle, style: textStyles.labelText),
                   const SizedBox(height: 20.0),
-                  type == ListingType.cinema || type == ListingType.theatre
-                      ? Column(
-                          children: [
-                            Row(
-                              children: [
-                                Text('Row name:', style: textStyles.accentText),
-                              ],
-                            ),
-                            TextFormField(
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(3),
-                              ],
-                              decoration: const InputDecoration(
-                                hintText: 'Enter a name...',
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter a name';
-                                }
-                                final state = context.read<CreateListingBloc>().state;
-                                if (state is ListingDataEntering && state.spots != null && availableSpots == null) {
-                                  final hasRow = state.spots!.any((spot) => spot.rowName == value);
-                                  if (hasRow) {
-                                    return 'Row name already used';
-                                  }
-                                }
-                                return null;
-                              },
-                              controller: _rowNameConteroller,
-                            ),
-                            const SizedBox(height: 20.0),
-                          ],
-                        )
-                      : Container(),
                   Row(
                     children: [
                       Text('${type.textLabelText}:', style: textStyles.accentText),
@@ -111,20 +77,6 @@ class BottomInputPopupWidget {
                                 rowName: _rowNameConteroller.text,
                                 prevRowName: rowName,
                               ));
-                          Get.back<dynamic>();
-                          return;
-                        }
-                        if (type == ListingType.cinema || type == ListingType.theatre) {
-                          for (int i = 0; i < int.parse(_availableSpotsController.text); i++) {
-                            context.read<CreateListingBloc>().add(
-                                  AddListingSpot(
-                                    spot: Spot(
-                                      availableSpots: 1,
-                                      rowName: _rowNameConteroller.text,
-                                    ),
-                                  ),
-                                );
-                          }
                           Get.back<dynamic>();
                           return;
                         }

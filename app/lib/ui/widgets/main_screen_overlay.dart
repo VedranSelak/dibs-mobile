@@ -1,3 +1,4 @@
+import 'package:app/blocs/listing_created_cubit/listing_created_cubit.dart';
 import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
@@ -55,7 +56,7 @@ class MainScreenOverlay extends StatelessWidget {
                     )
                   ],
                 ),
-                if (context.read<UserTypeBloc>().state is OwnerType)
+                if (context.read<UserTypeBloc>().state is OwnerType && !context.read<ListingCreatedCubit>().state)
                   Column(
                     children: [
                       Text("Create", style: textStyles.buttonText),

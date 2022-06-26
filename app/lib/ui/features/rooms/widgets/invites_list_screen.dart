@@ -1,4 +1,5 @@
 import 'package:app/blocs/rooms_bloc/rooms_bloc.dart';
+import 'package:app/res/text_styles.dart';
 import 'package:app/ui/features/rooms/widgets/invite_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,32 +21,43 @@ class _InvitesListScreenState extends State<InvitesListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textStyles = TextStyles.of(context);
     return Expanded(
       flex: 1,
       child: BlocBuilder<RoomsBloc, RoomsState>(builder: (context, state) {
         if (state is InvitesFetched) {
-          return RefreshIndicator(
-            onRefresh: () async {
-              context.read<RoomsBloc>().add(FetchInvites());
-              const Duration(seconds: 1);
-            },
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-              itemCount: state.invites.length,
-              itemBuilder: (context, index) {
-                final invite = state.invites[index];
-
-                return InviteListItem(
-                  id: invite.id,
-                  roomId: invite.roomId,
-                  name: invite.name,
-                  firstName: invite.firstName,
-                  lastName: invite.lastName,
-                  imageUrl: invite.imageUrl,
-                );
+          if (state.invites.isNotEmpty) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<RoomsBloc>().add(FetchInvites());
+                const Duration(seconds: 1);
               },
-            ),
-          );
+              child: ListView.builder(
+                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                itemCount: state.invites.length,
+                itemBuilder: (context, index) {
+                  final invite = state.invites[index];
+
+                  return InviteListItem(
+                    id: invite.id,
+                    roomId: invite.roomId,
+                    name: invite.name,
+                    firstName: invite.firstName,
+                    lastName: invite.lastName,
+                    imageUrl: invite.imageUrl,
+                  );
+                },
+              ),
+            );
+          } else {
+            return Center(
+              child: Text(
+                'You have no invites',
+                style: textStyles.descriptiveText,
+                textAlign: TextAlign.center,
+              ),
+            );
+          }
         }
         return const Center(
             child: SpinKitWave(

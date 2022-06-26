@@ -22,7 +22,6 @@ class UserTypeBloc extends Bloc<UserTypeEvent, UserTypeState> {
 
   void _onGetUserType(GetUserType event, Emitter<UserTypeState> emit) async {
     final user = await _getUserUseCase(params: null);
-    print(user);
     if (user == null) {
       emit(GuestType());
     } else if (user.isTokenExpired) {
