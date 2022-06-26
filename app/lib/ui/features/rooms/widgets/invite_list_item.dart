@@ -1,4 +1,5 @@
 import 'package:app/blocs/rooms_bloc/rooms_bloc.dart';
+import 'package:app/blocs/your_room_bloc/your_room_bloc.dart';
 import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
 import 'package:app/ui/widgets/avatar_widget.dart';
@@ -13,6 +14,7 @@ class InviteListItem extends StatelessWidget {
     required this.firstName,
     required this.lastName,
     required this.imageUrl,
+    this.isPending = false,
     Key? key,
   }) : super(key: key);
   final int id;
@@ -21,6 +23,7 @@ class InviteListItem extends StatelessWidget {
   final String firstName;
   final String lastName;
   final String? imageUrl;
+  final bool isPending;
 
   @override
   Widget build(BuildContext context) {
@@ -52,23 +55,30 @@ class InviteListItem extends StatelessWidget {
               ],
             ),
           ),
-          Row(
-            children: [
-              InkWell(
-                onTap: () {
-                  context.read<RoomsBloc>().add(RespondToInvite(id: id, response: true));
-                },
-                child: const Icon(Icons.check_circle_outline, color: Colors.green),
-              ),
-              const SizedBox(width: 20.0),
-              InkWell(
-                onTap: () {
-                  context.read<RoomsBloc>().add(RespondToInvite(id: id, response: false));
-                },
-                child: const Icon(Icons.delete_outline, color: Colors.red),
-              ),
-            ],
-          ),
+          !isPending
+              ? Row(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        context.read<RoomsBloc>().add(RespondToInvite(id: id, response: true));
+                      },
+                      child: const Icon(Icons.check_circle_outline, color: Colors.green),
+                    ),
+                    const SizedBox(width: 20.0),
+                    InkWell(
+                      onTap: () {
+                        context.read<RoomsBloc>().add(RespondToInvite(id: id, response: false));
+                      },
+                      child: const Icon(Icons.delete_outline, color: Colors.red),
+                    ),
+                  ],
+                )
+              : InkWell(
+                  onTap: () {
+                    context.read<YourRoomBloc>().add(RemoveInvite(index: id));
+                  },
+                  child: const Icon(Icons.delete_outline, color: Colors.red),
+                ),
         ],
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:app/blocs/rooms_bloc/rooms_bloc.dart';
 import 'package:app/res/dimensions.dart';
 import 'package:app/res/text_styles.dart';
+import 'package:app/ui/features/invite_friends/invite_friends_screen.dart';
 import 'package:app/ui/features/your_room/your_room_screen.dart';
 import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:app/ui/widgets/dialogs/alert_dialog.dart';
@@ -16,12 +17,14 @@ class YourRoomListItem extends StatelessWidget {
     required this.imageUrl,
     required this.description,
     required this.name,
+    this.isChoose = false,
     Key? key,
   }) : super(key: key);
   final int id;
   final String imageUrl;
   final String description;
   final String name;
+  final bool isChoose;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,11 @@ class YourRoomListItem extends StatelessWidget {
     final textStyles = TextStyles.of(context);
     return InkWell(
       onTap: () {
-        Get.to<dynamic>(YourRoomScreen(id: id));
+        if (isChoose) {
+          Get.to<dynamic>(InviteFriendsScreen(id: id));
+        } else {
+          Get.to<dynamic>(YourRoomScreen(id: id));
+        }
       },
       child: Container(
         padding: const EdgeInsets.all(8.0),
@@ -72,35 +79,37 @@ class YourRoomListItem extends StatelessWidget {
                 ],
               ),
             ),
-            IconButton(
-              icon: const Icon(
-                Icons.delete_outline,
-                color: Colors.red,
-              ),
-              onPressed: () {
-                AlertDialogWidget(
-                  context: context,
-                  title: 'Delete room "$name"',
-                  description:
-                      "Are you sure you want to delete the room. If you delete the room you will not be able to recover it back. Everything related to the room will be deleted.",
-                  acceptButton: PrimaryButton(
-                    buttonText: "Delete",
-                    onPress: () {
-                      context.read<RoomsBloc>().add(DeleteRoom(id: id));
-                      Get.back<dynamic>();
+            !isChoose
+                ? IconButton(
+                    icon: const Icon(
+                      Icons.delete_outline,
+                      color: Colors.red,
+                    ),
+                    onPressed: () {
+                      AlertDialogWidget(
+                        context: context,
+                        title: 'Delete room "$name"',
+                        description:
+                            "Are you sure you want to delete the room. If you delete the room you will not be able to recover it back. Everything related to the room will be deleted.",
+                        acceptButton: PrimaryButton(
+                          buttonText: "Delete",
+                          onPress: () {
+                            context.read<RoomsBloc>().add(DeleteRoom(id: id));
+                            Get.back<dynamic>();
+                          },
+                          backgroundColor: Colors.red,
+                        ),
+                        rejectButton: PrimaryButton(
+                          buttonText: "Cancel",
+                          onPress: () {
+                            Get.back<dynamic>();
+                          },
+                          backgroundColor: Colors.grey,
+                        ),
+                      ).showAlertDialog();
                     },
-                    backgroundColor: Colors.red,
-                  ),
-                  rejectButton: PrimaryButton(
-                    buttonText: "Cancel",
-                    onPress: () {
-                      Get.back<dynamic>();
-                    },
-                    backgroundColor: Colors.grey,
-                  ),
-                ).showAlertDialog();
-              },
-            ),
+                  )
+                : Container(),
           ],
         ),
       ),

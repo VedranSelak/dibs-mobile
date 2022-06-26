@@ -14,3 +14,19 @@ class FetchYourRoomDetails extends YourRoomEvent {
   @override
   List<Object> get props => [id];
 }
+
+class AddInvite extends YourRoomEvent {
+  const AddInvite({required this.user});
+  final SearchUser user;
+
+  @override
+  List<Object> get props => [user];
+}
+
+class RemoveInvite extends YourRoomEvent {
+  const RemoveInvite({required this.index});
+  final int index;
+
+  @override
+  List<Object> get props => [index];
+}
