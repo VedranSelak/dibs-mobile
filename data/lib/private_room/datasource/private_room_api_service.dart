@@ -1,3 +1,4 @@
+import 'package:common/params/add_invite_request.dart';
 import 'package:common/params/create_room_request.dart';
 import 'package:common/params/invite_request.dart';
 import 'package:data/private_room/dtos/invite_model.dart';
@@ -72,6 +73,13 @@ abstract class PrivateRoomApiService {
   @DELETE('/rooms/{id}')
   Future<HttpResponse<CreatedModel>> deleteRoom(
     @Path('id') int id,
+    @Header('Authorization') String header,
+  );
+
+  @POST('/invites/{id}')
+  Future<HttpResponse<CreatedModel>> addInvites(
+    @Path('id') int id,
+    @Body() AddInviteRequestParams params,
     @Header('Authorization') String header,
   );
 }

@@ -30,3 +30,5 @@ class RemoveInvite extends YourRoomEvent {
   @override
   List<Object> get props => [index];
 }
+
+class SendInvites extends YourRoomEvent {}

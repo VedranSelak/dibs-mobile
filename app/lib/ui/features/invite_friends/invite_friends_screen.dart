@@ -140,7 +140,9 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
                   state.users != null && state.users!.isNotEmpty
                       ? PrimaryButton(
                           buttonText: 'Invite',
-                          onPress: () {},
+                          onPress: () {
+                            context.read<YourRoomBloc>().add(SendInvites());
+                          },
                           backgroundColor: Colors.blueAccent,
                         )
                       : Container(),
