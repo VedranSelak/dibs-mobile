@@ -104,24 +104,9 @@ class _EnterListingSpotsScreenState extends State<EnterListingSpotsScreen> {
               },
               builder: (context, state) {
                 if (state is ListingDataEntering && state.type != null && state.spots != null) {
-                  final List<Spot> rows = [];
-                  if (state.type == ListingType.cinema || state.type == ListingType.theatre) {
-                    final List<String> rowNames = [];
-                    Spot temp = Spot(availableSpots: 0);
-                    for (final spot in state.spots!) {
-                      if (!rowNames.any((name) => name == spot.rowName!)) {
-                        rowNames.add(spot.rowName!);
-                        temp = Spot(availableSpots: 1, rowName: spot.rowName!);
-                        rows.add(temp);
-                      } else {
-                        temp.availableSpots++;
-                      }
-                    }
-                  }
                   return SpotListContainer(
                     type: state.type!,
-                    spots:
-                        state.type! == ListingType.cinema || state.type! == ListingType.theatre ? rows : state.spots!,
+                    spots: state.spots!,
                   );
                 }
                 return Expanded(child: Container());

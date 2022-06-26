@@ -12,7 +12,7 @@ class CustDropDown extends StatefulWidget {
       this.hintIcon = Icons.sort,
       this.borderRadius = 0,
       this.borderWidth = 1,
-      this.maxListHeight = 200,
+      this.maxListHeight = 300,
       this.defaultSelectedIndex = -1,
       this.isMultiSelect = false,
       Key? key,

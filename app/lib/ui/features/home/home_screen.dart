@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/blocs/filters_bloc/filters_bloc.dart';
 import 'package:app/blocs/listing_bloc/listing_bloc.dart';
+import 'package:app/blocs/listing_created_cubit/listing_created_cubit.dart';
 import 'package:app/blocs/search_listings_bloc/search_listings_bloc.dart';
 import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:app/res/dimensions.dart';
@@ -178,11 +179,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         items: const [
                           CustDropdownMenuItem<String>(
                             value: 'restaurant',
-                            child: Text('Restaurnts'),
+                            child: Text('Restaurnt'),
                           ),
                           CustDropdownMenuItem<String>(
                             value: 'sportcenter',
                             child: Text('Sport center'),
+                          ),
+                          CustDropdownMenuItem<String>(
+                            value: 'club',
+                            child: Text('Club'),
+                          ),
+                          CustDropdownMenuItem<String>(
+                            value: 'bar',
+                            child: Text('Bar'),
                           ),
                         ],
                         onChanged: (String value) {},
@@ -242,14 +251,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemCount: listings.length,
                         itemBuilder: (context, index) {
                           if (state is OwnerType && index == 0) {
-                            return Column(
-                              children: [
-                                const CreatePublicListingCard(),
-                                const SizedBox(
-                                  height: 20.0,
-                                ),
-                                ListingItem(listing: listings[index]),
-                              ],
+                            return BlocBuilder<ListingCreatedCubit, bool>(
+                              builder: (context, state) {
+                                if (!state) {
+                                  return Column(
+                                    children: [
+                                      const CreatePublicListingCard(),
+                                      const SizedBox(
+                                        height: 20.0,
+                                      ),
+                                      ListingItem(listing: listings[index]),
+                                    ],
+                                  );
+                                }
+                                return ListingItem(listing: listings[index]);
+                              },
                             );
                           }
                           return ListingItem(listing: listings[index]);

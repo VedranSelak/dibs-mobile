@@ -38,6 +38,7 @@ class ReservationsBloc extends Bloc<ReservationsEvent, ReservationsState> {
   final RemoveFromHistoryUseCase _removeFromHistoryUseCase = GetIt.I.get<RemoveFromHistoryUseCase>();
 
   void _onFetchUpcomingReservations(FetchUpcomingReservations event, Emitter<ReservationsState> emit) async {
+    emit(FetchingReservations());
     final response = await _getUpcomingReservationsUseCase(params: null);
     if (response is DataFailed) {
       if (response.error?.response?.statusCode != null && response.error?.response?.statusCode == 401) {

@@ -22,16 +22,18 @@ class SpotListItem extends StatelessWidget {
       children: [
         Row(
           children: [
-            type == ListingType.theatre || type == ListingType.cinema
-                ? Text(spot.rowName!, style: textStyles.headerText)
-                : type == ListingType.restaurant
-                    ? const Icon(
-                        Icons.table_restaurant,
-                        size: 40.0,
-                      )
-                    : type == ListingType.sportcenter
-                        ? const Icon(Icons.directions_run, size: 40.0)
-                        : Container(),
+            type == ListingType.restaurant
+                ? const Icon(
+                    Icons.table_restaurant,
+                    size: 40.0,
+                  )
+                : type == ListingType.sportcenter
+                    ? const Icon(Icons.directions_run, size: 40.0)
+                    : type == ListingType.club
+                        ? const Icon(Icons.table_bar, size: 40.0)
+                        : type == ListingType.bar
+                            ? const Icon(Icons.table_bar, size: 40.0)
+                            : Container(),
             const SizedBox(width: 15.0),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,16 +53,6 @@ class SpotListItem extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    if (type == ListingType.cinema || type == ListingType.theatre) {
-                      BottomInputPopupWidget(
-                        context: context,
-                        type: type,
-                        index: index,
-                        availableSpots: spot.availableSpots.toString(),
-                        rowName: spot.rowName!,
-                      ).onTapped();
-                      return;
-                    }
                     BottomInputPopupWidget(
                       context: context,
                       type: type,
@@ -76,10 +68,6 @@ class SpotListItem extends StatelessWidget {
                 const SizedBox(width: 8.0),
                 GestureDetector(
                   onTap: () {
-                    if (type == ListingType.cinema || type == ListingType.theatre) {
-                      context.read<CreateListingBloc>().add(RemoveListingSpot(index: index, rowName: spot.rowName!));
-                      return;
-                    }
                     context.read<CreateListingBloc>().add(RemoveListingSpot(index: index));
                   },
                   child: const Icon(

@@ -1,3 +1,4 @@
+import 'package:app/blocs/listing_created_cubit/listing_created_cubit.dart';
 import 'package:app/blocs/user_type_bloc/user_type_bloc.dart';
 import 'package:app/res/dimensions.dart';
 import 'package:app/ui/features/login/login_screen.dart';
@@ -66,6 +67,8 @@ class _MainScreenWrapperState extends State<MainScreenWrapper> {
                   backgroundColor: Colors.grey,
                 ),
               ).showAlertDialog();
+            } else if (state is OwnerType) {
+              context.read<ListingCreatedCubit>().checkHasListing();
             }
           },
           child: WillPopScope(
