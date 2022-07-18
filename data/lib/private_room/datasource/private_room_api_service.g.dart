@@ -10,7 +10,7 @@ part of 'private_room_api_service.dart';
 
 class _PrivateRoomApiService implements PrivateRoomApiService {
   _PrivateRoomApiService(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'http://192.168.0.19:3000/api/v1';
+    baseUrl ??= 'https://dibs-backend.herokuapp.com/api/v1';
   }
 
   final Dio _dio;

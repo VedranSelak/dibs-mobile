@@ -38,101 +38,88 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
           padding: const EdgeInsets.all(20.0),
           width: dimensions.fullWidth,
           height: dimensions.mainContentHeight,
-          child: BlocBuilder<UserTypeBloc, UserTypeState>(builder: (context, state) {
-            if (state is GuestType) {
+          child: BlocBuilder<UserTypeBloc, UserTypeState>(
+            builder: (context, state) {
+              if (state is GuestType) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'You are a guest',
+                      style: textStyles.headerText,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 20.0),
+                    Text(
+                      'To be able to view your resevations you have to be logged into your account. Please log in to your account.',
+                      style: textStyles.descriptiveText,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 30.0),
+                    PrimaryButton(
+                        buttonText: 'Log in',
+                        onPress: () {
+                          Get.toNamed<dynamic>(LoginScreen.routeName);
+                        },
+                        backgroundColor: Colors.blueAccent),
+                  ],
+                );
+              }
               return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'You are a guest',
-                    style: textStyles.headerText,
-                    textAlign: TextAlign.center,
-                  ),
                   const SizedBox(height: 20.0),
-                  Text(
-                    'To be able to view your resevations you have to be logged into your account. Please log in to your account.',
-                    style: textStyles.descriptiveText,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 30.0),
-                  PrimaryButton(
-                      buttonText: 'Log in',
-                      onPress: () {
-                        Get.toNamed<dynamic>(LoginScreen.routeName);
-                      },
-                      backgroundColor: Colors.blueAccent),
+                  state is OwnerType
+                      ? Container(
+                          margin: const EdgeInsets.only(bottom: 20.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Owner mode: ',
+                                style: textStyles.accentText,
+                              ),
+                              const SizedBox(width: 10.0),
+                              BlocBuilder<OwnerModeCubit, bool>(
+                                builder: (context, ownerState) {
+                                  return FlutterSwitch(
+                                    height: 30.0,
+                                    width: 65.0,
+                                    activeColor: const Color.fromRGBO(34, 186, 82, 1),
+                                    value: ownerState,
+                                    onToggle: (value) {
+                                      context.read<OwnerModeCubit>().toggleMode();
+                                      if (value) {
+                                        if (controller.tabIndex == 0) {
+                                          context.read<ReservationsBloc>().add(FetchUpcomingListingReservations());
+                                        } else {
+                                          context.read<ReservationsBloc>().add(FetchRecentListingReservations());
+                                        }
+                                      } else {
+                                        if (controller.tabIndex == 0) {
+                                          context.read<ReservationsBloc>().add(FetchUpcomingReservations());
+                                        } else {
+                                          context.read<ReservationsBloc>().add(FetchRecentReservations());
+                                        }
+                                      }
+                                    },
+                                  );
+                                },
+                              ),
+                              Expanded(child: Container()),
+                            ],
+                          ),
+                        )
+                      : Container(),
+                  _buildTopNavigation(context, controller),
+                  const SizedBox(height: 20.0),
+                  controller.tabIndex == 0
+                      ? const UpcomingReservationsScreen()
+                      : controller.tabIndex == 1
+                          ? const RecentReservationsScreen()
+                          : Container(),
                 ],
               );
-            }
-            return Column(
-              children: [
-                const SizedBox(height: 20.0),
-                state is OwnerType
-                    ? Container(
-                        margin: const EdgeInsets.only(bottom: 20.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Owner mode: ',
-                              style: textStyles.accentText,
-                            ),
-                            const SizedBox(width: 10.0),
-                            BlocBuilder<OwnerModeCubit, bool>(builder: (context, ownerState) {
-                              return FlutterSwitch(
-                                height: 30.0,
-                                width: 65.0,
-                                activeColor: const Color.fromRGBO(34, 186, 82, 1),
-                                value: ownerState,
-                                onToggle: (value) {
-                                  context.read<OwnerModeCubit>().toggleMode();
-                                  if (value) {
-                                    if (controller.tabIndex == 0) {
-                                      context.read<ReservationsBloc>().add(FetchUpcomingListingReservations());
-                                    } else {
-                                      context.read<ReservationsBloc>().add(FetchRecentListingReservations());
-                                    }
-                                  } else {
-                                    if (controller.tabIndex == 0) {
-                                      context.read<ReservationsBloc>().add(FetchUpcomingReservations());
-                                    } else {
-                                      context.read<ReservationsBloc>().add(FetchRecentReservations());
-                                    }
-                                  }
-                                },
-                              );
-                            }),
-                            Expanded(child: Container()),
-                            BlocBuilder<OwnerModeCubit, bool>(builder: (context, ownerState) {
-                              if (ownerState) {
-                                return SizedBox(
-                                  height: 30.0,
-                                  child: TextButton.icon(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.edit_outlined, color: Colors.blueAccent, size: 20.0),
-                                    label: Text(
-                                      'Edit',
-                                      style: textStyles.accentText,
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                return Container();
-                              }
-                            }),
-                          ],
-                        ),
-                      )
-                    : Container(),
-                _buildTopNavigation(context, controller),
-                const SizedBox(height: 20.0),
-                controller.tabIndex == 0
-                    ? const UpcomingReservationsScreen()
-                    : controller.tabIndex == 1
-                        ? const RecentReservationsScreen()
-                        : Container(),
-              ],
-            );
-          }),
+            },
+          ),
         );
       },
     );

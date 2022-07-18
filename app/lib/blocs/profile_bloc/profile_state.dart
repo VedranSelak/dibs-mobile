@@ -10,6 +10,8 @@ abstract class ProfileState extends Equatable {
 
 class ProfileInitial extends ProfileState {}
 
+class FetchingProfile extends ProfileState {}
+
 class ProfileDetailsFetched extends ProfileState {
   const ProfileDetailsFetched({required this.profile, this.image});
   final ProfileDetails profile;

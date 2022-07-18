@@ -105,7 +105,7 @@ class ProfileScreen extends StatelessWidget {
                             child: ClipOval(
                               child: state.image != null
                                   ? Image.file(File(state.image!.path), fit: BoxFit.cover, width: 180, height: 180)
-                                  : state.profile.imageUrl != null
+                                  : state.profile.imageUrl != null && state.profile.imageUrl!.isNotEmpty
                                       ? CachedNetworkImage(
                                           imageUrl: state.profile.imageUrl!, fit: BoxFit.cover, width: 180, height: 180)
                                       : Image.asset(Assets.defaultProfileImage,

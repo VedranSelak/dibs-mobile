@@ -7,7 +7,6 @@ import 'package:app/ui/features/create_listing/widgets/spot_list_container.dart'
 import 'package:app/ui/features/create_listing/widgets/text_label.dart';
 import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:app/ui/widgets/screen_wrappers/simple_screen_wrapper.dart';
-import 'package:domain/public_listing/entities/spot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/res/string_extension.dart';
@@ -66,7 +65,7 @@ class _EnterListingSpotsScreenState extends State<EnterListingSpotsScreen> {
                   value: selectedType,
                   hint: const Text('Select the listing type'),
                   items: ListingType.values.map((ListingType type) {
-                    final String title = type.rawValue.capitalizeMe();
+                    final String title = type.textValue.capitalizeMe();
                     return DropdownMenuItem<ListingType>(
                       value: type,
                       child: Row(

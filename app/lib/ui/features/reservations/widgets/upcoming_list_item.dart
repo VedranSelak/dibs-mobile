@@ -85,30 +85,22 @@ class UpcomingListItem extends StatelessWidget {
           ),
           Expanded(child: Container()),
           PopupMenuButton<dynamic>(
-              itemBuilder: (BuildContext context) => [
-                    PopupMenuItem<dynamic>(
-                      child: Row(
-                        children: [
-                          const Icon(Icons.edit, color: Colors.blueAccent),
-                          const SizedBox(width: 10.0),
-                          Text('Edit', style: textStyles.regularText),
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem<dynamic>(
-                      onTap: () {
-                        context.read<ReservationsBloc>().add(CancelReservation(id: id));
-                      },
-                      child: Row(
-                        children: [
-                          const Icon(Icons.cancel, color: Colors.red),
-                          const SizedBox(width: 10.0),
-                          Text('Cancel reservation', style: textStyles.regularText),
-                        ],
-                      ),
-                    ),
+            itemBuilder: (BuildContext context) => [
+              PopupMenuItem<dynamic>(
+                onTap: () {
+                  context.read<ReservationsBloc>().add(CancelReservation(id: id));
+                },
+                child: Row(
+                  children: [
+                    const Icon(Icons.cancel, color: Colors.red),
+                    const SizedBox(width: 10.0),
+                    Text('Cancel reservation', style: textStyles.regularText),
                   ],
-              icon: const Icon(Icons.more_vert)),
+                ),
+              ),
+            ],
+            icon: const Icon(Icons.more_vert),
+          ),
         ],
       ),
     );

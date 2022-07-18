@@ -1,10 +1,15 @@
+import 'package:app/blocs/listing_created_cubit/listing_created_cubit.dart';
+import 'package:app/blocs/owner_mode_cubit/owner_mode_cubit.dart';
 import 'package:app/blocs/reservations_bloc/reservations_bloc.dart';
 import 'package:app/res/text_styles.dart';
+import 'package:app/ui/features/create_listing/create_listing_screen.dart';
 import 'package:app/ui/features/reservations/widgets/listing_reservation_list_item.dart';
 import 'package:app/ui/features/reservations/widgets/upcoming_list_item.dart';
+import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 
 class UpcomingReservationsScreen extends StatefulWidget {
   const UpcomingReservationsScreen({Key? key}) : super(key: key);
@@ -40,84 +45,112 @@ class _UpcomingReservationsScreenState extends State<UpcomingReservationsScreen>
     final textStyles = TextStyles.of(context);
     return Expanded(
       flex: 1,
-      child: BlocBuilder<ReservationsBloc, ReservationsState>(builder: (context, state) {
-        if (state is ReservationsFetched) {
-          if (state.reservations.isNotEmpty) {
-            return RefreshIndicator(
-              onRefresh: () async {
-                context.read<ReservationsBloc>().add(FetchUpcomingReservations());
-              },
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                itemCount: state.reservations.length,
-                itemBuilder: (context, index) {
-                  final place = state.reservations[index].place;
-                  final reservation = state.reservations[index];
-                  final arrivalTime = _getArrivalTimeString(reservation.arrivalTimestamp);
-                  final date = _getDateString(reservation.arrivalTimestamp);
-
-                  return UpcomingListItem(
-                    id: reservation.id,
-                    imageUrl: place.imageUrl,
-                    arrivalTime: arrivalTime,
-                    name: place.name,
-                    isPrivate: reservation.isPrivate,
-                    date: date,
-                  );
+      child: BlocListener<ListingCreatedCubit, bool>(
+        listener: (context, state) {
+          if (context.read<OwnerModeCubit>().state) {
+            context.read<ReservationsBloc>().add(FetchUpcomingListingReservations());
+          }
+        },
+        child: BlocBuilder<ReservationsBloc, ReservationsState>(builder: (context, state) {
+          if (state is ReservationsFetched) {
+            if (state.reservations.isNotEmpty) {
+              return RefreshIndicator(
+                onRefresh: () async {
+                  context.read<ReservationsBloc>().add(FetchUpcomingReservations());
                 },
-              ),
-            );
-          } else {
-            return Center(
-              child: Text(
-                'You have no upcoming reservations',
-                style: textStyles.descriptiveText,
-                textAlign: TextAlign.center,
-              ),
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                  itemCount: state.reservations.length,
+                  itemBuilder: (context, index) {
+                    final place = state.reservations[index].place;
+                    final reservation = state.reservations[index];
+                    final arrivalTime = _getArrivalTimeString(reservation.arrivalTimestamp);
+                    final date = _getDateString(reservation.arrivalTimestamp);
+
+                    return UpcomingListItem(
+                      id: reservation.id,
+                      imageUrl: place.imageUrl,
+                      arrivalTime: arrivalTime,
+                      name: place.name,
+                      isPrivate: reservation.isPrivate,
+                      date: date,
+                    );
+                  },
+                ),
+              );
+            } else {
+              return Center(
+                child: Text(
+                  'You have no upcoming reservations',
+                  style: textStyles.descriptiveText,
+                  textAlign: TextAlign.center,
+                ),
+              );
+            }
+          } else if (state is ListingReservationsFetched) {
+            if (state.reservations.isNotEmpty) {
+              return RefreshIndicator(
+                onRefresh: () async {
+                  context.read<ReservationsBloc>().add(FetchUpcomingListingReservations());
+                },
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                  itemCount: state.reservations.length,
+                  itemBuilder: (context, index) {
+                    final fullName =
+                        '${state.reservations[index].user.firstName} ${state.reservations[index].user.lastName}';
+                    final reservation = state.reservations[index];
+                    final arrivalTime = _getArrivalTimeString(reservation.arrivalTimestamp);
+                    final date = _getDateString(reservation.arrivalTimestamp);
+
+                    return ListingReservationListItem(
+                      fullName: fullName,
+                      arrivalTime: arrivalTime,
+                      date: date,
+                      numOfPeople: reservation.numOfParticipants,
+                      stay: (reservation.stayApprox - reservation.arrivalTimestamp) ~/ 3600000,
+                      imageUrl: reservation.user.imageUrl,
+                    );
+                  },
+                ),
+              );
+            } else {
+              return Center(
+                child: Text(
+                  'You have no upcoming reservations',
+                  style: textStyles.descriptiveText,
+                  textAlign: TextAlign.center,
+                ),
+              );
+            }
+          } else if (state is FetchReservationsFailed &&
+              !context.read<ListingCreatedCubit>().state &&
+              context.read<OwnerModeCubit>().state) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "You haven't created a listing",
+                  style: textStyles.descriptiveText,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10.0),
+                PrimaryButton(
+                  buttonText: 'Create',
+                  onPress: () {
+                    Get.toNamed<dynamic>(CreateListingScreen.routeName);
+                  },
+                  backgroundColor: Colors.blueAccent,
+                ),
+              ],
             );
           }
-        } else if (state is ListingReservationsFetched) {
-          if (state.reservations.isNotEmpty) {
-            return RefreshIndicator(
-              onRefresh: () async {
-                context.read<ReservationsBloc>().add(FetchUpcomingListingReservations());
-              },
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                itemCount: state.reservations.length,
-                itemBuilder: (context, index) {
-                  final fullName =
-                      '${state.reservations[index].user.firstName} ${state.reservations[index].user.lastName}';
-                  final reservation = state.reservations[index];
-                  final arrivalTime = _getArrivalTimeString(reservation.arrivalTimestamp);
-                  final date = _getDateString(reservation.arrivalTimestamp);
-
-                  return ListingReservationListItem(
-                    fullName: fullName,
-                    arrivalTime: arrivalTime,
-                    date: date,
-                    numOfPeople: reservation.numOfParticipants,
-                    stay: (reservation.stayApprox - reservation.arrivalTimestamp) ~/ 3600000,
-                    imageUrl: reservation.user.imageUrl,
-                  );
-                },
-              ),
-            );
-          } else {
-            return Center(
-              child: Text(
-                'You have no upcoming reservations',
-                style: textStyles.descriptiveText,
-                textAlign: TextAlign.center,
-              ),
-            );
-          }
-        }
-        return const Center(
-            child: SpinKitWave(
-          color: Colors.blueAccent,
-        ));
-      }),
+          return const Center(
+              child: SpinKitWave(
+            color: Colors.blueAccent,
+          ));
+        }),
+      ),
     );
   }
 }

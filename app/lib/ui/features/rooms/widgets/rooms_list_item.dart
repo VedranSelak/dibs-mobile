@@ -86,7 +86,7 @@ class RoomsListItem extends StatelessWidget {
               onPressed: () {
                 AlertDialogWidget(
                   context: context,
-                  title: 'Leave room "$name""',
+                  title: 'Leave room "$name"',
                   description:
                       "Are you sure you want to leave the room. If you leave the room you will not be able to come back without another invite.",
                   acceptButton: PrimaryButton(

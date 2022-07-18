@@ -31,7 +31,8 @@ class BlocModule extends BaseDiModule {
         (userTypeBloc, _) => SignUpBloc(userTypeBloc: userTypeBloc));
     GetIt.I.registerFactory<ListingBloc>(ListingBloc.new);
     GetIt.I.registerFactory<UserTypeBloc>(UserTypeBloc.new);
-    GetIt.I.registerFactory<CreateListingBloc>(CreateListingBloc.new);
+    GetIt.I.registerFactoryParam<CreateListingBloc, ListingCreatedCubit, void>(
+        (listingCreatedCubit, _) => CreateListingBloc(listingCreatedCubit));
     GetIt.I.registerFactory<ListingDetailsBloc>(ListingDetailsBloc.new);
     GetIt.I.registerFactory<CreateReservationBloc>(CreateReservationBloc.new);
     GetIt.I.registerFactory<ReservationsBloc>(ReservationsBloc.new);

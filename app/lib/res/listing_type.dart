@@ -92,6 +92,21 @@ extension ListingTypeExtension on ListingType {
         return Icons.local_restaurant;
     }
   }
+
+  String get textValue {
+    switch (this) {
+      case ListingType.restaurant:
+        return 'restaurant';
+      case ListingType.sportcenter:
+        return 'sport center';
+      case ListingType.club:
+        return 'club';
+      case ListingType.bar:
+        return 'bar';
+      default:
+        return 'unknown';
+    }
+  }
 }
 
 class ListingHelper {
