@@ -1,11 +1,15 @@
+import 'package:app/blocs/listing_created_cubit/listing_created_cubit.dart';
 import 'package:app/blocs/owner_mode_cubit/owner_mode_cubit.dart';
 import 'package:app/blocs/reservations_bloc/reservations_bloc.dart';
 import 'package:app/res/text_styles.dart';
+import 'package:app/ui/features/create_listing/create_listing_screen.dart';
 import 'package:app/ui/features/reservations/widgets/listing_reservation_list_item.dart';
 import 'package:app/ui/features/reservations/widgets/recent_list_item.dart';
+import 'package:app/ui/widgets/buttons/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 
 class RecentReservationsScreen extends StatefulWidget {
   const RecentReservationsScreen({Key? key}) : super(key: key);
@@ -46,84 +50,112 @@ class _RecentReservationsScreenState extends State<RecentReservationsScreen> {
     final textStyles = TextStyles.of(context);
     return Expanded(
       flex: 1,
-      child: BlocBuilder<ReservationsBloc, ReservationsState>(builder: (context, state) {
-        if (state is ReservationsFetched) {
-          if (state.reservations.isNotEmpty) {
-            return RefreshIndicator(
-              onRefresh: () async {
-                context.read<ReservationsBloc>().add(FetchRecentReservations());
-                const Duration(seconds: 1);
-              },
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                itemCount: state.reservations.length,
-                itemBuilder: (context, index) {
-                  final place = state.reservations[index].place;
-                  final reservation = state.reservations[index];
-                  final date = _getDateString(reservation.arrivalTimestamp);
-
-                  return RecentListItem(
-                    id: reservation.id,
-                    imageUrl: place.imageUrl,
-                    name: place.name,
-                    isPrivate: reservation.isPrivate,
-                    date: date,
-                  );
+      child: BlocListener<ListingCreatedCubit, bool>(
+        listener: (context, state) {
+          if (context.read<OwnerModeCubit>().state) {
+            context.read<ReservationsBloc>().add(FetchRecentListingReservations());
+          }
+        },
+        child: BlocBuilder<ReservationsBloc, ReservationsState>(builder: (context, state) {
+          if (state is ReservationsFetched) {
+            if (state.reservations.isNotEmpty) {
+              return RefreshIndicator(
+                onRefresh: () async {
+                  context.read<ReservationsBloc>().add(FetchRecentReservations());
+                  const Duration(seconds: 1);
                 },
-              ),
-            );
-          } else {
-            return Center(
-              child: Text(
-                'You have no reservations in history',
-                style: textStyles.descriptiveText,
-                textAlign: TextAlign.center,
-              ),
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                  itemCount: state.reservations.length,
+                  itemBuilder: (context, index) {
+                    final place = state.reservations[index].place;
+                    final reservation = state.reservations[index];
+                    final date = _getDateString(reservation.arrivalTimestamp);
+
+                    return RecentListItem(
+                      id: reservation.id,
+                      imageUrl: place.imageUrl,
+                      name: place.name,
+                      isPrivate: reservation.isPrivate,
+                      date: date,
+                    );
+                  },
+                ),
+              );
+            } else {
+              return Center(
+                child: Text(
+                  'You have no reservations in history',
+                  style: textStyles.descriptiveText,
+                  textAlign: TextAlign.center,
+                ),
+              );
+            }
+          } else if (state is ListingReservationsFetched) {
+            if (state.reservations.isNotEmpty) {
+              return RefreshIndicator(
+                onRefresh: () async {
+                  context.read<ReservationsBloc>().add(FetchRecentListingReservations());
+                },
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                  itemCount: state.reservations.length,
+                  itemBuilder: (context, index) {
+                    final fullName =
+                        '${state.reservations[index].user.firstName} ${state.reservations[index].user.lastName}';
+                    final reservation = state.reservations[index];
+                    final arrivalTime = _getArrivalTimeString(reservation.arrivalTimestamp);
+                    final date = _getDateString(reservation.arrivalTimestamp);
+
+                    return ListingReservationListItem(
+                      fullName: fullName,
+                      arrivalTime: arrivalTime,
+                      date: date,
+                      numOfPeople: reservation.numOfParticipants,
+                      stay: (reservation.stayApprox - reservation.arrivalTimestamp) ~/ 3600000,
+                      imageUrl: reservation.user.imageUrl,
+                    );
+                  },
+                ),
+              );
+            } else {
+              return Center(
+                child: Text(
+                  'You have no reservations in history',
+                  style: textStyles.descriptiveText,
+                  textAlign: TextAlign.center,
+                ),
+              );
+            }
+          } else if (state is FetchReservationsFailed &&
+              context.read<OwnerModeCubit>().state &&
+              !context.read<ListingCreatedCubit>().state) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "You haven't created a listing",
+                  style: textStyles.descriptiveText,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10.0),
+                PrimaryButton(
+                  buttonText: 'Create',
+                  onPress: () {
+                    Get.toNamed<dynamic>(CreateListingScreen.routeName);
+                  },
+                  backgroundColor: Colors.blueAccent,
+                ),
+              ],
             );
           }
-        } else if (state is ListingReservationsFetched) {
-          if (state.reservations.isNotEmpty) {
-            return RefreshIndicator(
-              onRefresh: () async {
-                context.read<ReservationsBloc>().add(FetchRecentListingReservations());
-              },
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                itemCount: state.reservations.length,
-                itemBuilder: (context, index) {
-                  final fullName =
-                      '${state.reservations[index].user.firstName} ${state.reservations[index].user.lastName}';
-                  final reservation = state.reservations[index];
-                  final arrivalTime = _getArrivalTimeString(reservation.arrivalTimestamp);
-                  final date = _getDateString(reservation.arrivalTimestamp);
 
-                  return ListingReservationListItem(
-                    fullName: fullName,
-                    arrivalTime: arrivalTime,
-                    date: date,
-                    numOfPeople: reservation.numOfParticipants,
-                    stay: (reservation.stayApprox - reservation.arrivalTimestamp) ~/ 3600000,
-                    imageUrl: reservation.user.imageUrl,
-                  );
-                },
-              ),
-            );
-          } else {
-            return Center(
-              child: Text(
-                'You have no reservations in history',
-                style: textStyles.descriptiveText,
-                textAlign: TextAlign.center,
-              ),
-            );
-          }
-        }
-
-        return const Center(
-            child: SpinKitWave(
-          color: Colors.blueAccent,
-        ));
-      }),
+          return const Center(
+              child: SpinKitWave(
+            color: Colors.blueAccent,
+          ));
+        }),
+      ),
     );
   }
 }

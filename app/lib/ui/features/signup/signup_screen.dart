@@ -43,7 +43,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("Choose the account type", style: textStyles.headerText),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Text(
+                      "Choose the account type",
+                      style: textStyles.headerText,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                   const SizedBox(
                     height: 30.0,
                   ),

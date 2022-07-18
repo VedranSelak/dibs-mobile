@@ -1,5 +1,4 @@
 import 'package:app/blocs/listing_created_cubit/listing_created_cubit.dart';
-import 'package:app/blocs/show_reminder_cubit/show_reminder_cubit.dart';
 import 'package:app/res/listing_type.dart';
 import 'package:app/ui/features/create_listing/enter_listing_spots_screen.dart';
 import 'package:app/ui/features/home/home_screen.dart';
@@ -20,7 +19,7 @@ part "create_listing_event.dart";
 part "create_listing_state.dart";
 
 class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
-  CreateListingBloc() : super(CreateListingInitial()) {
+  CreateListingBloc(this.listingCreatedCubit) : super(CreateListingInitial()) {
     on<EnterListingData>(_onEnterListingData);
     on<AddListingImages>(_onAddListingImages);
     on<RemoveListingImage>(_onRemoveListingImage);
@@ -34,6 +33,7 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
 
   final PostListingImagesUseCase _postListingImagesUseCase = GetIt.I.get<PostListingImagesUseCase>();
   final PostListingUseCase _postListingUseCase = GetIt.I.get<PostListingUseCase>();
+  final ListingCreatedCubit listingCreatedCubit;
 
   void _onEnterListingData(EnterListingData event, Emitter<CreateListingState> emit) {
     Get.toNamed<dynamic>(EnterListingSpotsScreen.routeName);
@@ -296,6 +296,7 @@ class CreateListingBloc extends Bloc<CreateListingEvent, CreateListingState> {
               },
             ),
             predicate: ModalRoute.withName(HomeScreen.routeName));
+        listingCreatedCubit.checkHasListing();
         emit(CreateListingInitial());
       }
     } else if (currentState is ListingDataEntering) {

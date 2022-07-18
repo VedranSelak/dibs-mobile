@@ -1,3 +1,4 @@
+import 'package:common/params/add_invite_request.dart';
 import 'package:common/params/create_room_request.dart';
 import 'package:common/params/invite_request.dart';
 import 'package:common/resources/data_state.dart';
@@ -20,4 +21,5 @@ abstract class PrivateRoomApiRepository {
   Future<DataState<PrivateRoomDetails>> getRoomDetails(int id);
   Future<DataState<YourRoomDetails>> getYourRoom(int id);
   Future<DataState<Created>> deleteRoom(int id);
+  Future<DataState<Created>> addInvites(AddInviteRequestParams params);
 }

@@ -41,7 +41,7 @@ class RoomInviteScreen extends StatelessWidget {
       child: Stack(
         children: [
           SimpleScreenWrapper(
-            title: "Enter room image",
+            title: "Submit room",
             shouldGoUnderAppBar: false,
             shouldResize: false,
             onBackPressed: () {

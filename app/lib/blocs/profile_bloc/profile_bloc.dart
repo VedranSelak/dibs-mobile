@@ -24,6 +24,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final ChangeProfileImageUseCase _changeProfileImageUseCase = GetIt.I.get<ChangeProfileImageUseCase>();
 
   void _onFetchProfileDetails(FetchProfileDetails event, Emitter<ProfileState> emit) async {
+    emit(FetchingProfile());
     final response = await _getProfileDetailsUseCase(params: null);
     if (response is DataFailed) {
       final Map errorObject = json.decode(response.error?.response.toString() ?? "") as Map;

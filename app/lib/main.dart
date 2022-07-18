@@ -51,8 +51,13 @@ void main() async {
           param1: context.read<UserTypeBloc>(),
         ),
       ),
+      BlocProvider<ListingCreatedCubit>(
+        create: (context) => GetIt.I.get<ListingCreatedCubit>(),
+      ),
       BlocProvider<CreateListingBloc>(
-        create: (context) => GetIt.I.get<CreateListingBloc>(),
+        create: (context) => GetIt.I.get<CreateListingBloc>(
+          param1: context.read<ListingCreatedCubit>(),
+        ),
       ),
       BlocProvider<ListingDetailsBloc>(
         create: (context) => GetIt.I.get<ListingDetailsBloc>(),
@@ -86,9 +91,6 @@ void main() async {
       ),
       BlocProvider<FiltersBloc>(
         create: (context) => GetIt.I.get<FiltersBloc>(),
-      ),
-      BlocProvider<ListingCreatedCubit>(
-        create: (context) => GetIt.I.get<ListingCreatedCubit>(),
       ),
       BlocProvider<ShowReminderCubit>(
         create: (context) => GetIt.I.get<ShowReminderCubit>(),

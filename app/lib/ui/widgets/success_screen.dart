@@ -58,7 +58,7 @@ class SuccessScreen extends StatelessWidget {
                 margin: EdgeInsets.symmetric(horizontal: dimensions.fullWidth * 0.15),
                 child: Text(
                   isListing
-                      ? "You have successfully created your public listing. The listing is currently in review and is not active. After the review is passed the listing will be visible to users."
+                      ? "You have successfully created your public listing. The listing is currently available to users. Be ready for reservations."
                       : "Your have successfully create a private room. You will be able to see your room in the rooms tab of the application.",
                   style: textStyles.descriptiveText,
                   textAlign: TextAlign.center,

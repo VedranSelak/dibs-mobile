@@ -4,6 +4,7 @@ import 'package:app/ui/features/create_listing/enter_listing_spots_screen.dart';
 import 'package:app/ui/features/create_room/create_room_screen.dart';
 import 'package:app/ui/features/create_room/room_invite_screen.dart';
 import 'package:app/ui/features/home/home_screen.dart';
+import 'package:app/ui/features/invite_friends/choose_room_screen.dart';
 import 'package:app/ui/features/login/login_screen.dart';
 import 'package:app/ui/features/profile/profile_screen.dart';
 import 'package:app/ui/features/reservations/navigation/reservations_binding.dart';
@@ -73,6 +74,10 @@ class Application extends StatelessWidget {
     GetPage<RoomsScreen>(
       name: RoomsScreen.routeName,
       page: RoomsScreen.new,
+    ),
+    GetPage<ChooseRoomScreen>(
+      name: ChooseRoomScreen.routeName,
+      page: ChooseRoomScreen.new,
     ),
   ];
 }
